@@ -21,12 +21,6 @@ class Lista {
         Lista();
 
         /*
-        Inicializa una nueva lista, copiando todos los nodos y atributos de 'otraLista'.
-        
-        Lista(Lista<Tipo>* otraLista);
-        */
-
-        /*
         Destruye todos los nodos de la lista, liberando el espacio que ocupaban en la
         memoria dinamica
         */
@@ -99,19 +93,10 @@ class Lista {
         Tipo& operator[](int indice);
 
         /*
-        Recibe otra lista y combina sus elementos de forma que el ultimo elemento de la lista tiene
-        como nodo proximo al primero de 'otraLista'.
-        No muta ninguna de las dos listas y devuelve una copia de la union de estas.
-        
-        Lista<Tipo>*& operator+(Lista<Tipo>* otraLista);
-        */
-
-        /*
         Compara dos listas y devuelve 'true' si tienen la msima cantidad de elementos y estos son los
         mismos. Si no devuelve 'false'.
-        
-        bool operator==(Lista<Tipo>* otraLista);
         */
+        bool operator==(Lista<Tipo> otraLista);
 
         /*
         Imprime por pantalla todos los elementos de la lista, para que se los pueda ver comodamente.
@@ -127,21 +112,6 @@ Lista<Tipo>::Lista() {
     prim = NULL;
     cant = 0;
 }
-
-// template <class Tipo>
-// Lista<Tipo>::Lista(Lista<Tipo>* otraLista) {
-
-//     Nodo<Tipo>* aux1;
-//     Nodo<Tipo>* aux2 = otraLista.prim;
-
-//     while (aux2 && aux2->prox()) {
-
-//         aux1 = new Nodo<Tipo>(aux2->dato(), aux2->prox());
-
-//         aux1 = aux1->prox();
-//         aux2 = aux2->prox();
-//     }
-// }
 
 template <class Tipo>
 Lista<Tipo>::~Lista() {
@@ -188,7 +158,7 @@ void Lista<Tipo>::agregarFin(Tipo elem) {
 
     if (aux) {
 
-        aux->setProx(new Nodo<Tipo>(elem, aux->prox()));
+        aux->setProx(new Nodo<Tipo>(elem));
 
     } else {
 
@@ -202,7 +172,9 @@ template <class Tipo>
 void Lista<Tipo>::insertar(int indice, Tipo elem) {
 
     if (indice < 0 || indice > cant) {
-        throw "El indice indicado esta fuera de rango";
+
+        std::cout << "El indice indicado (" << indice << ") no valido o fuera de rango" << std::endl;
+        throw indice;
     }
 
     if (indice == 0) {
@@ -224,7 +196,7 @@ void Lista<Tipo>::insertar(int indice, Tipo elem) {
 
         } else {
 
-            agregarFin();
+            agregarFin(elem);
         }
     }
 }
@@ -234,7 +206,8 @@ void Lista<Tipo>::borrar(Tipo elem) {
 
     if (estaVacia()) {
 
-        throw "La lista esta vacia";
+        std::cout << "La lista esta vacia" << std::endl;
+        throw elem;
     }
 
     Nodo<Tipo>* anterior = NULL;
@@ -260,7 +233,8 @@ void Lista<Tipo>::borrar(Tipo elem) {
 
     } else {
 
-        throw "El elemento especificado no fue encontrado";
+        std::cout << "El elemento especificado (" << elem << ") no fue encontrado" << std::endl;
+        throw elem;
     }
 
     cant--;
@@ -270,7 +244,9 @@ template <class Tipo>
 Tipo Lista<Tipo>::pop(int indice) {
 
     if (estaVacia() || indice < 0 || indice >= cant) {
-        throw "El indice indicado esta fuera de rango o la lista esta vacia";
+
+        std::cout << "El indice indicado (" << indice << ") esta fuera de rango o la lista esta vacia" << std::endl;
+        throw indice;
     }
 
     Nodo<Tipo>* anterior = NULL;
@@ -304,7 +280,8 @@ int Lista<Tipo>::indice(Tipo elem) {
 
     if (estaVacia()) {
 
-        throw "La lista esta vacia";
+        std::cout << "La lista esta vacia" << std::endl;
+        throw elem;
     }
 
     Nodo<Tipo>* aux = prim;
@@ -322,7 +299,8 @@ int Lista<Tipo>::indice(Tipo elem) {
 
     } else {
 
-        throw "El elemento especificado no fue encontrado";
+        std::cout << "El elemento especificado (" << elem << ") no fue encontrado" << std::endl;
+        throw elem;
     }
 }
 
@@ -375,7 +353,8 @@ Tipo& Lista<Tipo>::operator[](int indice) {
 
     if (estaVacia() || indice < 0 || indice >= cant) {
 
-        throw "El indice indicado esta fuera de rango o la lista esta vacia";
+        std::cout << "El indice indicado (" << indice << ") esta fuera de rango o la lista esta vacia" << std::endl;
+        throw indice;
     }
 
     Nodo<Tipo>* aux = prim;
@@ -388,63 +367,49 @@ Tipo& Lista<Tipo>::operator[](int indice) {
     return aux->datoRef();
 }
 
-// template <class Tipo>
-// Lista<Tipo>*& Lista<Tipo>::operator+(Lista<Tipo>* otraLista) {
+template <class Tipo>
+bool Lista<Tipo>::operator==(Lista<Tipo> otraLista) {
 
-//      Lista<Tipo>* copiaLista = Lista<Tipo>(*this);
-//      Lista<Tipo>* copiaOtraLista = Lista<Tipo>(otraLista);
-     
-//      Nodo<Tipo>* aux = prim;
+    if (len() != otraLista.len()) {
 
-//      while (aux && aux->prox()) {
+        return false;
+    }
 
-//          aux = aux->porx();
-//      }
+    Nodo<Tipo>* aux1 = prim;
+    Nodo<Tipo>* aux2 = otraLista.prim;
 
-//      aux->setProx(copiaOtraLista.prim);
-//      copiaLista->cant += copiaOtraLista->cant;
+    while (aux1 && aux1->prox()) {
 
-//      return copiaLista;
-// }
+        if (aux1->dato() != aux2->dato()) {
 
-// template <class Tipo>
-// bool Lista<Tipo>::operator==(Lista<Tipo>* otraLista) {
+            return false;
+        }
 
-//     if (len() == otraLista->len()) {
+        aux1 = aux1->prox();
+        aux2 = aux2->prox();
+    }
 
-//         Nodo<Tipo>* aux1 = prim;
-//         Nodo<Tipo>* aux2 = otraLista->prim;
-
-//         while (aux1 && aux1->prox()) {
-
-//             if (aux1->dato() != aux2->dato()) {
-
-//                 return false;
-//             }
-
-//             aux1 = aux1->prox();
-//             aux2 = aux2->prox();
-//         }
-
-//         return true;
-//     }
-
-//     return false;
-// }
+    return true;
+}
 
 template <class Tipo>
 void Lista<Tipo>::imprimir() {
 
-    for (int i = 0; i < cant; i++) {
+    Nodo<Tipo>* aux = prim;
 
-        std::cout << operator[](i);
+    while (aux) {
 
-        if (i < cant - 1) {
+        std::cout << aux->dato();
+
+        if (aux->prox()) {
 
             std::cout << " -> ";
         }
+
+        aux = aux->prox();
     }
-    std::cout<< std::endl;
+
+    std::cout << std::endl;
 }
 
 #endif /* LISTALIGADA_H_ */
