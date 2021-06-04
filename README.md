@@ -9,7 +9,7 @@ Repositorio hecho para el desarrollo grupal del Trabajo Práctico 2 - "4 EN LÍN
 * [Guillermina Hoff](https://github.com/guillehoff)
 * [Joaquín Gandolfo](https://github.com/JGandolfoM)
 * [Nico Gareca](https://github.com/nicogareca)
-* [Saul Gerardo](https://github.com/saulGerardoL)
+* ~~[Saul Gerardo](https://github.com/saulGerardoL)~~ [04/06/2021: Dejó la materia]
 
 ### Cómo contribuir al repositorio:
 
