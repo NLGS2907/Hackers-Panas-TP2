@@ -80,16 +80,16 @@ Tablero<TipoTablero>::Tablero(int anchoInic, int altoInic, int largoInic) {
     for (int fila = 0; fila < altoInic; fila++) {
 
         Lista<Lista<TipoTablero>*>* listaFila = new Lista<Lista<TipoTablero>*>;
-        espacio->agregarFin(listaFila);
+        espacio->agregarPrin(listaFila);
 
         for (int columna = 0; columna < anchoInic; columna++) {
 
             Lista<TipoTablero>* listaColumna = new Lista<TipoTablero>;
-            (*espacio)[fila]->agregarFin(listaColumna);
+            (*espacio)[0]->agregarPrin(listaColumna);
 
             for (int profundidad = 0; profundidad < largoInic; profundidad++) {
 
-                (*(*espacio)[fila])[columna]->agregarFin(VACIO);
+                (*(*espacio)[0])[0]->agregarPrin(VACIO);
             }
         }
     }
