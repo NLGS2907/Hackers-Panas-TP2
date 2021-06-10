@@ -92,17 +92,29 @@ Tablero<TipoTablero>::Tablero(int anchoInic, int altoInic, int largoInic) {
 
     for (int fila = 0; fila < altoInic; fila++) {
 
+<<<<<<< FrancoL
         Lista<Lista<Casillero<TipoTablero> >*>* listaFila = new Lista<Lista<Casillero<TipoTablero> >*>;
+=======
+        Lista<Lista<TipoTablero>*>* listaFila = new Lista<Lista<TipoTablero>*>;
+>>>>>>> main
         espacio->agregarPrin(listaFila);
 
         for (int columna = 0; columna < anchoInic; columna++) {
 
+<<<<<<< FrancoL
             Lista<Casillero<TipoTablero> >* listaColumna = new Lista<Casillero<TipoTablero> >;
+=======
+            Lista<TipoTablero>* listaColumna = new Lista<TipoTablero>;
+>>>>>>> main
             (*espacio)[0]->agregarPrin(listaColumna);
 
             for (int profundidad = 0; profundidad < largoInic; profundidad++) {
 
+<<<<<<< FrancoL
                 (*(*espacio)[0])[0]->agregarPrin(Casillero<TipoTablero>());
+=======
+                (*(*espacio)[0])[0]->agregarPrin(VACIO);
+>>>>>>> main
             }
         }
     }
