@@ -1,6 +1,7 @@
 #ifndef TABLERO_H_
 #define TABLERO_H_
 #include "listaLigada.h"
+#include "casillero.h"
 #include "constantes.h"
 #include <iostream>
 
@@ -11,7 +12,7 @@ class Tablero {
 
     private:
 
-        Lista<Lista<Lista<TipoTablero>*>*>* espacio;
+        Lista<Lista<Lista<Casillero<TipoTablero> >*>*>* espacio;
 
         void _imprimir(char ladoCorto);
 
@@ -28,7 +29,13 @@ class Tablero {
         Crea un tablero de tres (3) dimensiones ALTO-ANCHO-LARGO, que deben ser
         especificadas en el constructor.
         */
-        Tablero(int altoInic, int anchoInic, int largoInic);
+        Tablero(int anchoInic, int altoInic, int largoInic);
+
+        /*
+        Libera la memoria que ocupa el tablero llamando al destructor de cada lista
+        que conforma el mismo.
+        */
+        ~Tablero();
 
         /*
         Devuelve el ALTO del tablero.
@@ -52,18 +59,24 @@ class Tablero {
         TipoTablero& celda(int fil, int col, int prof);
 
         /*
-        Se detecta el lado mas corto automaticamente y se usa el plano normal al mismo.
-        Si los tres lados tienen la misma longitud se utilizara el plano ANCHO-ALTO.
+        Deja caer una ficha en la columna correspondiente segun las coordenadas
+        (columna, profundo) que se elijan.
         */
-       void imprimir();
+        void tirarFicha(int columna, int profundo, TipoTablero tipoFicha);
+
+        /*
+        Se detecta el lado mas corto automaticamente y se usa el plano normal al mismo.
+        Si los tres lados tienen la misma longitud se utilizara el plano ALTO ^ ANCHO >.
+        */
+        void imprimir();
 
         /*
         Imprime el tablero por pantalla mostrando slices de un un plano que sea
         normal al lado seleccionado.
 
         'x' o 'X' utiliza el plano de ALTO ^ LARGO >.
-        'y' o 'Y' utiliza el plano de ANCHO ^ LARGO >.
-        'z' o 'Z' utiliza el plano de ANCHO ^ ALTO >.
+        'y' o 'Y' utiliza el plano de LARGO ^ ANCHO >.
+        'z' o 'Z' utiliza el plano de ALTO ^ ANCHO >.
 
         Cualquier otro caracter hará que se llame a `imprimir()`.
         */
@@ -75,24 +88,43 @@ class Tablero {
 template <class TipoTablero>
 Tablero<TipoTablero>::Tablero(int anchoInic, int altoInic, int largoInic) {
 
-    espacio = new Lista<Lista<Lista<TipoTablero>*>*>;
+    espacio = new Lista<Lista<Lista<Casillero<TipoTablero> >*>*>;
 
     for (int fila = 0; fila < altoInic; fila++) {
 
-        Lista<Lista<TipoTablero>*>* listaFila = new Lista<Lista<TipoTablero>*>;
-        espacio->agregarFin(listaFila);
+        Lista<Lista<Casillero<TipoTablero> >*>* listaFila = new Lista<Lista<Casillero<TipoTablero> >*>;
+        espacio->agregarPrin(listaFila);
 
         for (int columna = 0; columna < anchoInic; columna++) {
 
-            Lista<TipoTablero>* listaColumna = new Lista<TipoTablero>;
-            (*espacio)[fila]->agregarFin(listaColumna);
+            Lista<Casillero<TipoTablero> >* listaColumna = new Lista<Casillero<TipoTablero> >;
+            (*espacio)[0]->agregarPrin(listaColumna);
 
             for (int profundidad = 0; profundidad < largoInic; profundidad++) {
 
-                (*(*espacio)[fila])[columna]->agregarFin(VACIO);
+                (*(*espacio)[0])[0]->agregarPrin(Casillero<TipoTablero>());
             }
         }
     }
+}
+
+template <class TipoTablero>
+Tablero<TipoTablero>::~Tablero() {
+
+    int filas = alto();
+    int columnas = ancho();
+
+    for (int fil = 0; fil < filas; fil++) {
+
+        for (int col = 0; col < columnas; col++) {
+
+            delete (*(*espacio)[fil])[col];
+        }
+
+        delete (*espacio)[fil];
+    }
+
+    delete espacio;
 }
 
 template <class TipoTablero>
@@ -116,7 +148,22 @@ int Tablero<TipoTablero>::largo() {
 template <class TipoTablero>
 TipoTablero& Tablero<TipoTablero>::celda(int fil, int col, int prof) {
 
-    return (*(*(*espacio)[fil])[col])[prof];
+    return (*(*(*espacio)[fil])[col])[prof].verContenido();
+}
+
+template <class TipoTablero>
+void Tablero<TipoTablero>::tirarFicha(int columna, int profundo, TipoTablero tipoFicha) {
+
+    int filas = alto();
+    int filaElegida = 0;
+    int filaActual = 0;
+
+    while (filaActual < filas && celda(filaActual, columna, profundo) == VACIO) {
+
+        filaElegida = filaActual++;
+    }
+
+    celda(filaElegida, columna, profundo) = tipoFicha;
 }
 
 template <class TipoTablero>
