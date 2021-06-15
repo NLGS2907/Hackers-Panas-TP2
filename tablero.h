@@ -29,7 +29,7 @@ class Tablero {
         Crea un tablero de tres (3) dimensiones ALTO-ANCHO-LARGO, que deben ser
         especificadas en el constructor.
         */
-        Tablero(int anchoInic, int altoInic, int largoInic);
+        Tablero(int anchoInicial, int altoInicial, int largoInicial);
 
         /*
         Libera la memoria que ocupa el tablero llamando al destructor de cada lista
@@ -86,35 +86,23 @@ class Tablero {
 /* ----- DEFINICIONES ----- */
 
 template <class TipoTablero>
-Tablero<TipoTablero>::Tablero(int anchoInic, int altoInic, int largoInic) {
+Tablero<TipoTablero>::Tablero(int anchoInicial, int altoInicial, int largoInicial) {
 
     espacio = new Lista<Lista<Lista<Casillero<TipoTablero> >*>*>;
 
-    for (int fila = 0; fila < altoInic; fila++) {
+    for (int fila = 0; fila < altoInicial; fila++) {
 
-<<<<<<< FrancoL
         Lista<Lista<Casillero<TipoTablero> >*>* listaFila = new Lista<Lista<Casillero<TipoTablero> >*>;
-=======
-        Lista<Lista<TipoTablero>*>* listaFila = new Lista<Lista<TipoTablero>*>;
->>>>>>> main
         espacio->agregarPrin(listaFila);
 
-        for (int columna = 0; columna < anchoInic; columna++) {
+        for (int columna = 0; columna < anchoInicial; columna++) {
 
-<<<<<<< FrancoL
             Lista<Casillero<TipoTablero> >* listaColumna = new Lista<Casillero<TipoTablero> >;
-=======
-            Lista<TipoTablero>* listaColumna = new Lista<TipoTablero>;
->>>>>>> main
             (*espacio)[0]->agregarPrin(listaColumna);
 
-            for (int profundidad = 0; profundidad < largoInic; profundidad++) {
+            for (int profundidad = 0; profundidad < largoInicial; profundidad++) {
 
-<<<<<<< FrancoL
                 (*(*espacio)[0])[0]->agregarPrin(Casillero<TipoTablero>());
-=======
-                (*(*espacio)[0])[0]->agregarPrin(VACIO);
->>>>>>> main
             }
         }
     }

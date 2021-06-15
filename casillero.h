@@ -37,7 +37,6 @@ template <class TipoCasillero>
 Casillero<TipoCasillero>::Casillero(TipoCasillero nuevoContenido) {
 
     contenido = nuevoContenido;
-
 }
 
 template <class TipoCasillero>
