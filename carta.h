@@ -3,12 +3,12 @@
 
 #include<string>
 
-template <class T>
+template <class tipoCarta>
 class Carta {
 
 private:
 
-	T descripcion;
+	tipoCarta datoCarta; 
 
 public:
 
@@ -16,40 +16,40 @@ public:
 	 * PRE:
 	 * POST: asigna decripcion
 	 */
-	Carta(T descripcion);
+	Carta(tipoCarta datoCartaNuevo);
 
 	/*
 	 * PRE:
 	 * POST: asigna decripcion
 	 */
-	void asignarDescripcion(T descripcion);
+	void asignarDescripcion(tipoCarta datoCartaNuevo);
 
 	/*
 	 * PRE:
 	 * POST: devuelve descripcion de carta
 	 */
-	T obtenerDescripcion();
+	tipoCarta obtenerDescripcion();
 
 };
 
 
 /* ----- DEFINICIONES ----- */
-template <class T>
-Carta<T>::Carta(T descripcion)  {
+template <class tipoCarta>
+Carta<tipoCarta>::Carta(tipoCarta datoCarta)  {
 
-	this->descripcion = descripcion;
+	datoCarta = datoCartaNuevo;
 }
 
-template <class T>
-void Carta<T>::asignarDescripcion(T descripcion) {
+template <class tipoCarta>
+void Carta<tipoCarta>::asignarDescripcion(tipoCarta datoCartaNuevo) {
 
-	this->descripcion = descripcion;
+	datoCarta = datoCartaNuevo;
 }
 
-template <class T>
-T Carta<T>::obtenerDescripcion() {
+template <class tipoCarta>
+tipoCarta Carta<tipoCarta>::obtenerDescripcion() {
 
-	return descripcion;
+	return datoCarta;
 }
 
 #endif /* CARTA_H_ */
