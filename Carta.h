@@ -1,7 +1,6 @@
 #ifndef CARTA_H_
 #define CARTA_H_
 
-#include<iostream>
 #include<string>
 
 template <class T>
