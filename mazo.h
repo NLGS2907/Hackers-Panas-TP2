@@ -8,7 +8,7 @@
  Primer elemento = FRENTE
  Ultimo elemento = FONDO (en la clase se usaron estos nombres)
  El primer elemento en entrar es el primer elemento en salir.
- Sólo permite el acceso al elemento que denomina frente.
+ SÃ³lo permite el acceso al elemento que denomina frente.
 */
 
 template <class T>
