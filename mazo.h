@@ -3,6 +3,7 @@
 
 #include"Nodo.h"
 #include"Carta.h"
+#include<iostream>
 /*
  Principio FIFO (First In - First Out)
  Primer elemento = FRENTE
@@ -93,7 +94,7 @@ void Mazo<T>::acolar(T descripcionCarta){ // NO PONGO Nodo<T>* siguiente=NULL Po
 
 	if (this->estaVacia()) {
 		this->frente = nuevoNodo;
-
+		this->fondo = nuevoNodo;
 	} else {
 		this->fondo->setProx(nuevoNodo);
 	}
@@ -105,11 +106,9 @@ void Mazo<T>::acolar(T descripcionCarta){ // NO PONGO Nodo<T>* siguiente=NULL Po
 template <class T>
 Carta<T>* Mazo<T>::desacolar(){
 
-	Carta<T>* carta = NULL;
-
-    if (this->estaVacia()) {
-        throw std::string("El mazo esta vacio");
-    }
+	if (this->estaVacia()) {
+        	throw std::string("El mazo esta vacio");
+    	}
 
 
 	if (!this->estaVacia()) {
@@ -117,13 +116,15 @@ Carta<T>* Mazo<T>::desacolar(){
 		Nodo<T>* frenteAnterior = this->frente;
 		this->frente = frenteAnterior->prox();
 
-	    if (this->frente == NULL) {
-	       this->fondo = NULL;
-	    }
-
-	 /* devuelve el elemento y libera los recursos asociados */
-	    carta = frenteAnterior->dato(); //dato() METODO de nodo.h devuelve dato de nodo
-	    delete frenteAnterior;
+	    	if (this->frente == NULL) {
+	       		this->fondo = NULL;
+	    	}
+		
+	 	Carta<T>* carta = NULL;
+		
+	 	/* devuelve el elemento y libera los recursos asociados */
+	 	carta = frenteAnterior->dato(); //dato() METODO de nodo.h devuelve dato de nodo
+	 	delete frenteAnterior;
 	}
 
 	return carta;
@@ -134,18 +135,15 @@ Carta<T>* Mazo<T>::desacolar(){
 template <class T>
 Carta<T>* Mazo<T>::obtenerFrente(){
 
-	Carta<T>* carta = NULL;
-
-    if (this->estaVacia()) {
-        throw std::string("El mazo esta vacio");
-    }
+	if (this->estaVacia()) {
+        	throw std::string("El mazo esta vacio");
+    	}
 
 	if (!this->estaVacia()) {
 
-		carta = this->frente->dato();
-	    }
+		return this->frente->dato();
+	}
 
-	return carta;
 }
 
 
