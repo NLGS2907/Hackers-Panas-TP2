@@ -81,7 +81,7 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
   ```
 
 * **Archivos:** Los archivos deberían seguir la misma guía que las variables y funciones, con *camelCase*:
-  ![ejemploArchivos.png](readme/imgReadme/ejemploArchivos.png)
+  ![ejemploArchivos.png](docs/imgReadme/ejemploArchivos.png)
 
 * **Documentaicón:** Todas las funciones, métodos u otro bloque/línea de código que requiera una documentación pertinente es recomendada seguir la plantilla siguiente:
   ```c++
