@@ -4,42 +4,49 @@
 #include"nodo.h"
 #include<string>
 
-template<class T> class Cola {
+template<class Tipo> class Cola {
 
 	private:
 
-        Nodo<T>* frente;
+        Nodo<Tipo>* frente;
 
-        Nodo<T>* fondo;
+        Nodo<Tipo>* fondo;
 
     public:
 
         /*
-         * post: instancia de Cola vacÌa y lista para ser usada.
+         * post: instancia de Cola vac√≠a y lista para ser usada.
          */
         Cola();
 
         /*
-         * post: devuelve si la Cola no tiene ning˙n elemento.
+         * post: devuelve si la Cola no tiene ning√∫n elemento.
          */
         bool estaVacia();
 
         /*
          * post: agrega 'elemento' en el fondo de la Cola.
          */
-        void acolar(T elemento);
+        void acolar(Tipo elemento);
 
         /*
-         * pre : la Cola no est· vacÌa.
+         * pre : la Cola no est√° vac√≠a.
          * post: remueve el frente de la Cola y lo devuelve.
          */
-        T desacolar();
+        Tipo desacolar();
 
         /*
-         * pre : la Cola no est· vacÌa.
+         * pre : la Cola no est√° vac√≠a.
          * post: devuelve el frente de la Cola.
          */
-        T obtenerFrente();
+        Tipo obtenerFrente();
+
+        /*
+         *pre:
+         *post:
+         */
+        Tipo imprimir();
+
 
         /*
          * post: remueve todos los elementos y libera
@@ -48,70 +55,71 @@ template<class T> class Cola {
         ~Cola();
 };
 
-template<class T>
-Cola<T>::Cola() {
+template<class Tipo>
+Cola<Tipo>::Cola() {
 
     this->frente = NULL;
     this->fondo = NULL;
 }
 
-template<class T>
-bool Cola<T>::estaVacia() {
+template<class Tipo>
+bool Cola<Tipo>::estaVacia() {
 
     return (this->frente == NULL);
 }
 
-template<class T>
-void Cola<T>::acolar(T elemento) {
+template<class Tipo>
+void Cola<Tipo>::acolar(Tipo elemento) {
 
-    Nodo<T>* nuevoFondo = new Nodo<T>(elemento);
+    Nodo<Tipo>* nuevoFondo = new Nodo<Tipo>(elemento);
 
     if (this->estaVacia()) {
         this->frente = nuevoFondo;
 
     } else {
-        this->fondo->cambiarSiguiente(nuevoFondo);
+        this->fondo->setProx(nuevoFondo);
     }
 
     this->fondo = nuevoFondo;
 }
 
-template<class T>
-T Cola<T>::desacolar() {
+template<class Tipo>
+Tipo Cola<Tipo>::desacolar() {
 
     if (this->estaVacia()) {
-        throw std::string("No se puede desacolar, la cola est· vacÌa.");
+        throw std::string("No se puede desacolar, la cola est√° vac√≠a.");
     }
 
     /* remueve el frente de la estructura */
-    Nodo<T>* frenteAnterior = this->frente;
-    this->frente = frenteAnterior->obtenerSiguiente();
+    Nodo<Tipo>* frenteAnterior = this->frente;
+
+    this->frente = frenteAnterior->prox();
 
     if (this->frente == NULL) {
         this->fondo = NULL;
     }
 
     /* devuelve el elemento y libera los recursos asociados */
-    T elemento = frenteAnterior->obtenerDato();
+    Tipo elemento = frenteAnterior->dato();
     delete frenteAnterior;
 
     return elemento;
 }
 
-template<class T>
-T Cola<T>::obtenerFrente() {
+template<class Tipo>
+Tipo Cola<Tipo>::obtenerFrente() {
 
     if (this->estaVacia()) {
-        throw std::string("No se puede obtener el frente, la cola est· vacÌa.");
+        throw std::string("No se puede obtener el frente, la cola est√° vac√≠a.");
     }
 
-    T elemento = this->frente->obtenerDato();
+    Tipo elemento = this->frente->dato();
 
     return elemento;
 }
 
-template<class T>
-Cola<T>::~Cola() {
+template<class Tipo>
+Cola<Tipo>::~Cola() {
 
     while (! this->estaVacia()) {
 
