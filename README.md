@@ -3,7 +3,18 @@
 
 Repositorio hecho para el desarrollo grupal del Trabajo Práctico 2 - "4 EN LÍNEA v1.0"
 
-### Colaboradores:
+<hr/>
+
+## **Tabla de Contenidos**
+
+* [Lista de Colaboradores](#colaboradores)
+* [Convenciones Generales](#convenciones-para-contribuir)
+* [Cómo contrubuir al repositorio](#cómo-contribuir-al-repositorio)
+
+<br/>
+<hr/>
+
+### Colaboradores
 
 * [Franco Lighterman Reismann](https://github.com/NLGS2907)
 * [Guillermina Hoff](https://github.com/guillehoff)
@@ -11,30 +22,95 @@ Repositorio hecho para el desarrollo grupal del Trabajo Práctico 2 - "4 EN LÍN
 * [Nico Gareca](https://github.com/nicogareca)
 * ~~[Saul Gerardo](https://github.com/saulGerardoL)~~ [04/06/2021: Dejó la materia]
 
-### Cómo contribuir al repositorio:
+<br/>
 
-La manera en que **Hackers-Panas-TP2** opera es mediante los llamados *pull requests*, para los cuales el codigo fuente se desarrolla de la siguiente manera:
+## Convenciones para contribuir
 
-1. En caso de usar un software que gestione un clon 'local' del repositorio (como **GitHub Desktop** o **GitKraken**), crear una rama en el repositorio local
-para el uso personal del colaborador. Preferiblemente del formato ***[NombreInicialApellido]***. Así, "*Franco Lighterman*" sería **"FrancoL"**.
+Las mismas son más una norma general que una regla estricta que se debe acatar oblgiatoriamente, sin embargo se recomienda seguirlas para entender mejor este código desarrollado grupalmente.
 
-  <img alt="*GitKraken: Creando un nueva rama en el repositorio*" src="readme/imgReadme/creating_new_branch.gif" width="315" height="375">
+* **Variables y Funciones:** Los nombres de variables (y atributos de clases), así como las de funciones (y por extensión métodos) e instancias de objetos
+  se declaran con *camelCase*, es decir empezando la palabra con una letra minúscula, y no se utilizan espacios si no que la siguiente palabra (fuese el nombre
+  de la variable una frase compuesta de varias palabras) es agregada tal cual pero con la inicial en mayúscula. ***Ejemplo:***
+  ```c++
+  int estoEsUnaVariable;
+  ```
+  También, cuando se desarrolla el método de una clase, evitar poner `this->` de ser posible, a menos que sea necesario. Se han visto ejemplos del tipo
+  ```c++
+  class ClaseCualquiera {
+  
+    private:
+    
+      int numeroCualquiera;
+  
+    public:
+    
+      void metodoCualquiera;
+  };
+  
+  void metodoCualquiera(int numeroCualquiera) {
+  
+    this->numeroCualquiera = numeroCualquiera;
+  }
+  ```
+  donde `this->numeroCualquiera` y `numeroCualquiera` tienen nombres muy similares y podrían ser confundidos. Uno es el atributo de la clase, y otro es el
+  parámetro del método. Al inhibir el uso de `this->`, se sugiere una alternativa similar a esta:
+  ```c++
+  class ClaseCualquiera {
+  
+    private:
+    
+      int numeroCualquiera;
+  
+    public:
+    
+      void metodoCualquiera;
+  };
+  
+  void metodoCualquiera(int numeroNuevo) {
+  
+    numeroCualquiera = numeroNuevo;
+  }
+  ```
+  ya que, al ser un atributo interno, la clase ya tiene la información sobre el atributo y no es necesario explicitar que pertenece a la clase sobre la que
+  se trabaja.
 
-2. Todos los *commits* y *pushs* al repositorio remoto de ese colaborador deberían ser hechas a su respectiva rama, la cual no está protegida por ninguna regla,
-por lo que se confía en no haber modificaciones hechas sin permiso debido por otro usuario que no sea el colaborador asignado a esa rama.
+* **Clases:** Los nombres para las clases y TDAs hechos siguen las mismas guías que para las variables y funciones, con *camelCase*, sólo que esta vez la primera
+  palabra **también** debe tener la inicial en mayúscula. ***Ejemplo:***
+  ```c++
+  class EstoEsUnaClase {}
+  ```
 
-  <img alt="*GitKraken: Aplicando los cambios al clon de repositorio local (commits)*" src="readme/imgReadme/commiting_new_changes.gif" width="585" height="479">
-  <img alt="*GitKraken: Subiendo los cambios del clon local al repositorio remoto*" src="readme/imgReadme/pushing_to_origin.gif" width="585" height="479">
+* **Archivos:** Los archivos deberían seguir la misma guía que las variables y funciones, con *camelCase*:
+  ![ejemploArchivos.png](readme/imgReadme/ejemploArchivos.png)
 
-3. Cuando ese colaborador quiere contribuir con un cambio o retoque al código fuente de la rama principal *main*, o contribuir al proyecto con un algoritmo que hizo,
-debe abrir un *pull request*, el cual dos (2) otros colaboradores más deben aprobar. De ser así, dicho cambio se une a la rama *main*.
+* **Documentaicón:** Todas las funciones, métodos u otro bloque/línea de código que requiera una documentación pertinente es recomendada seguir la plantilla siguiente:
+  ```c++
+  /*                                                  <- Un salto de línea al empezar y terminar el comentario.
+  __________________________________________________  <- estos son exactamente cincuenta (50) barras bajas ('_')
+  PRE: (pre-condiciones)                              <- PRE es escrito en mayúscula, seguido de dos puntos, un espacio, y ahí las condiciones.
+  -                                                   <- Para separar, un único guión se escribe en esta línea.
+  POS: (pos-condiciones)                              <- POS es escrito en mayúscula, seguido de dos puntos, un espacio, y ahí las condiciones.
+  __________________________________________________
+  */
+  int funcionCualquiera;
+  ```
+  Cabe aclarar, que todos los detalles están sujetos al nivel de indentación (sangría) que tenga ese bloque de código en concreto dentro del cuerpo del archivo. Es una
+  aclaración mínima, irrelevante casi, pero convendría tener cuidado que todos las líneas de la plantilla mostrada, de ser usadas, estén indentadas al mismo nivel.
+  Es decir que
+  ```c++
+  /* <- éste está una línea adelante
+   __________________________________________________
+   PRE: (pre-condiciones)
+   -
+   POS: (pos-condiciones)
+   __________________________________________________
+   */
+  int funcionCualquiera;
+  ```
+  no sería una versión válida en estos términos. 
 
-  <img alt="*GitKraken: Craendo Pull Requests*" src="readme/imgReadme/creating_a_request.gif" width="585" height="479">
-  <img alt="*GitKraken: Revisando Pull Requests*" src="readme/imgReadme/reviewing_a_request.gif" width="780" height="464">
+<br/>
 
-(**NOTA:** Salvo que se pida pasar archivos específicos, hay riesgo de que se trate de pullear una rama entera a la principal y sobreescribirla, por lo que para reducir
-dicho riesgo, cada vez que se apruebe un cambio en el principal, cada rama debería pullear esos cambios para que el mismo se refleje en todas las ramas).
+## ¿Cómo contribuir al repositorio?
 
-
-
-*Todas las normas comunes explicadas arriba están sujetas a posterior revisión y/o modificación por parte de los demás colaboradores.*
+Toda forma de contribución es detallada en el archivo *contributing.md* de este repositorio, que se encuentra [aquí](contributing.md).
