@@ -113,4 +113,4 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
 
 ## ¿Cómo contribuir al repositorio?
 
-Toda forma de contribución es detallada en el archivo *contributing.md* de este repositorio, que se encuentra [aquí](contributing.md).
+Toda forma de contribución es detallada en el archivo *contributing.md* de este repositorio, que se encuentra [aquí](CONTRIBUTING.md).
