@@ -80,6 +80,13 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
   class EstoEsUnaClase {}
   ```
 
+* **Constantes:** Los nombres de constantes, es decir valores que no cambian en toda la ejecución del programa, deberían declararse con *snake_case*; con todas
+  las palabras escritas con mayúscula. ***Ejemplo:***
+  ```c++
+  int const ESTO_ES_UNA_CONSTANTE
+  #define ESTO_TAMBIEN // <- Esto en realidad no guarda ninguna variable en memoria.
+  ```
+
 * **Archivos:** Los archivos deberían seguir la misma guía que las variables y funciones, con *camelCase*:
   ![ejemploArchivos.png](docs/imgReadme/ejemploArchivos.png)
 
