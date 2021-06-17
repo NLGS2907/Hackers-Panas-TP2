@@ -1,5 +1,5 @@
 #include "tablero.h"
-#include <iostream>
+// '<iostream>' ya fue incluido en "tablero.h"
 using namespace std;
 
 int main() {

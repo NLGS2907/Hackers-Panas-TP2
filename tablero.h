@@ -3,7 +3,7 @@
 #include "listaLigada.h"
 #include "casillero.h"
 #include "constantes.h"
-#include <iostream>
+// '<iostream>' ya fue incluido en "listaLigada.h"
 
 /* ----- DECLARACIONES ----- */
 
@@ -17,6 +17,12 @@ class Tablero {
         void _imprimir(char ladoCorto);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
         Deuelve el dato que hay en las coordenadas corresponientes, las cuales
         cambian segun que ejes sean `prim`, `seg` y `ter`. Por eso se decide con
         un parametro adicional `ladoCorto`.
@@ -26,51 +32,106 @@ class Tablero {
     public:
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Se crea un tablero con los datos pasados por parámetro.
+        __________________________________________________
+
         Crea un tablero de tres (3) dimensiones ALTO-ANCHO-LARGO, que deben ser
         especificadas en el constructor.
         */
         Tablero(int anchoInicial, int altoInicial, int largoInicial);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero ya no existe.
+        __________________________________________________
+
         Libera la memoria que ocupa el tablero llamando al destructor de cada lista
         que conforma el mismo.
         */
         ~Tablero();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
         Devuelve el ALTO del tablero.
         */
         int alto();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
         Devuelve el ANCHO del tablero.
         */
         int ancho();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
         Devuelve el LARGO del tablero.
         */
         int largo();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Se pasa una referencia, por lo que el Tablero podría ser modificado.
+        __________________________________________________
+
         Verifica el contenido de la celda y devuelve una refencia a su contenido,
         permitiendo modificarlo.
         */
         TipoTablero& celda(int fil, int col, int prof);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero es modificado, porque se cambia el valor de uno de sus
+        casilleros.
+        __________________________________________________
+
         Deja caer una ficha en la columna correspondiente segun las coordenadas
         (columna, profundo) que se elijan.
         */
         void tirarFicha(int columna, int profundo, TipoTablero tipoFicha);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
         Se detecta el lado mas corto automaticamente y se usa el plano normal al mismo.
         Si los tres lados tienen la misma longitud se utilizara el plano ALTO ^ ANCHO >.
         */
         void imprimir();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
         Imprime el tablero por pantalla mostrando slices de un un plano que sea
         normal al lado seleccionado.
 
