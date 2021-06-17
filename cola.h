@@ -45,7 +45,7 @@ template<class Tipo> class Cola {
          *pre:
          *post:
          */
-        Tipo imprimir();
+        void imprimir();
 
 
         /*
@@ -127,5 +127,23 @@ Cola<Tipo>::~Cola() {
     }
 }
 
+template<class Tipo>
+void Cola<Tipo>::imprimir(){
+	  Nodo<Tipo>* aux = frente;
+
+	    while (aux) {
+
+	        std::cout << aux->dato();
+
+	        if (aux->prox()) {
+
+	            std::cout << " -> ";
+	        }
+
+	        aux = aux->prox();
+	    }
+
+	    std::cout << std::endl;
+}
 
 #endif /* COLA_H_ */
