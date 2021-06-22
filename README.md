@@ -17,7 +17,7 @@ Repositorio hecho para el desarrollo grupal del Trabajo Práctico 2 - "4 EN LÍN
 ### Colaboradores
 
 * [Franco Lighterman Reismann](https://github.com/NLGS2907)
-* [Guillermina Hoff](https://github.com/guillehoff)
+* [Guillermina Hoffmann](https://github.com/guillehoff)
 * [Joaquín Gandolfo](https://github.com/JGandolfoM)
 * [Nico Gareca](https://github.com/nicogareca)
 * ~~[Saul Gerardo](https://github.com/saulGerardoL)~~ [04/06/2021: Dejó la materia]
@@ -90,7 +90,7 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
 * **Archivos:** Los archivos deberían seguir la misma guía que las variables y funciones, con *camelCase*:
   ![ejemploArchivos.png](docs/imgReadme/ejemploArchivos.png)
 
-* **Documentaicón:** Todas las funciones, métodos u otro bloque/línea de código que requiera una documentación pertinente es recomendada seguir la plantilla siguiente:
+* **Documentación:** Todas las funciones, métodos u otro bloque/línea de código que requiera una documentación pertinente es recomendada seguir la plantilla siguiente:
   ```c++
   /*                                                  <- Un salto de línea al empezar y terminar el comentario.
   __________________________________________________  <- estos son exactamente cincuenta (50) barras bajas ('_')
@@ -98,6 +98,8 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
   -                                                   <- Para separar, un único guión se escribe en esta línea.
   POS: (pos-condiciones)                              <- POS es escrito en mayúscula, seguido de dos puntos, un espacio, y ahí las condiciones.
   __________________________________________________
+
+  (Descripción adicional)                             <- Se describe brevemente lo que hace la función, y/o se hacen aclaraciones que no entrarían arriba.
   */
   int funcionCualquiera;
   ```
@@ -111,6 +113,8 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
    -
    POS: (pos-condiciones)
    __________________________________________________
+  
+   (Descripción adicional) 
    */
   int funcionCualquiera;
   ```
@@ -120,4 +124,4 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
 
 ## ¿Cómo contribuir al repositorio?
 
-Toda forma de contribución es detallada en el archivo *contributing.md* de este repositorio, que se encuentra [aquí](CONTRIBUTING.md).
+Toda forma de contribución es detallada en el archivo *CONTRIBUTING.md* de este repositorio, que se encuentra [aquí](CONTRIBUTING.md).

@@ -16,38 +16,80 @@ class Lista {
     public:
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista es creada con sus valores predeterminados.
+        __________________________________________________
+
         Inicializa una nueva lista, cuyo primer nodo apunta a NULL.
         */
         Lista();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La lista ya no existe.
+        __________________________________________________
+
         Destruye todos los nodos de la lista, liberando el espacio que ocupaban en la
         memoria dinamica
         */
         ~Lista();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista permanece inalterada.
+        __________________________________________________
+
         Verifica si el nodo primero es NULL, y devulve 'true' si es el caso. Caso contrario
         devuelve 'false'.
         */
         bool estaVacia();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista permanece inalterada.
+        __________________________________________________
+
         Devuelve la cantidad de elementos de la lista.
         */
         int len();
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
+        __________________________________________________
+
         Ingresa un nodo con un nuevo dato al principio de toda la lista, antes del primer nodo.
         */
         void agregarPrin(Tipo elem);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
+        __________________________________________________
+
         Ingresa un nodo con un nuevo dato al final de toda la lista, despues del ultimo nodo.
         */
         void agregarFin(Tipo elem);
 
         /*
+        __________________________________________________
+        PRE: El índice indicado debe ser entre 0 y la cantidad de Nodos actual de la lista inclusive.
+        -
+        POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
+        __________________________________________________
+
         Recibe un indice, y agrega un nodo con un nuevo dato justo antes del nodo que corresponde
         al indice dado.
         Si el indice esta fuera de rango y/o no existe se lanza una excepcion.
@@ -55,6 +97,13 @@ class Lista {
         void insertar(int indice, Tipo elem);
 
         /*
+        __________________________________________________
+        PRE: La Lista no está vacía y el elemento que se busca debe existir dentro de
+        la misma.
+        -
+        POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
+        __________________________________________________
+
         Busca en la lista si el elemento pasado por parametro existe y, de ser así, elimina la
         primera aparicion de este.
         Si el elemento no se encuentra se lanza una excepcion.
@@ -62,6 +111,14 @@ class Lista {
         void borrar(Tipo elem);
 
         /*
+        __________________________________________________
+        PRE: La lista no debe estar vacía y el índice indicado debe ser
+        entre 0 y uno menos que la cantidad de Nodos (los índices van
+        desde 0 hasta n - 1).
+        -
+        POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
+        __________________________________________________
+
         Recorre la lista hasta el indice dado y remueve el elemento que esta alli, y devolviendo
         su valor.
         Si el indice esta fuera de rango y/o no existe se lanza una excepcion.
@@ -69,6 +126,13 @@ class Lista {
         Tipo pop(int indice);
 
         /*
+        __________________________________________________
+        PRE: La Lista no está vacía y el elemento que se busca debe existir dentro de
+        la misma.
+        -
+        POS: La Lista permanece inalterada.
+        __________________________________________________
+
         Busca en la lista el elemento pasado por parametro y devuelve el indice que corresponda
         a la primera aparicion de este.
         Si el elemento no se encuentra se lanza una excepcion.
@@ -76,29 +140,62 @@ class Lista {
         int indice(Tipo elem);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista permanece inalterada.
+        __________________________________________________
+
         Devuelve 'true' si existe al menos una (1) aparicion del elemento dado dentro de la lista.
         Devuelve 'false' si no se encuentra nada.
         */
         bool existe(Tipo elem);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista permanece inalterada.
+        __________________________________________________
+
         Cuenta las apariciones del elemento dado que hay dentro de la lista. Devuelve 0 si no
         encuentra nada.
         */
         int contar(Tipo elem);
 
         /*
+        __________________________________________________
+        PRE: La lista no debe estar vacía y el índice indicado debe ser
+        entre 0 y uno menos que la cantidad de Nodos (los índices van
+        desde 0 hasta n - 1).
+        -
+        POS: Se pasa una referencia, por lo que la Lista podría ser
+        modificada.
+        __________________________________________________
+
         Devuelve el dato que esta en el nodo cuyo indice es el pasado por parametro.
         */
         Tipo& operator[](int indice);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista permanece inalterada.
+        __________________________________________________
+
         Compara dos listas y devuelve 'true' si tienen la msima cantidad de elementos y estos son los
         mismos. Si no devuelve 'false'.
         */
         bool operator==(Lista<Tipo> otraLista);
 
         /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista permanece inalterada.
+        __________________________________________________
+
         Imprime por pantalla todos los elementos de la lista, para que se los pueda ver comodamente.
         */
         void imprimir();
