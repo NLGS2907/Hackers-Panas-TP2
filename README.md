@@ -118,7 +118,25 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
    */
   int funcionCualquiera;
   ```
-  no sería una versión válida en estos términos. 
+  no sería una versión válida en estos términos.
+  <br/><br/>
+  También, es preferible que en la sección de PRE y POS condiciones, de haber un texto que superase una línea (las líneas no tienen una longitud definida pero debería
+  tratarse de que las mismas queden más o menos justificadas), la sangría que tienen las nuevas líneas obedecen al punto donde empiezan a escribirse las pre-condiciones
+  o las pos-condiciones; y no donde empiezan las palabras PRE/POS. Es decir, se sigue lo siguiente:
+  ```c++
+  /*
+  __________________________________________________
+  PRE: Esta es una pre-condición MAL
+  escrita en multilínea.                              <- Esto está mal indentado.
+  -
+  POS: Esta, en cambio, es una pos-condición
+       BIEN escrita en multilínea.                    <- Esto está bien indentado.
+  __________________________________________________
+
+  (Descripción adicional) 
+  */
+  int funcionCualquiera;
+  ```
 
 <br/>
 

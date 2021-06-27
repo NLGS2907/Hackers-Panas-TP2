@@ -7,6 +7,19 @@
 
 /* ----- DECLARACIONES ----- */
 
+/*
+__________________________________________________
+PRE: El arreglo pasado debe de tener al menos 1 elemento.
+-
+POS: El arreglo permanece inalterado, ya que solo se lo usa
+     para leer los datos.
+__________________________________________________
+
+Devuelve el elemento de menor valor del arreglo de enteros pasado
+por parametro.
+*/
+int menorValor(int cantidadElementos, int* elementos);
+
 template <class TipoTablero>
 class Tablero {
 
@@ -87,6 +100,7 @@ class Tablero {
         Devuelve el LARGO del tablero.
         */
         int largo();
+        
 
         /*
         __________________________________________________
@@ -105,7 +119,7 @@ class Tablero {
         PRE: -
         -
         POS: El Tablero es modificado, porque se cambia el valor de uno de sus
-        casilleros.
+             casilleros.
         __________________________________________________
 
         Deja caer una ficha en la columna correspondiente segun las coordenadas
@@ -145,6 +159,21 @@ class Tablero {
 };
 
 /* ----- DEFINICIONES ----- */
+
+int menorValor(int cantidadElementos, int* elementos) {
+
+    int valorMasChiquito = 99999999; // Valor Basura
+
+    for (int i = 0; i < cantidadElementos; i++) {
+
+        if (elementos[i] <= valorMasChiquito) {
+
+            valorMasChiquito = elementos[i];
+        }
+    }
+
+    return valorMasChiquito;
+}
 
 template <class TipoTablero>
 Tablero<TipoTablero>::Tablero(int anchoInicial, int altoInicial, int largoInicial) {
@@ -231,28 +260,20 @@ template <class TipoTablero>
 void Tablero<TipoTablero>::imprimir() {
 
     int lados[] = {alto(), ancho(), largo()};
-    int ladoMasCorto = 99999999; // Valor Basura
+    int ladoMasCorto = menorValor(3, lados);
 
-        for (int i = 0; i < 3; i++) {
+    if (ladoMasCorto == lados[2]) {
 
-            if (lados[i] <= ladoMasCorto) {
+        _imprimir('z');
 
-                ladoMasCorto = lados[i];
-            }
-        }
+    } else if (ladoMasCorto == lados[1]) {
 
-        if (ladoMasCorto == lados[2]) {
+        _imprimir('x');
 
-            _imprimir('z');
+    } else {
 
-        } else if (ladoMasCorto == lados[1]) {
-
-            _imprimir('x');
-
-        } else {
-
-            _imprimir('y');
-        }
+        _imprimir('y');
+    }
 }
 
 template <class TipoTablero>

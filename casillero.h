@@ -18,7 +18,7 @@ class Casillero {
         PRE: -
         -
         POS: El Casillero es creado con el valor predeterminado o el
-        pasado por parámetro.
+             pasado por parámetro.
         __________________________________________________
 
         Crea un casillero. El mismo tiene un determinado contenido, que de
@@ -31,7 +31,7 @@ class Casillero {
         PRE: El Casillero contiene un dato de tipo válido.
         -
         POS: Se pasa una referencia, así que el Casillero podría ser
-        modificado luego.
+             modificado luego.
         __________________________________________________
 
         Devuelve el dato que contiene el casillero.

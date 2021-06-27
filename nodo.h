@@ -22,7 +22,7 @@ class Nodo {
         PRE: -
         -
         POS: El Nodo es creado con sus valores predeterminados o los
-        pasados por parámetros.
+             pasados por parámetros.
         __________________________________________________
 
         Crea un nuevo nodo con la info y posible nodo siguiente pasados por

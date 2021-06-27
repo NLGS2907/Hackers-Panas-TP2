@@ -99,7 +99,7 @@ class Lista {
         /*
         __________________________________________________
         PRE: La Lista no está vacía y el elemento que se busca debe existir dentro de
-        la misma.
+             la misma.
         -
         POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
         __________________________________________________
@@ -113,8 +113,8 @@ class Lista {
         /*
         __________________________________________________
         PRE: La lista no debe estar vacía y el índice indicado debe ser
-        entre 0 y uno menos que la cantidad de Nodos (los índices van
-        desde 0 hasta n - 1).
+             entre 0 y uno menos que la cantidad de Nodos (los índices van
+             desde 0 hasta n - 1).
         -
         POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
         __________________________________________________
@@ -128,7 +128,7 @@ class Lista {
         /*
         __________________________________________________
         PRE: La Lista no está vacía y el elemento que se busca debe existir dentro de
-        la misma.
+             la misma.
         -
         POS: La Lista permanece inalterada.
         __________________________________________________
@@ -166,11 +166,11 @@ class Lista {
         /*
         __________________________________________________
         PRE: La lista no debe estar vacía y el índice indicado debe ser
-        entre 0 y uno menos que la cantidad de Nodos (los índices van
-        desde 0 hasta n - 1).
+             entre 0 y uno menos que la cantidad de Nodos (los índices van
+             desde 0 hasta n - 1).
         -
         POS: Se pasa una referencia, por lo que la Lista podría ser
-        modificada.
+             modificada.
         __________________________________________________
 
         Devuelve el dato que esta en el nodo cuyo indice es el pasado por parametro.
