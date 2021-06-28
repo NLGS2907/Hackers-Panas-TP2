@@ -33,7 +33,7 @@ class Jugador{
                 -La cantidad de fichas que tendra para jugar.
         __________________________________________________
         */
-        Jugador(char ficha, int cantidadDeFichasPorJugador);
+        Jugador(char ficha, int cantidadFichasJugador);
 
         /*
         __________________________________________________
