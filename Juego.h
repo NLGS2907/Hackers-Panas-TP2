@@ -1,10 +1,10 @@
 #ifndef JUEGO_H_
 #define JUEGO_H_
 
-#include "listaLigada.h"
 #include "Jugador.h"
 #include "Mazo.h"
 #include "Casillero.h"
+#include "tablero.h"
 
 const int MAX_CARTAS = 3;
 
@@ -44,7 +44,7 @@ class Juego{
                     -La cantidadDeFichas son la cantidad de fichas totales para cada jugador.
         __________________________________________________
         */
-        Juego(int cantidadFilas, int canitdadColumnas, int profundidad, int cantidadJugadores, int cantidadCartasDelMazo, int cantidadDeFichas);
+        Juego(int cantidadFilas, int canitdadColumnas, int profundidad, int cantidadJugadores, int cantidadCartasDelMazo, int cantidadDeFichas, int fichasEnLinea);
 
         /*
         __________________________________________________
