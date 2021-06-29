@@ -1,5 +1,6 @@
 #ifndef LISTALIGADA_H_
 #define LISTALIGADA_H_
+
 #include "nodo.h"
 #include <iostream>
 

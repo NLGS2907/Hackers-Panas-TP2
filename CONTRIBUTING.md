@@ -1,4 +1,4 @@
-Al ser un repositorio más o menos temporal para el desarrollo de un TP, no se espera un acatamiento muy estricto, pero la forma general en caso de duda se detalla a continuación.
+Al ser un repositorio más o menos temporal para el desarrollo de un TP, no se espera un acatamiento muy estricto, pero la norma general, en caso de duda, se detalla a continuación.
 
 ## **Índice**
 

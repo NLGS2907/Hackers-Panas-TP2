@@ -11,11 +11,10 @@ int main(int argc, char* argv[]) {
     }
 
     BMP imagen;
-    imagen.SetSize(100, 100);
+    imagen.SetSize(500, 500);
+    imagen.SetBitDepth(32);
 
-
-    dibujarRectangulo(imagen, 15, 15, 105, 300, "#ff0000", 100, true);
-
+    dibujarCirculo(imagen, 10, 10, 144, 0 , 2 * _PI_, "#ffa20d");
 
     imagen.WriteToFile(argv[1]);
 

@@ -2,10 +2,13 @@
 #define EXPORTADORTDA_H_
 
 /*
-Este archivo contiene al TDA Exportador, y sus funciones internas.
+Este archivo contiene las declaraciones del TDA Exportador, y sus
+funciones internas.
 */
 
 #include "easyBMP.h"
+#include "EasyBMP_Geometry.h"
+#include "constantes.h"
 
 class Exportador {
 

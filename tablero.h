@@ -1,9 +1,9 @@
 #ifndef TABLERO_H_
 #define TABLERO_H_
+
 #include "listaLigada.h"
 #include "casillero.h"
 #include "constantes.h"
-// '<iostream>' ya fue incluido en "listaLigada.h"
 
 /* ----- DECLARACIONES ----- */
 
@@ -113,6 +113,19 @@ class Tablero {
         permitiendo modificarlo.
         */
         TipoTablero& celda(int fil, int col, int prof);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El tablero permanece inalterado.
+        __________________________________________________
+
+        Va a la primera posición de la columna elegida segun las coordenadas
+        (columna, profundo) que se elijan, y devuelve un booleano que indica
+        si dicha columna no soporta agregar más fichas.
+        */
+        bool columnaEstaLlena(int columna, int profundo);
 
         /*
         __________________________________________________
@@ -239,6 +252,17 @@ template <class TipoTablero>
 TipoTablero& Tablero<TipoTablero>::celda(int fil, int col, int prof) {
 
     return (*(*(*espacio)[fil])[col])[prof].verContenido();
+}
+
+template <class TipoTablero>
+bool Tablero<TipoTablero>::columnaEstaLlena(int columna, int profundo) {
+
+    if (celda(0, columna, profundo) != VACIO) {
+
+        return true;
+    }
+
+    return false;
 }
 
 template <class TipoTablero>

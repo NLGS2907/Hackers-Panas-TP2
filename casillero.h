@@ -1,5 +1,6 @@
 #ifndef CASILLERO_H_
 #define CASILLERO_H_
+
 #include "constantes.h"
 
 /* ----- DECLARACIONES ----- */

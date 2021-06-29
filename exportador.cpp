@@ -24,9 +24,9 @@ bool esRGBValido(int color) {
     return false;
 }
 
-bool esAlphaValido(int color) {
+bool esAlphaValido(double color) {
 
-    if (color >= 0 && color <= 100) {
+    if (color >= 0 && color <= 1000) {
 
         return true;
     }
@@ -68,6 +68,45 @@ bool esPosicionValida(BMP imagen, int x, int y) {
     return false;
 }
 
+void acomodarCoordenadas(int& x1, int& y1, int& x2, int& y2) {
+
+    if (x1 > x2) {
+
+        swapInt(x1, x2);
+    }
+
+    if (y1 > y2) {
+
+        swapInt(y1, y2);
+    }
+}
+
+void corregirCoordenadas(BMP imagen, int& x1, int& y1, int& x2, int& y2) {
+
+    int ancho = imagen.TellWidth();
+    int alto = imagen.TellHeight();
+
+    if (x1 < 0) {
+
+        x1 = 0;
+    }
+
+    if (y1 < 0) {
+
+        y1 = 0;
+    }
+
+    if (x2 >= ancho) {
+
+        x2 = ancho - 1;
+    }
+
+    if (y2 >= alto) {
+
+        y2 = alto - 1;
+    }
+}
+
 int HexDigitToInt(const char digitoHexadecimal) {
 
     if (digitoHexadecimal >= '0' && digitoHexadecimal <= '9') {
@@ -104,7 +143,7 @@ RGBApixel HexToRGB(const char* numeroHexadecimal) {
     return pixelNuevo;
 }
 
-void cambiarColor(BMP& imagen, int x, int y, int rojo, int verde, int azul, int alpha) {
+void cambiarColor(BMP& imagen, int x, int y, int rojo, int verde, int azul, double alpha) {
 
     if (esRGBValido(rojo)) {
 
@@ -127,60 +166,43 @@ void cambiarColor(BMP& imagen, int x, int y, int rojo, int verde, int azul, int 
     }
 }
 
-void dibujarLinea(BMP& imagen, int x1, int y1, int x2, int y2, const char* colorRGB, int alpha) {
+void dibujarRectangulo(BMP& imagen, int x1, int y1, int x2, int y2, bool esRelleno, const char* colorRGB, double alpha) {
 
-    if (x1 > x2) {
+    acomodarCoordenadas(x1, y1, x2, y2);
 
-        swapInt(x1, x2);
-    }
+    if (!esPosicionValida(imagen, x1, y1) || !esPosicionValida(imagen, x2, y2)) {
 
-    if (y1, y2) {
-
-        swapInt(y1, y2);
+        corregirCoordenadas(imagen, x1, y1, x2, y2);
     }
 
     RGBApixel pixelTemporal = HexToRGB(colorRGB);
-
-    if (x1 == x2) {
-
-        for (int y = y1; y <= y2; y++) {
-
-            if (!esPosicionValida(imagen, x1, y)) {
-
-                break;
-            }
-
-            cambiarColor(imagen, x1, y, pixelTemporal.Red, pixelTemporal.Green, pixelTemporal.Blue, alpha);
-        }
-
-    } else if (y1 == y2) {
-
-        for (int x = x1; x <= x2; x++) {
-
-           if (!esPosicionValida(imagen, x, y1)) {
-
-               break;
-           }
-
-           cambiarColor(imagen, x, y1, pixelTemporal.Red, pixelTemporal.Green, pixelTemporal.Blue, alpha);
-        }
-    }
-}
-
-void dibujarRectangulo(BMP& imagen, int x1, int y1, int x2, int y2, const char* colorRGB, int alpha, bool esRelleno) {
 
     if (esRelleno) {
 
         for (int y = y1; y <= y2; y++) {
 
-            dibujarLinea(imagen, x1, y, x2, y, colorRGB, esRelleno);
+            for (int x = x1; x <= x2; x++) {
+
+                cambiarColor(imagen, x, y, pixelTemporal.Red, pixelTemporal.Green, pixelTemporal.Blue, alpha);
+            }
         }
+
     } else {
 
-        dibujarLinea(imagen, x1, y1, x1, y2, colorRGB, esRelleno);
-        dibujarLinea(imagen, x1, y1, x2, y1, colorRGB, esRelleno);
-        dibujarLinea(imagen, x2, y1, x2, y2, colorRGB, esRelleno);
-        dibujarLinea(imagen, x1, y2, x2, y2, colorRGB, esRelleno);
+        DrawAALine(imagen, x1, y1, x1, y2, pixelTemporal);
+        DrawAALine(imagen, x1, y1, x2, y1, pixelTemporal);
+        DrawAALine(imagen, x2, y1, x2, y2, pixelTemporal);
+        DrawAALine(imagen, x1, y2, x2, y2, pixelTemporal);
+    }
+}
+
+void dibujarCirculo(BMP& imagen, double centroX, double centroY, double radio, double anguloInicial, double anguloFinal, const char* colorRGB, double alpha) {
+
+    RGBApixel colorPixel = HexToRGB(colorRGB);
+
+    for (double i = 0; i <= radio; i += 0.5) {
+
+        DrawArc(imagen, centroX, centroY, i, anguloInicial, anguloFinal, colorPixel);
     }
 }
 
@@ -221,7 +243,7 @@ RGBApixel Exportador::conseguirPixel(int x, int y) {
     if (!esPosicionValida(imagen, x, y)) {
 
         std::cout << "La posición (" << x << ", " << y << ") no está dentro de los límites de la imagen." << std::endl;
-        throw (x);   
+        throw (x);
     }
 
     return imagen.GetPixel(x, y);
