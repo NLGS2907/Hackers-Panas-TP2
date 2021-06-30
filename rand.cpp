@@ -22,7 +22,9 @@ int main() {
 			/* entero aleatorio entre 0 y 2147483647 */
 			int aleatorio = rand();
 			std::cout << aleatorio << "\t\t";
-
+			
+			int aleatorio2 = rand() % 3 + 1;  //se puede poner directo asi 
+			std::cout << aleatorio2 << "\t\t";
 
 			/* reduce el rango a 0..3 */
 			int aleatorioEntre1y3 = (aleatorio % 4);
