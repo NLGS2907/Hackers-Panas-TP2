@@ -11,7 +11,7 @@
 
 int main() {
 
-	/* inicializa la generación de números aleatorios */
+	/* inicializa la generaciÃ³n de nÃºmeros aleatorios */
 		srand(time(NULL));
 
 		std::cout << "Aleatorios" << std::endl
@@ -24,8 +24,8 @@ int main() {
 			std::cout << aleatorio << "\t\t";
 
 
-			/* reduce el rango a 0..2 y luego lo traslada entre 1 y 3 */
-			int aleatorioEntre1y3 = (aleatorio % 3) + 1;
+			/* reduce el rango a 0..3 */
+			int aleatorioEntre1y3 = (aleatorio % 4);
 			std::cout << aleatorioEntre1y3 << std::endl;
 		}
 
