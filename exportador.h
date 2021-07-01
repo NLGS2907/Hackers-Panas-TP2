@@ -21,7 +21,7 @@ PRE: -
 POS: Invierte los valores de 'a' y 'b'.
 __________________________________________________
 */
-void swapInt(int& a, int& b);
+void _swapInt(int& a, int& b);
 
 /*
 __________________________________________________

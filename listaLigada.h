@@ -6,13 +6,13 @@
 
 /* ----- DECLARACIONES ----- */
 
-template <class Tipo>
+template <class TipoLista>
 class Lista {
 
     private:
 
-        Nodo<Tipo>* prim; // Primer nodo de la lista
-        int cant; // Sin importar el tipo de dato, la cantidad debería ser <int>
+        Nodo<TipoLista>* prim; // Primer nodo de la lista
+        int cant; // Sin importar el TipoLista de dato, la cantidad debería ser <int>
     
     public:
 
@@ -71,7 +71,7 @@ class Lista {
 
         Ingresa un nodo con un nuevo dato al principio de toda la lista, antes del primer nodo.
         */
-        void agregarPrin(Tipo elem);
+        void agregarPrin(TipoLista elem);
 
         /*
         __________________________________________________
@@ -82,7 +82,7 @@ class Lista {
 
         Ingresa un nodo con un nuevo dato al final de toda la lista, despues del ultimo nodo.
         */
-        void agregarFin(Tipo elem);
+        void agregarFin(TipoLista elem);
 
         /*
         __________________________________________________
@@ -95,7 +95,7 @@ class Lista {
         al indice dado.
         Si el indice esta fuera de rango y/o no existe se lanza una excepcion.
         */
-        void insertar(int indice, Tipo elem);
+        void insertar(int indice, TipoLista elem);
 
         /*
         __________________________________________________
@@ -109,7 +109,7 @@ class Lista {
         primera aparicion de este.
         Si el elemento no se encuentra se lanza una excepcion.
         */
-        void borrar(Tipo elem);
+        void borrar(TipoLista elem);
 
         /*
         __________________________________________________
@@ -124,7 +124,7 @@ class Lista {
         su valor.
         Si el indice esta fuera de rango y/o no existe se lanza una excepcion.
         */
-        Tipo pop(int indice);
+        TipoLista pop(int indice);
 
         /*
         __________________________________________________
@@ -138,7 +138,7 @@ class Lista {
         a la primera aparicion de este.
         Si el elemento no se encuentra se lanza una excepcion.
         */
-        int indice(Tipo elem);
+        int indice(TipoLista elem);
 
         /*
         __________________________________________________
@@ -150,7 +150,7 @@ class Lista {
         Devuelve 'true' si existe al menos una (1) aparicion del elemento dado dentro de la lista.
         Devuelve 'false' si no se encuentra nada.
         */
-        bool existe(Tipo elem);
+        bool existe(TipoLista elem);
 
         /*
         __________________________________________________
@@ -162,7 +162,7 @@ class Lista {
         Cuenta las apariciones del elemento dado que hay dentro de la lista. Devuelve 0 si no
         encuentra nada.
         */
-        int contar(Tipo elem);
+        int contar(TipoLista elem);
 
         /*
         __________________________________________________
@@ -176,7 +176,7 @@ class Lista {
 
         Devuelve el dato que esta en el nodo cuyo indice es el pasado por parametro.
         */
-        Tipo& operator[](int indice);
+        TipoLista& operator[](int indice);
 
         /*
         __________________________________________________
@@ -188,7 +188,7 @@ class Lista {
         Compara dos listas y devuelve 'true' si tienen la msima cantidad de elementos y estos son los
         mismos. Si no devuelve 'false'.
         */
-        bool operator==(Lista<Tipo> otraLista);
+        bool operator==(Lista<TipoLista> otraLista);
 
         /*
         __________________________________________________
@@ -204,19 +204,19 @@ class Lista {
 
 /* ----- DEFINICIONES ----- */
 
-template <class Tipo>
-Lista<Tipo>::Lista() {
+template <class TipoLista>
+Lista<TipoLista>::Lista() {
 
     prim = NULL;
     cant = 0;
 }
 
-template <class Tipo>
-Lista<Tipo>::~Lista() {
+template <class TipoLista>
+Lista<TipoLista>::~Lista() {
 
     if (prim) {
 
-        Nodo<Tipo>* aux = prim;
+        Nodo<TipoLista>* aux = prim;
         while (aux) {
 
             prim = prim->prox();
@@ -226,29 +226,29 @@ Lista<Tipo>::~Lista() {
     }
 }
 
-template <class Tipo>
-bool Lista<Tipo>::estaVacia() {
+template <class TipoLista>
+bool Lista<TipoLista>::estaVacia() {
 
     return prim == NULL;
 }
 
-template <class Tipo>
-int Lista<Tipo>::len() {
+template <class TipoLista>
+int Lista<TipoLista>::len() {
 
     return cant;
 }
 
-template <class Tipo>
-void Lista<Tipo>::agregarPrin(Tipo elem) {
+template <class TipoLista>
+void Lista<TipoLista>::agregarPrin(TipoLista elem) {
 
-    prim = new Nodo<Tipo>(elem, prim);
+    prim = new Nodo<TipoLista>(elem, prim);
     cant++;
 }
 
-template <class Tipo>
-void Lista<Tipo>::agregarFin(Tipo elem) {
+template <class TipoLista>
+void Lista<TipoLista>::agregarFin(TipoLista elem) {
 
-    Nodo<Tipo>* aux = prim;
+    Nodo<TipoLista>* aux = prim;
     while (aux && aux->prox()) {
 
         aux = aux->prox();
@@ -256,18 +256,18 @@ void Lista<Tipo>::agregarFin(Tipo elem) {
 
     if (aux) {
 
-        aux->setProx(new Nodo<Tipo>(elem));
+        aux->setProx(new Nodo<TipoLista>(elem));
 
     } else {
 
-        prim = new Nodo<Tipo>(elem, prim);
+        prim = new Nodo<TipoLista>(elem, prim);
     }
 
     cant++;
 }
 
-template <class Tipo>
-void Lista<Tipo>::insertar(int indice, Tipo elem) {
+template <class TipoLista>
+void Lista<TipoLista>::insertar(int indice, TipoLista elem) {
 
     if (indice < 0 || indice > cant) {
 
@@ -281,7 +281,7 @@ void Lista<Tipo>::insertar(int indice, Tipo elem) {
 
     } else {
 
-        Nodo<Tipo>* posterior = prim;
+        Nodo<TipoLista>* posterior = prim;
         for (int contador = 0; (posterior) && (posterior->prox()) && (contador < indice - 1); contador++) {
 
             posterior = posterior->prox();
@@ -289,7 +289,7 @@ void Lista<Tipo>::insertar(int indice, Tipo elem) {
 
         if (posterior) {
 
-            posterior->setProx(new Nodo<Tipo>(elem, posterior->prox()));
+            posterior->setProx(new Nodo<TipoLista>(elem, posterior->prox()));
             cant++;
 
         } else {
@@ -299,8 +299,8 @@ void Lista<Tipo>::insertar(int indice, Tipo elem) {
     }
 }
 
-template <class Tipo>
-void Lista<Tipo>::borrar(Tipo elem) {
+template <class TipoLista>
+void Lista<TipoLista>::borrar(TipoLista elem) {
 
     if (estaVacia()) {
 
@@ -308,8 +308,8 @@ void Lista<Tipo>::borrar(Tipo elem) {
         throw elem;
     }
 
-    Nodo<Tipo>* anterior = NULL;
-    Nodo<Tipo>* posterior = prim;
+    Nodo<TipoLista>* anterior = NULL;
+    Nodo<TipoLista>* posterior = prim;
     while (posterior && posterior->prox() && posterior->dato() != elem) {
 
         anterior = posterior;
@@ -338,8 +338,8 @@ void Lista<Tipo>::borrar(Tipo elem) {
     cant--;
 }
 
-template <class Tipo>
-Tipo Lista<Tipo>::pop(int indice) {
+template <class TipoLista>
+TipoLista Lista<TipoLista>::pop(int indice) {
 
     if (estaVacia() || indice < 0 || indice >= cant) {
 
@@ -347,9 +347,9 @@ Tipo Lista<Tipo>::pop(int indice) {
         throw indice;
     }
 
-    Nodo<Tipo>* anterior = NULL;
-    Nodo<Tipo>* posterior = prim;
-    Tipo datoEliminado;
+    Nodo<TipoLista>* anterior = NULL;
+    Nodo<TipoLista>* posterior = prim;
+    TipoLista datoEliminado;
 
     for (int contador = 0; (posterior) && (posterior->prox()) && (contador < indice); contador++) {
 
@@ -373,8 +373,8 @@ Tipo Lista<Tipo>::pop(int indice) {
     return datoEliminado;
 }
 
-template <class Tipo>
-int Lista<Tipo>::indice(Tipo elem) {
+template <class TipoLista>
+int Lista<TipoLista>::indice(TipoLista elem) {
 
     if (estaVacia()) {
 
@@ -382,7 +382,7 @@ int Lista<Tipo>::indice(Tipo elem) {
         throw elem;
     }
 
-    Nodo<Tipo>* aux = prim;
+    Nodo<TipoLista>* aux = prim;
     int contador = 0;
 
     while (aux && aux->prox() && aux->dato() != elem) {
@@ -402,12 +402,12 @@ int Lista<Tipo>::indice(Tipo elem) {
     }
 }
 
-template <class Tipo>
-bool Lista<Tipo>::existe(Tipo elem) {
+template <class TipoLista>
+bool Lista<TipoLista>::existe(TipoLista elem) {
 
     if (!estaVacia()) {
 
-        Nodo<Tipo>* aux = prim;
+        Nodo<TipoLista>* aux = prim;
 
         while (aux) {
 
@@ -423,14 +423,14 @@ bool Lista<Tipo>::existe(Tipo elem) {
     return false;
 }
 
-template <class Tipo>
-int Lista<Tipo>::contar(Tipo elem) {
+template <class TipoLista>
+int Lista<TipoLista>::contar(TipoLista elem) {
 
     int suma = 0;
 
     if (!estaVacia()) {
 
-        Nodo<Tipo>* aux = prim;
+        Nodo<TipoLista>* aux = prim;
 
         while (aux) {
 
@@ -446,8 +446,8 @@ int Lista<Tipo>::contar(Tipo elem) {
     return suma;
 }
 
-template <class Tipo>
-Tipo& Lista<Tipo>::operator[](int indice) {
+template <class TipoLista>
+TipoLista& Lista<TipoLista>::operator[](int indice) {
 
     if (estaVacia() || indice < 0 || indice >= cant) {
 
@@ -455,7 +455,7 @@ Tipo& Lista<Tipo>::operator[](int indice) {
         throw indice;
     }
 
-    Nodo<Tipo>* aux = prim;
+    Nodo<TipoLista>* aux = prim;
 
     for (int contador = 0; contador < indice; contador++) {
 
@@ -465,16 +465,16 @@ Tipo& Lista<Tipo>::operator[](int indice) {
     return aux->datoRef();
 }
 
-template <class Tipo>
-bool Lista<Tipo>::operator==(Lista<Tipo> otraLista) {
+template <class TipoLista>
+bool Lista<TipoLista>::operator==(Lista<TipoLista> otraLista) {
 
     if (len() != otraLista.len()) {
 
         return false;
     }
 
-    Nodo<Tipo>* aux1 = prim;
-    Nodo<Tipo>* aux2 = otraLista.prim;
+    Nodo<TipoLista>* aux1 = prim;
+    Nodo<TipoLista>* aux2 = otraLista.prim;
 
     while (aux1 && aux1->prox()) {
 
@@ -490,10 +490,10 @@ bool Lista<Tipo>::operator==(Lista<Tipo> otraLista) {
     return true;
 }
 
-template <class Tipo>
-void Lista<Tipo>::imprimir() {
+template <class TipoLista>
+void Lista<TipoLista>::imprimir() {
 
-    Nodo<Tipo>* aux = prim;
+    Nodo<TipoLista>* aux = prim;
 
     while (aux) {
 

@@ -7,7 +7,7 @@
 ==============================
 */
 
-void swapInt(int &a, int &b) {
+void _swapInt(int &a, int &b) {
 
     int temp = a;
     a = b;
@@ -72,12 +72,12 @@ void acomodarCoordenadas(int& x1, int& y1, int& x2, int& y2) {
 
     if (x1 > x2) {
 
-        swapInt(x1, x2);
+        _swapInt(x1, x2);
     }
 
     if (y1 > y2) {
 
-        swapInt(y1, y2);
+        _swapInt(y1, y2);
     }
 }
 

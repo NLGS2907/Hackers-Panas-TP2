@@ -18,14 +18,16 @@ __________________________________________________
 Devuelve el elemento de menor valor del arreglo de enteros pasado
 por parametro.
 */
-int menorValor(int cantidadElementos, int* elementos);
+int menorValor(int* elementos, int cantidadElementos);
 
 template <class TipoTablero>
 class Tablero {
 
     private:
 
-        Lista<Lista<Lista<Casillero<TipoTablero> >*>*>* espacio;
+        Lista<Lista<Lista<Casillero<TipoTablero>*>*>*>* espacio;
+
+        Casillero<TipoTablero>* ultimoCasillero;
 
         void _imprimir(char ladoCorto);
 
@@ -100,19 +102,67 @@ class Tablero {
         Devuelve el LARGO del tablero.
         */
         int largo();
-        
 
         /*
         __________________________________________________
         PRE: -
         -
-        POS: Se pasa una referencia, por lo que el Tablero podría ser modificado.
+        POS: El Tablero permanece inalterado.
         __________________________________________________
 
         Verifica el contenido de la celda y devuelve una refencia a su contenido,
         permitiendo modificarlo.
         */
-        TipoTablero& celda(int fil, int col, int prof);
+        TipoTablero celda(int fil, int col, int prof);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
+        Devuelve una refencia a una celda, más que su contenido, permitiendo su
+        potencial modificación.
+        */
+        Casillero<TipoTablero>* casillero(int fil, int col, int prof);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Se cambia el valor de uan celda del tablero.
+        __________________________________________________
+
+        Modifica el valor del contenido del casillero que se encuentra en las
+        coordenadas pasadas por parámetro, reemplazándolo por un valor también
+        pasado por parámetro.
+        */
+        void cambiarCelda(int fil, int col, int prof, TipoTablero nuevoContenido);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
+        Devuelve un puntero al último casillero con el que
+        se ha interactuado en el último turno.
+        */
+        Casillero<TipoTablero>* conseguirUltimoCasillero();
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
+        Cambia el último casillero con el que
+        se ha interactuado en el último turno.
+        */
+        void cambiarUltimoCasillero(Casillero<TipoTablero>* nuevoCasillero);
 
         /*
         __________________________________________________
@@ -173,7 +223,7 @@ class Tablero {
 
 /* ----- DEFINICIONES ----- */
 
-int menorValor(int cantidadElementos, int* elementos) {
+int menorValor(int* elementos, int cantidadElementos) {
 
     int valorMasChiquito = 99999999; // Valor Basura
 
@@ -191,21 +241,23 @@ int menorValor(int cantidadElementos, int* elementos) {
 template <class TipoTablero>
 Tablero<TipoTablero>::Tablero(int anchoInicial, int altoInicial, int largoInicial) {
 
-    espacio = new Lista<Lista<Lista<Casillero<TipoTablero> >*>*>;
+    espacio = new Lista<Lista<Lista<Casillero<TipoTablero>*>*>*>;
+    ultimoCasillero = NULL;
 
     for (int fila = 0; fila < altoInicial; fila++) {
 
-        Lista<Lista<Casillero<TipoTablero> >*>* listaFila = new Lista<Lista<Casillero<TipoTablero> >*>;
+        Lista<Lista<Casillero<TipoTablero>*>*>* listaFila = new Lista<Lista<Casillero<TipoTablero>*>*>;
         espacio->agregarPrin(listaFila);
 
         for (int columna = 0; columna < anchoInicial; columna++) {
 
-            Lista<Casillero<TipoTablero> >* listaColumna = new Lista<Casillero<TipoTablero> >;
+            Lista<Casillero<TipoTablero>*>* listaColumna = new Lista<Casillero<TipoTablero>*>;
             (*espacio)[0]->agregarPrin(listaColumna);
 
             for (int profundidad = 0; profundidad < largoInicial; profundidad++) {
 
-                (*(*espacio)[0])[0]->agregarPrin(Casillero<TipoTablero>());
+                Casillero<TipoTablero>* nuevoCasillero = new Casillero<TipoTablero>;
+                (*(*espacio)[0])[0]->agregarPrin(nuevoCasillero);
             }
         }
     }
@@ -249,9 +301,34 @@ int Tablero<TipoTablero>::largo() {
 }
 
 template <class TipoTablero>
-TipoTablero& Tablero<TipoTablero>::celda(int fil, int col, int prof) {
+TipoTablero Tablero<TipoTablero>::celda(int fil, int col, int prof) {
 
-    return (*(*(*espacio)[fil])[col])[prof].verContenido();
+    return casillero(fil, col, prof)->verContenido();
+}
+
+template <class TipoTablero>
+Casillero<TipoTablero>* Tablero<TipoTablero>::casillero(int fil, int col, int prof) {
+
+    return (*(*(*espacio)[fil])[col])[prof];
+}
+
+template <class TipoTablero>
+void Tablero<TipoTablero>::cambiarCelda(int fil, int col, int prof, TipoTablero nuevoContenido) {
+
+    casillero(fil, col, prof)->cambiarContenido(nuevoContenido);
+}
+
+template <class TipoTablero>
+Casillero<TipoTablero>* Tablero<TipoTablero>::conseguirUltimoCasillero() {
+
+    return ultimoCasillero;
+}
+
+template <class TipoTablero>
+void Tablero<TipoTablero>::cambiarUltimoCasillero(Casillero<TipoTablero>* nuevoCasillero) {
+
+
+    ultimoCasillero = nuevoCasillero;
 }
 
 template <class TipoTablero>
@@ -277,14 +354,15 @@ void Tablero<TipoTablero>::tirarFicha(int columna, int profundo, TipoTablero tip
         filaElegida = filaActual++;
     }
 
-    celda(filaElegida, columna, profundo) = tipoFicha;
+    *ultimoCasillero = casillero(filaElegida, columna, profundo);
+    ultimoCasillero->cambiarContenido(tipoFicha);
 }
 
 template <class TipoTablero>
 void Tablero<TipoTablero>::imprimir() {
 
     int lados[] = {alto(), ancho(), largo()};
-    int ladoMasCorto = menorValor(3, lados);
+    int ladoMasCorto = menorValor(lados, 3);
 
     if (ladoMasCorto == lados[2]) {
 
