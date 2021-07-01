@@ -7,13 +7,6 @@
 ==============================
 */
 
-void _swapInt(int &a, int &b) {
-
-    int temp = a;
-    a = b;
-    b = temp;
-}
-
 bool esRGBValido(int color) {
 
     if (color >= 0 && color <= 255) {
@@ -26,7 +19,7 @@ bool esRGBValido(int color) {
 
 bool esAlphaValido(double color) {
 
-    if (color >= 0 && color <= 1000) {
+    if (color >= 0 && color <= 1) {
 
         return true;
     }
@@ -72,12 +65,12 @@ void acomodarCoordenadas(int& x1, int& y1, int& x2, int& y2) {
 
     if (x1 > x2) {
 
-        _swapInt(x1, x2);
+        _swap(x1, x2);
     }
 
     if (y1 > y2) {
 
-        _swapInt(y1, y2);
+        _swap(y1, y2);
     }
 }
 
@@ -166,7 +159,7 @@ void cambiarColor(BMP& imagen, int x, int y, int rojo, int verde, int azul, doub
     }
 }
 
-void dibujarRectangulo(BMP& imagen, int x1, int y1, int x2, int y2, bool esRelleno, const char* colorRGB, double alpha) {
+void dibujarRectangulo(BMP& imagen, int x1, int y1, int x2, int y2, bool esRelleno, RGBApixel colorRGB, double alpha) {
 
     acomodarCoordenadas(x1, y1, x2, y2);
 
@@ -175,34 +168,30 @@ void dibujarRectangulo(BMP& imagen, int x1, int y1, int x2, int y2, bool esRelle
         corregirCoordenadas(imagen, x1, y1, x2, y2);
     }
 
-    RGBApixel pixelTemporal = HexToRGB(colorRGB);
-
     if (esRelleno) {
 
         for (int y = y1; y <= y2; y++) {
 
             for (int x = x1; x <= x2; x++) {
 
-                cambiarColor(imagen, x, y, pixelTemporal.Red, pixelTemporal.Green, pixelTemporal.Blue, alpha);
+                cambiarColor(imagen, x, y, colorRGB.Red, colorRGB.Green, colorRGB.Blue, alpha);
             }
         }
 
     } else {
 
-        DrawAALine(imagen, x1, y1, x1, y2, pixelTemporal);
-        DrawAALine(imagen, x1, y1, x2, y1, pixelTemporal);
-        DrawAALine(imagen, x2, y1, x2, y2, pixelTemporal);
-        DrawAALine(imagen, x1, y2, x2, y2, pixelTemporal);
+        DrawAALine(imagen, x1, y1, x1, y2, colorRGB);
+        DrawAALine(imagen, x1, y1, x2, y1, colorRGB);
+        DrawAALine(imagen, x2, y1, x2, y2, colorRGB);
+        DrawAALine(imagen, x1, y2, x2, y2, colorRGB);
     }
 }
 
-void dibujarCirculo(BMP& imagen, double centroX, double centroY, double radio, double anguloInicial, double anguloFinal, const char* colorRGB, double alpha) {
-
-    RGBApixel colorPixel = HexToRGB(colorRGB);
+void dibujarCirculo(BMP& imagen, double centroX, double centroY, double radio, double anguloInicial, double anguloFinal, RGBApixel colorRGB, double alpha) {
 
     for (double i = 0; i <= radio; i += 0.5) {
 
-        DrawArc(imagen, centroX, centroY, i, anguloInicial, anguloFinal, colorPixel);
+        DrawArc(imagen, centroX, centroY, i, anguloInicial, anguloFinal, colorRGB);
     }
 }
 

@@ -43,18 +43,6 @@ class Nodo {
 
         /*
         __________________________________________________
-        PRE: El Nodo tiene un tipo de dato válido.
-        -
-        POS: Se pasa una referencia, por lo que el dato puede ser modificado luego.
-        __________________________________________________
-
-        Devuelve una REFERENCIA al dato del nodo, lo que permite modifcarlo.
-        Es desaconsejable usarlo salvo que se lo necesite explícitamente.
-        */
-        TipoNodo& datoRef();
-
-        /*
-        __________________________________________________
         PRE: -
         -
         POS: El Nodo actual permanece inalterado.
@@ -98,12 +86,6 @@ Nodo<TipoNodo>::Nodo(TipoNodo info, Nodo<TipoNodo>* siguiente) {
 
 template <class TipoNodo>
 TipoNodo Nodo<TipoNodo>::dato() {
-
-    return datoNodo;
-}
-
-template <class TipoNodo>
-TipoNodo& Nodo<TipoNodo>::datoRef() {
 
     return datoNodo;
 }

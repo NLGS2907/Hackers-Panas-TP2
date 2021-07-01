@@ -21,7 +21,13 @@ PRE: -
 POS: Invierte los valores de 'a' y 'b'.
 __________________________________________________
 */
-void _swapInt(int& a, int& b);
+template <class TipoVariable>
+void _swap(TipoVariable& a, TipoVariable& b) {
+
+    int temp = a;
+    a = b;
+    b = temp;
+}
 
 /*
 __________________________________________________
@@ -172,7 +178,7 @@ __________________________________________________
 Dibuja un rectángulo de vértices opuestos (x1, y1)
 y (x2, y2). El color por defecto es un negro opaco.
 */
-void dibujarRectangulo(BMP& imagen, int x1, int y1, int x2, int y2, bool esRelleno=true, const char* colorRGB="#000000", double alpha=1);
+void dibujarRectangulo(BMP& imagen, int x1, int y1, int x2, int y2, bool esRelleno=true, RGBApixel colorRGB=HexToRGB("#000000"), double alpha=1);
 
 /*
 __________________________________________________
@@ -186,6 +192,6 @@ Dibuja un círculo que cuyo centro está en el medio
 de la caja de vértices (x1, y1) y (x2, y2).
 El color por defecto es un negro opaco.
 */
-void dibujarCirculo(BMP& imagen, double centroX, double centroY, double radio, double anguloInicial=0, double anguloFinal=(2 * _PI_), const char* colorRGB="#000000", double alpha=1);
+void dibujarCirculo(BMP& imagen, double centroX, double centroY, double radio, double anguloInicial=0, double anguloFinal=(2 * _PI_), RGBApixel colorRGB=HexToRGB("#000000"), double alpha=1);
 
 #endif /* EXPORTADOR_H_ */
