@@ -7,6 +7,26 @@
 ==============================
 */
 
+double _funcionRecta(double xInicial, double yInicial, double xFinal, double yFinal, double xAEvaluar) {
+
+    double m = (yFinal - yInicial) / (xFinal - xInicial);
+
+    return (m * (xAEvaluar - xInicial)) + yInicial;
+}
+
+void _dibujarArea(BMP& imagen, double funcPiso, double funcTecho, double xEvaluado, RGBApixel colorRGB, double alpha) {
+
+    if (funcPiso > funcTecho) {
+
+        _swap(funcPiso, funcTecho);
+    }
+
+    for (int y = funcPiso; y <= funcTecho; y++) {
+
+        cambiarColor(imagen, xEvaluado, y, colorRGB.Red, colorRGB.Green, colorRGB.Blue, alpha);
+    }
+}
+
 bool esRGBValido(int color) {
 
     if (color >= 0 && color <= 255) {
@@ -48,7 +68,7 @@ bool esHexValido(const char* hex) {
     return false;
 }
 
-bool esPosicionValida(BMP imagen, int x, int y) {
+bool esPosicionValida(BMP imagen, double x, double y) {
 
     int ancho = imagen.TellWidth();
     int alto = imagen.TellHeight();
@@ -59,45 +79,6 @@ bool esPosicionValida(BMP imagen, int x, int y) {
     }
 
     return false;
-}
-
-void acomodarCoordenadas(int& x1, int& y1, int& x2, int& y2) {
-
-    if (x1 > x2) {
-
-        _swap(x1, x2);
-    }
-
-    if (y1 > y2) {
-
-        _swap(y1, y2);
-    }
-}
-
-void corregirCoordenadas(BMP imagen, int& x1, int& y1, int& x2, int& y2) {
-
-    int ancho = imagen.TellWidth();
-    int alto = imagen.TellHeight();
-
-    if (x1 < 0) {
-
-        x1 = 0;
-    }
-
-    if (y1 < 0) {
-
-        y1 = 0;
-    }
-
-    if (x2 >= ancho) {
-
-        x2 = ancho - 1;
-    }
-
-    if (y2 >= alto) {
-
-        y2 = alto - 1;
-    }
 }
 
 int HexDigitToInt(const char digitoHexadecimal) {
@@ -161,12 +142,17 @@ void cambiarColor(BMP& imagen, int x, int y, int rojo, int verde, int azul, doub
 
 void dibujarRectangulo(BMP& imagen, int x1, int y1, int x2, int y2, bool esRelleno, RGBApixel colorRGB, double alpha) {
 
-    acomodarCoordenadas(x1, y1, x2, y2);
+    if (!esPosicionValida(imagen, x1, y1)) {
 
-    if (!esPosicionValida(imagen, x1, y1) || !esPosicionValida(imagen, x2, y2)) {
-
-        corregirCoordenadas(imagen, x1, y1, x2, y2);
+        _corregirCoordenadas(imagen, x1, y1);
     }
+
+    if (!esPosicionValida(imagen, x2, y2)) {
+
+        _corregirCoordenadas(imagen, x2, y2);
+    }
+
+    acomodarCoordenadas(x1, y1, x2, y2);
 
     if (esRelleno) {
 
@@ -193,6 +179,73 @@ void dibujarCirculo(BMP& imagen, double centroX, double centroY, double radio, d
 
         DrawArc(imagen, centroX, centroY, i, anguloInicial, anguloFinal, colorRGB);
     }
+}
+
+void dibujarTriangulo(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, RGBApixel colorRGB, double alpha) {
+
+
+    if (!esPosicionValida(imagen, x1, y1)) {
+
+        _corregirCoordenadas(imagen, x1, y1);
+    }
+
+    if (!esPosicionValida(imagen, x2, y2)) {
+
+        _corregirCoordenadas(imagen, x2, y2);
+    }
+
+    if (!esPosicionValida(imagen, x3, y3)) {
+
+        _corregirCoordenadas(imagen, x3, y3);
+    }
+
+    _acomodarCoordenadasTriangulo(x1, y1, x2, y2, x3, y3);
+    
+    double funcionPiso, funcionTecho;
+
+    for (int x = x1; x < x2; x++) {
+
+        funcionPiso = _funcionRecta(x1, y1, x2, y2, x);
+        funcionTecho = _funcionRecta(x1, y1, x3, y3, x);
+
+        _dibujarArea(imagen, funcionPiso, funcionTecho, x, colorRGB, alpha);
+    }
+
+    for (int x = x2; x < x3; x++) {
+
+        funcionPiso = _funcionRecta(x2, y2, x3, y3, x);
+        funcionTecho = _funcionRecta(x1, y1, x3, y3, x);
+
+        _dibujarArea(imagen, funcionPiso, funcionTecho, x, colorRGB, alpha);
+    }
+}
+
+void dibujarCuadrilatero(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, RGBApixel colorRGB, double alpha) {
+
+    if (!esPosicionValida(imagen, x1, y1)) {
+
+        _corregirCoordenadas(imagen, x1, y1);
+    }
+
+    if (!esPosicionValida(imagen, x2, y2)) {
+
+        _corregirCoordenadas(imagen, x2, y2);
+    }
+
+    if (!esPosicionValida(imagen, x3, y3)) {
+
+        _corregirCoordenadas(imagen, x3, y3);
+    }
+
+    if (!esPosicionValida(imagen, x4, y4)) {
+
+        _corregirCoordenadas(imagen, x4, y4);
+    }
+
+    _acomodarCoordenadasCuadrilatero(x1, y1, x2, y2, x3, y3, x4, y4);
+
+    dibujarTriangulo(imagen, x1, y1, x2, y2, x3, y3, colorRGB, alpha);
+    dibujarTriangulo(imagen, x2, y2, x3, y3, x4, y4, colorRGB, alpha);
 }
 
 /*

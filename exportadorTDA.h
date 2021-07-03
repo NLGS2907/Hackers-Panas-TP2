@@ -10,11 +10,26 @@ funciones internas.
 #include "EasyBMP_Geometry.h"
 #include "constantes.h"
 
+typedef struct Cubo {
+
+     // Basándonos en el diagrama "Cubo_Coordenadas.png":
+
+     double x0, x1, x2, x3,
+            y0, y1, y2, y3,
+            y4, y5, y6, y7; // Los componentes de las coordenadas de los vértices.
+
+     double dy; // La distancia entre y0-y4, y1-y5, etc.
+
+     double r1; // Radio para indicar qué tan grandes se dibujan las fichas.
+
+} Cubo;
+
 class Exportador {
 
      private:
 
           BMP imagen;
+          Cubo cubo;
           const char* rutaSalida;
 
      public:
@@ -27,6 +42,16 @@ class Exportador {
           __________________________________________________
           */
           Exportador(const char* rutaDeEntrada, const char* rutaDeSalida);
+
+          // /*
+          // __________________________________________________
+          // PRE: La ruta de salida es uan dirección válida.
+          // -
+          // POS: El Exportador es creado y se guarda su ruta de salida.
+          // __________________________________________________
+          // */
+          // template <class TipoTablero>
+          // Exportador(Tablero<TipoTablero> tablero, const char* rutaDeSalida);
 
           /*
           __________________________________________________
@@ -93,9 +118,23 @@ class Exportador {
           que devuelva valores erróneos.
           */
           RGBApixel conseguirPixel(int x, int y);
-         
-
-        
 };
+
+// template <class TipoTablero>
+// Exportador::Exportador(Tablero<TipoTablero> tablero, const char* rutaDeSalida) {
+
+//      imagen.SetSize(tablero.ancho() * (1300.0 / 6.0), tablero.alto() * (1100.0 / 6.0));
+
+//      double anchoImagen, altoImagen;
+//      anchoImagen = imagen.TellWidth();
+//      altoImagen = imagen.TellHeight();
+
+//      // Inicializamos los valores de los ejes de los vértices
+//      cubo.x0 = anchoImagen / 13; cubo.x1 = anchoImagen / 2.6; cubo.x2 = anchoImagen / 1.625; cubo.x3 = anchoImagen / (13.0 / 12.0);
+//      cubo.y0 = altoImagen / 11; cubo.y1 = altoImagen / (110.0 / 15.0); cubo.y2 = altoImagen / 5.5; cubo.y3 = altoImagen / 4.4;
+//      cubo.dy = (anchoImagen + altoImagen) / 3.2;
+//      cubo.y4 = cubo.y0 + cubo.dy; cubo.y5 = cubo.y1 + cubo.dy; cubo.y6 = cubo.y2 + cubo.dy; cubo.y7 = cubo.y3 + cubo.dy;
+
+// }
 
 #endif /* EXPORTADORTDA_H_ */

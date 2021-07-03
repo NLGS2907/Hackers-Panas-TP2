@@ -176,7 +176,7 @@ class Lista {
 
         Devuelve el dato que esta en el nodo cuyo indice es el pasado por parametro.
         */
-        TipoLista& operator[](int indice);
+        TipoLista operator[](int indice);
 
         /*
         __________________________________________________
@@ -447,7 +447,7 @@ int Lista<TipoLista>::contar(TipoLista elem) {
 }
 
 template <class TipoLista>
-TipoLista& Lista<TipoLista>::operator[](int indice) {
+TipoLista Lista<TipoLista>::operator[](int indice) {
 
     if (estaVacia() || indice < 0 || indice >= cant) {
 
@@ -462,7 +462,7 @@ TipoLista& Lista<TipoLista>::operator[](int indice) {
         aux = aux->prox();
     }
 
-    return aux->datoRef();
+    return aux->dato();
 }
 
 template <class TipoLista>

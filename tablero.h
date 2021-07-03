@@ -3,7 +3,6 @@
 
 #include "listaLigada.h"
 #include "casillero.h"
-#include "constantes.h"
 
 /* ----- DECLARACIONES ----- */
 
@@ -18,7 +17,8 @@ __________________________________________________
 Devuelve el elemento de menor valor del arreglo de enteros pasado
 por parametro.
 */
-int menorValor(int* elementos, int cantidadElementos);
+template <class TipoVariable>
+int menorValor(TipoVariable* elementos, int cantidadElementos);
 
 template <class TipoTablero>
 class Tablero {
@@ -223,7 +223,8 @@ class Tablero {
 
 /* ----- DEFINICIONES ----- */
 
-int menorValor(int* elementos, int cantidadElementos) {
+template <class TipoVariable>
+int menorValor(TipoVariable* elementos, int cantidadElementos) {
 
     int valorMasChiquito = 99999999; // Valor Basura
 
@@ -345,17 +346,20 @@ bool Tablero<TipoTablero>::columnaEstaLlena(int columna, int profundo) {
 template <class TipoTablero>
 void Tablero<TipoTablero>::tirarFicha(int columna, int profundo, TipoTablero tipoFicha) {
 
-    int filas = alto();
-    int filaElegida = 0;
-    int filaActual = 0;
+    if (!columnaEstaLlena(columna, profundo)) {
 
-    while (filaActual < filas && celda(filaActual, columna, profundo) == VACIO) {
+        int filas = alto();
+        int filaElegida = 0;
+        int filaActual = 0;
 
-        filaElegida = filaActual++;
+        while (filaActual < filas && celda(filaActual, columna, profundo) == VACIO) {
+
+            filaElegida = filaActual++;
+        }
+
+        cambiarUltimoCasillero(casillero(filaElegida, columna, profundo));
+        ultimoCasillero->cambiarContenido(tipoFicha);
     }
-
-    *ultimoCasillero = casillero(filaElegida, columna, profundo);
-    ultimoCasillero->cambiarContenido(tipoFicha);
 }
 
 template <class TipoTablero>
