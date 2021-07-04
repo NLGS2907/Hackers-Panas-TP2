@@ -1,40 +1,35 @@
 
 #include<iostream>
-#include<random>
-#include<sstream> //para uso std::stringstream
-#include<chrono>
+#include<ctime>
+#include<cstdlib> //Para uso de rand() y srand()
 
-int main(){
+int main() {
 
-	std::default_random_engine maquina;
+     /* inicializa la generación de números aleatorios
+	con srand siempre seran diferentes los numeros
+	sin esto cada vez que se ejecuta salen los mismos numeros */
 
-	//rangos posibles de random engine
-	std::cout << "Min:" << maquina.min() << std::endl;
-	std::cout << "Max:" << maquina.max() << std::endl;
+	srand(time(NULL));
 
-	// si la maquina esta en el mismo estado genera los mismos numeros
-	std::stringstream estado;
-	estado << maquina;
+	std::cout << "Aleatorios" << std::endl
+		  << "[0..2147483647]\t[1..3]" << std::endl;
 
-	std::cout << maquina() << std::endl;
-	std::cout << maquina() << std::endl;
+	for (int i = 0; i < 10; i++) {
 
-	estado >> maquina; // reestablece al estado guardado, asi imprime mismos num
+	// entero aleatorio entre 0 y 2147483647
+	int aleatorio = rand();
+	std::cout << aleatorio << "\t\t";
 
-	std::cout << maquina() << std::endl;
-	std::cout << maquina() << std::endl;
+	// entero aleatorio entre 0 y 2
+	int aleatorio2 = rand() % 3;
+	std::cout << aleatorio2 << "\t\t";
 
 
-	// seed = unsigned int que sale de tiempo. numero unico de time actual
-	// determina estado interno de engine/maquina
-
-	unsigned seed = std::chrono::steady_clock::now().time_since_epoch().count();
-	std::default_random_engine maquina2(seed);
-
-	for(int i = 0; i<5; i++){
-		int num;
-		num = maquina2() % 3 + 1;
-		std::cout << num << std::endl;
+	// reduce el rango a 0..2 y luego lo traslada entre 1 y 3
+	int aleatorioEntre1y3 = (aleatorio % 3) + 1;
+	std::cout << aleatorioEntre1y3 << std::endl;
+		
 	}
+	
 	return 0;
 }
