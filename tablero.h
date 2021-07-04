@@ -181,6 +181,20 @@ class Tablero {
         __________________________________________________
         PRE: -
         -
+        POS: El tablero permanece inalterado.
+        __________________________________________________
+
+        Devuelve 'false' si alguno de los casilleros en la
+        fila más alta de toda el tablero, en cada combinación
+        de columnas y profundidad, es la constante VACIO.
+        En caso contrario, devuelve 'true'.
+        */
+        bool tableroEstaLleno();
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
         POS: El Tablero es modificado, porque se cambia el valor de uno de sus
              casilleros.
         __________________________________________________
@@ -338,6 +352,26 @@ bool Tablero<TipoTablero>::columnaEstaLlena(int columna, int profundo) {
     if (celda(0, columna, profundo) != VACIO) {
 
         return true;
+    }
+
+    return false;
+}
+
+template <class TipoTablero>
+bool Tablero<TipoTablero>::tableroEstaLleno() {
+
+    int anchoTablero = ancho();
+    int largoTablero = largo();
+
+    for (int columna = 0; columna < anchoTablero; columna++) {
+
+        for (int profundo = 0; profundo < largoTablero; profundo++) {
+
+            if (columnaEstaLlena(columna, profundo)) {
+
+                return true;
+            }
+        }
     }
 
     return false;

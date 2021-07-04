@@ -22,12 +22,7 @@ POS: Invierte los valores de 'a' y 'b'.
 __________________________________________________
 */
 template <class TipoVariable>
-void _swap(TipoVariable& a, TipoVariable& b) {
-
-    TipoVariable temp = a;
-    a = b;
-    b = temp;
-}
+void _swap(TipoVariable& a, TipoVariable& b);
 
 /*
 __________________________________________________
@@ -116,7 +111,8 @@ bool esPosicionValida(BMP imagen, double x, double y);
 
 /*
 __________________________________________________
-PRE: -
+PRE: El TipoVariable es una clase de número a la que se
+     puede comparar con 0 y los límites de la imagen.
 -
 POS: Modifica el/los valor/es de las coordenadas de
      forma que x1 es menor o igual a x2; e y1 menor
@@ -128,22 +124,12 @@ cumplirse las condiciones (x1 <= x2 && y1 <= y2),
 las acomoda para que así sea.
 */
 template <class TipoVariable>
-void acomodarCoordenadas(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2) {
-
-    if (x1 > x2) {
-
-        _swap(x1, x2);
-    }
-
-    if (y1 > y2) {
-
-        _swap(y1, y2);
-    }
-}
+void acomodarCoordenadas(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2);
 
 /*
 __________________________________________________
-PRE: -
+PRE: El TipoVariable es una clase de número a la que se
+     puede comparar con 0 y los límites de la imagen.
 -
 POS: Modifica el/los valor/es de las coordenadas de
      forma que se cumpla x1 <= x2 <= x3.
@@ -154,30 +140,12 @@ cumplirse las condiciones x1 <= x2 <= x3, las acomoda
 para que así sea.
 */
 template <class TipoVariable>
-void _acomodarCoordenadasTriangulo(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2, TipoVariable& x3, TipoVariable& y3) {
-
-     if (x1 > x3) {
-
-          _swap(x1, x3);
-          _swap(y1, y3);
-     }
-
-     if (x1 > x2) {
-
-          _swap(x1, x2);
-          _swap(y1, y2);
-     }
-
-     if (x2 > x3) {
-
-          _swap(x2, x3);
-          _swap(y2, y3);
-     }
-}
+void _acomodarCoordenadasTriangulo(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2, TipoVariable& x3, TipoVariable& y3);
 
 /*
 __________________________________________________
-PRE: -
+PRE: El TipoVariable es una clase de número a la que se
+     puede comparar con 0 y los límites de la imagen.
 -
 POS: Modifica el/los valor/es de las coordenadas de
      forma que se cumpla x1 <= x2 <= x3 <= x4.
@@ -188,27 +156,12 @@ cumplirse las condiciones x1 <= x2 <= x3 <= x4, las
 acomoda para que así sea.
 */
 template <class TipoVariable>
-void _acomodarCoordenadasCuadrilatero(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2, TipoVariable& x3, TipoVariable& y3, TipoVariable& x4, TipoVariable&y4) {
-
-     if (x1 > x4) {
-
-          _swap(x1, x4);
-          _swap(y1, y4);    
-     }
-
-     _acomodarCoordenadasTriangulo(x1, y1, x2, y2, x3, y3); // Para no copiar código ;)
-
-     if (x3 > x4) {
-
-          _swap(x3, x4);
-          _swap(y3, y4);
-     }
-
-}
+void _acomodarCoordenadasCuadrilatero(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2, TipoVariable& x3, TipoVariable& y3, TipoVariable& x4, TipoVariable&y4);
 
 /*
 __________________________________________________
-PRE: -
+PRE: El TipoVariable es una clase de número a la que se
+     puede comparar con 0 y los límites de la imagen.
 -
 POS: Modifica el/los valor/es de las coordenadas que
      sean necesarios para estar dentro de los límites
@@ -220,29 +173,7 @@ fuera de los límites de la imagen, se los trunca para
 caber dentro.
 */
 template <class TipoVariable>
-void _corregirCoordenadas(BMP imagen, TipoVariable& x, TipoVariable& y) {
-
-    int ancho = imagen.TellWidth();
-    int alto = imagen.TellHeight();
-
-    if (x < 0) {
-
-        x = 0;
-
-    } else if (x >= ancho) {
-
-        x = ancho - 1;
-    }
-
-    if (y < 0) {
-
-        y = 0;
-
-    } else if (y >= alto) {
-
-        y = alto - 1;
-    }
-}
+void _corregirCoordenadas(BMP imagen, TipoVariable& x, TipoVariable& y);
 
 /*
 __________________________________________________
@@ -341,7 +272,7 @@ de la imagen se las corrige.
 Se acomoda las coordenadas de manera que x1 <= x2 <= x3
 e y1 <= y2 <= y3.
 */
-void dibujarTriangulo(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, RGBApixel colorRGB=HexToRGB("#000000"), double alpha=1);
+void dibujarTriangulo(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, bool esRelleno=true, RGBApixel colorRGB=HexToRGB("#000000"), double alpha=1);
 
 /*
 __________________________________________________
@@ -354,7 +285,97 @@ Dibuja un cuadrilátero de vértices (x1, y1), (x2, y2),
 (x3, y3) y (x4, y4); de manera que en realidad se dibujan
 dos triángulos formando la figura.
 */
-void dibujarCuadrilatero(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, RGBApixel colorRGB=HexToRGB("#000000"), double alpha=1);
+void dibujarCuadrilatero(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, bool esRelleno=true, RGBApixel colorRGB=HexToRGB("#000000"), double alpha=1);
 
+
+/* ----- DEFINICIONES DE FUNCIONES CON TEMPLATE ----- */
+
+
+template <class TipoVariable>
+void _swap(TipoVariable& a, TipoVariable& b) {
+
+    TipoVariable temp = a;
+    a = b;
+    b = temp;
+}
+
+template <class TipoVariable>
+void acomodarCoordenadas(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2) {
+
+    if (x1 > x2) {
+
+        _swap(x1, x2);
+    }
+
+    if (y1 > y2) {
+
+        _swap(y1, y2);
+    }
+}
+
+template <class TipoVariable>
+void _acomodarCoordenadasTriangulo(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2, TipoVariable& x3, TipoVariable& y3) {
+
+     if (x1 > x3) {
+
+          _swap(x1, x3);
+          _swap(y1, y3);
+     }
+
+     if (x1 > x2) {
+
+          _swap(x1, x2);
+          _swap(y1, y2);
+     }
+
+     if (x2 > x3) {
+
+          _swap(x2, x3);
+          _swap(y2, y3);
+     }
+}
+
+template <class TipoVariable>
+void _acomodarCoordenadasCuadrilatero(TipoVariable& x1, TipoVariable& y1, TipoVariable& x2, TipoVariable& y2, TipoVariable& x3, TipoVariable& y3, TipoVariable& x4, TipoVariable&y4) {
+
+     if (x1 > x4) {
+
+          _swap(x1, x4);
+          _swap(y1, y4);    
+     }
+
+     _acomodarCoordenadasTriangulo(x1, y1, x2, y2, x3, y3); // Para no copiar código ;)
+
+     if (x3 > x4) {
+
+          _swap(x3, x4);
+          _swap(y3, y4);
+     }
+}
+
+template <class TipoVariable>
+void _corregirCoordenadas(BMP imagen, TipoVariable& x, TipoVariable& y) {
+
+    int ancho = imagen.TellWidth();
+    int alto = imagen.TellHeight();
+
+    if (x < 0) {
+
+        x = 0;
+
+    } else if (x >= ancho) {
+
+        x = ancho - 1;
+    }
+
+    if (y < 0) {
+
+        y = 0;
+
+    } else if (y >= alto) {
+
+        y = alto - 1;
+    }
+}
 
 #endif /* EXPORTADOR_H_ */

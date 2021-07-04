@@ -181,7 +181,7 @@ void dibujarCirculo(BMP& imagen, double centroX, double centroY, double radio, d
     }
 }
 
-void dibujarTriangulo(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, RGBApixel colorRGB, double alpha) {
+void dibujarTriangulo(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, bool esRelleno, RGBApixel colorRGB, double alpha) {
 
 
     if (!esPosicionValida(imagen, x1, y1)) {
@@ -201,26 +201,34 @@ void dibujarTriangulo(BMP& imagen, double x1, double y1, double x2, double y2, d
 
     _acomodarCoordenadasTriangulo(x1, y1, x2, y2, x3, y3);
     
-    double funcionPiso, funcionTecho;
+    if (esRelleno) {
 
-    for (int x = x1; x < x2; x++) {
+        double funcionPiso, funcionTecho;
 
-        funcionPiso = _funcionRecta(x1, y1, x2, y2, x);
-        funcionTecho = _funcionRecta(x1, y1, x3, y3, x);
+        for (int x = x1; x < x2; x++) {
 
-        _dibujarArea(imagen, funcionPiso, funcionTecho, x, colorRGB, alpha);
-    }
+            funcionPiso = _funcionRecta(x1, y1, x2, y2, x);
+            funcionTecho = _funcionRecta(x1, y1, x3, y3, x);
 
-    for (int x = x2; x < x3; x++) {
+            _dibujarArea(imagen, funcionPiso, funcionTecho, x, colorRGB, alpha);
+        }
 
-        funcionPiso = _funcionRecta(x2, y2, x3, y3, x);
-        funcionTecho = _funcionRecta(x1, y1, x3, y3, x);
+        for (int x = x2; x < x3; x++) {
 
-        _dibujarArea(imagen, funcionPiso, funcionTecho, x, colorRGB, alpha);
+            funcionPiso = _funcionRecta(x2, y2, x3, y3, x);
+            funcionTecho = _funcionRecta(x1, y1, x3, y3, x);
+
+            _dibujarArea(imagen, funcionPiso, funcionTecho, x, colorRGB, alpha);
+        }
+    } else {
+
+        DrawAALine(imagen, x1, y1, x2, y2, colorRGB);
+        DrawAALine(imagen, x1, y1, x3, y3, colorRGB);
+        DrawAALine(imagen, x2, y2, x3, y3, colorRGB);
     }
 }
 
-void dibujarCuadrilatero(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, RGBApixel colorRGB, double alpha) {
+void dibujarCuadrilatero(BMP& imagen, double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, bool esRelleno, RGBApixel colorRGB, double alpha) {
 
     if (!esPosicionValida(imagen, x1, y1)) {
 
@@ -244,8 +252,18 @@ void dibujarCuadrilatero(BMP& imagen, double x1, double y1, double x2, double y2
 
     _acomodarCoordenadasCuadrilatero(x1, y1, x2, y2, x3, y3, x4, y4);
 
-    dibujarTriangulo(imagen, x1, y1, x2, y2, x3, y3, colorRGB, alpha);
-    dibujarTriangulo(imagen, x2, y2, x3, y3, x4, y4, colorRGB, alpha);
+    if (esRelleno) {
+
+        dibujarTriangulo(imagen, x1, y1, x2, y2, x3, y3, true, colorRGB, alpha);
+        dibujarTriangulo(imagen, x2, y2, x3, y3, x4, y4, true, colorRGB, alpha);
+
+    } else {
+
+        DrawAALine(imagen, x1, y1, x2, y2, colorRGB);
+        DrawAALine(imagen, x1, y1, x3, y3, colorRGB);
+        DrawAALine(imagen, x2, y2, x4, y4, colorRGB);
+        DrawAALine(imagen, x3, y3, x4, y4, colorRGB);
+    }
 }
 
 /*
