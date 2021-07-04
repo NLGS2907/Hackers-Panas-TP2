@@ -1,5 +1,6 @@
 #ifndef CASILLERO_H_
 #define CASILLERO_H_
+
 #include "constantes.h"
 
 /* ----- DECLARACIONES ----- */
@@ -10,6 +11,7 @@ class Casillero {
     private:
 
         TipoCasillero contenido;
+        int* coordenadas;
 
     public:
 
@@ -18,7 +20,7 @@ class Casillero {
         PRE: -
         -
         POS: El Casillero es creado con el valor predeterminado o el
-        pasado por parámetro.
+             pasado por parámetro.
         __________________________________________________
 
         Crea un casillero. El mismo tiene un determinado contenido, que de
@@ -28,15 +30,24 @@ class Casillero {
 
         /*
         __________________________________________________
+        PRE: -
+        -
+        POS: El Casillero ya no existe
+        __________________________________________________
+        */
+        ~Casillero();
+
+        /*
+        __________________________________________________
         PRE: El Casillero contiene un dato de tipo válido.
         -
         POS: Se pasa una referencia, así que el Casillero podría ser
-        modificado luego.
+             modificado luego.
         __________________________________________________
 
         Devuelve el dato que contiene el casillero.
         */
-        TipoCasillero& verContenido();
+        TipoCasillero verContenido();
 
         /*
         __________________________________________________
@@ -72,7 +83,13 @@ Casillero<TipoCasillero>::Casillero(TipoCasillero nuevoContenido) {
 }
 
 template <class TipoCasillero>
-TipoCasillero& Casillero<TipoCasillero>::verContenido() {
+Casillero<TipoCasillero>::~Casillero() {
+
+    // Por el momento no se usó memoria dinámica, por lo que no hay que eliminar nada realmente.
+}
+
+template <class TipoCasillero>
+TipoCasillero Casillero<TipoCasillero>::verContenido() {
 
     return contenido;
 }
@@ -86,7 +103,12 @@ void Casillero<TipoCasillero>::cambiarContenido(TipoCasillero nuevoContenido) {
 template <class TipoCasillero>
 bool Casillero<TipoCasillero>::estaVacio() {
 
-    return contenido == VACIO;
+    if (contenido == VACIO) {
+
+        return true;
+    }
+
+    return false;
 }
 
 #endif /* CASILLERO_H_ */

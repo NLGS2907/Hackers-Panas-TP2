@@ -1,6 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,clion,eclipse,windows,codeblocks,c++,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,visualstudiocode,clion,eclipse,windows,codeblocks,c++,linux
 
+### Agregado Personal, para evitar que mis archivos de prueba se cuelen ###
+test
+testFiles/*
+prueba.bmp
+
 ### C++ ###
 # Prerequisites
 *.d
@@ -234,10 +239,6 @@ local.properties
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 *.code-workspace
 
 ### VisualStudioCode Patch ###

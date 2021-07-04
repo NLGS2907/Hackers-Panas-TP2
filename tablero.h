@@ -1,18 +1,33 @@
 #ifndef TABLERO_H_
 #define TABLERO_H_
+
 #include "listaLigada.h"
 #include "casillero.h"
-#include "constantes.h"
-// '<iostream>' ya fue incluido en "listaLigada.h"
 
 /* ----- DECLARACIONES ----- */
+
+/*
+__________________________________________________
+PRE: El arreglo pasado debe de tener al menos 1 elemento.
+-
+POS: El arreglo permanece inalterado, ya que solo se lo usa
+     para leer los datos.
+__________________________________________________
+
+Devuelve el elemento de menor valor del arreglo de enteros pasado
+por parametro.
+*/
+template <class TipoVariable>
+int menorValor(TipoVariable* elementos, int cantidadElementos);
 
 template <class TipoTablero>
 class Tablero {
 
     private:
 
-        Lista<Lista<Lista<Casillero<TipoTablero> >*>*>* espacio;
+        Lista<Lista<Lista<Casillero<TipoTablero>*>*>*>* espacio;
+
+        Casillero<TipoTablero>* ultimoCasillero;
 
         void _imprimir(char ladoCorto);
 
@@ -92,20 +107,96 @@ class Tablero {
         __________________________________________________
         PRE: -
         -
-        POS: Se pasa una referencia, por lo que el Tablero podría ser modificado.
+        POS: El Tablero permanece inalterado.
         __________________________________________________
 
         Verifica el contenido de la celda y devuelve una refencia a su contenido,
         permitiendo modificarlo.
         */
-        TipoTablero& celda(int fil, int col, int prof);
+        TipoTablero celda(int fil, int col, int prof);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
+        Devuelve una refencia a una celda, más que su contenido, permitiendo su
+        potencial modificación.
+        */
+        Casillero<TipoTablero>* casillero(int fil, int col, int prof);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Se cambia el valor de uan celda del tablero.
+        __________________________________________________
+
+        Modifica el valor del contenido del casillero que se encuentra en las
+        coordenadas pasadas por parámetro, reemplazándolo por un valor también
+        pasado por parámetro.
+        */
+        void cambiarCelda(int fil, int col, int prof, TipoTablero nuevoContenido);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
+        Devuelve un puntero al último casillero con el que
+        se ha interactuado en el último turno.
+        */
+        Casillero<TipoTablero>* conseguirUltimoCasillero();
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
+        Cambia el último casillero con el que
+        se ha interactuado en el último turno.
+        */
+        void cambiarUltimoCasillero(Casillero<TipoTablero>* nuevoCasillero);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El tablero permanece inalterado.
+        __________________________________________________
+
+        Va a la primera posición de la columna elegida segun las coordenadas
+        (columna, profundo) que se elijan, y devuelve un booleano que indica
+        si dicha columna no soporta agregar más fichas.
+        */
+        bool columnaEstaLlena(int columna, int profundo);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El tablero permanece inalterado.
+        __________________________________________________
+
+        Devuelve 'false' si alguno de los casilleros en la
+        fila más alta de toda el tablero, en cada combinación
+        de columnas y profundidad, es la constante VACIO.
+        En caso contrario, devuelve 'true'.
+        */
+        bool tableroEstaLleno();
 
         /*
         __________________________________________________
         PRE: -
         -
         POS: El Tablero es modificado, porque se cambia el valor de uno de sus
-        casilleros.
+             casilleros.
         __________________________________________________
 
         Deja caer una ficha en la columna correspondiente segun las coordenadas
@@ -146,24 +237,42 @@ class Tablero {
 
 /* ----- DEFINICIONES ----- */
 
+template <class TipoVariable>
+int menorValor(TipoVariable* elementos, int cantidadElementos) {
+
+    int valorMasChiquito = 99999999; // Valor Basura
+
+    for (int i = 0; i < cantidadElementos; i++) {
+
+        if (elementos[i] <= valorMasChiquito) {
+
+            valorMasChiquito = elementos[i];
+        }
+    }
+
+    return valorMasChiquito;
+}
+
 template <class TipoTablero>
 Tablero<TipoTablero>::Tablero(int anchoInicial, int altoInicial, int largoInicial) {
 
-    espacio = new Lista<Lista<Lista<Casillero<TipoTablero> >*>*>;
+    espacio = new Lista<Lista<Lista<Casillero<TipoTablero>*>*>*>;
+    ultimoCasillero = NULL;
 
     for (int fila = 0; fila < altoInicial; fila++) {
 
-        Lista<Lista<Casillero<TipoTablero> >*>* listaFila = new Lista<Lista<Casillero<TipoTablero> >*>;
+        Lista<Lista<Casillero<TipoTablero>*>*>* listaFila = new Lista<Lista<Casillero<TipoTablero>*>*>;
         espacio->agregarPrin(listaFila);
 
         for (int columna = 0; columna < anchoInicial; columna++) {
 
-            Lista<Casillero<TipoTablero> >* listaColumna = new Lista<Casillero<TipoTablero> >;
+            Lista<Casillero<TipoTablero>*>* listaColumna = new Lista<Casillero<TipoTablero>*>;
             (*espacio)[0]->agregarPrin(listaColumna);
 
             for (int profundidad = 0; profundidad < largoInicial; profundidad++) {
 
-                (*(*espacio)[0])[0]->agregarPrin(Casillero<TipoTablero>());
+                Casillero<TipoTablero>* nuevoCasillero = new Casillero<TipoTablero>;
+                (*(*espacio)[0])[0]->agregarPrin(nuevoCasillero);
             }
         }
     }
@@ -207,52 +316,104 @@ int Tablero<TipoTablero>::largo() {
 }
 
 template <class TipoTablero>
-TipoTablero& Tablero<TipoTablero>::celda(int fil, int col, int prof) {
+TipoTablero Tablero<TipoTablero>::celda(int fil, int col, int prof) {
 
-    return (*(*(*espacio)[fil])[col])[prof].verContenido();
+    return casillero(fil, col, prof)->verContenido();
+}
+
+template <class TipoTablero>
+Casillero<TipoTablero>* Tablero<TipoTablero>::casillero(int fil, int col, int prof) {
+
+    return (*(*(*espacio)[fil])[col])[prof];
+}
+
+template <class TipoTablero>
+void Tablero<TipoTablero>::cambiarCelda(int fil, int col, int prof, TipoTablero nuevoContenido) {
+
+    casillero(fil, col, prof)->cambiarContenido(nuevoContenido);
+}
+
+template <class TipoTablero>
+Casillero<TipoTablero>* Tablero<TipoTablero>::conseguirUltimoCasillero() {
+
+    return ultimoCasillero;
+}
+
+template <class TipoTablero>
+void Tablero<TipoTablero>::cambiarUltimoCasillero(Casillero<TipoTablero>* nuevoCasillero) {
+
+
+    ultimoCasillero = nuevoCasillero;
+}
+
+template <class TipoTablero>
+bool Tablero<TipoTablero>::columnaEstaLlena(int columna, int profundo) {
+
+    if (celda(0, columna, profundo) != VACIO) {
+
+        return true;
+    }
+
+    return false;
+}
+
+template <class TipoTablero>
+bool Tablero<TipoTablero>::tableroEstaLleno() {
+
+    int anchoTablero = ancho();
+    int largoTablero = largo();
+
+    for (int columna = 0; columna < anchoTablero; columna++) {
+
+        for (int profundo = 0; profundo < largoTablero; profundo++) {
+
+            if (columnaEstaLlena(columna, profundo)) {
+
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 template <class TipoTablero>
 void Tablero<TipoTablero>::tirarFicha(int columna, int profundo, TipoTablero tipoFicha) {
 
-    int filas = alto();
-    int filaElegida = 0;
-    int filaActual = 0;
+    if (!columnaEstaLlena(columna, profundo)) {
 
-    while (filaActual < filas && celda(filaActual, columna, profundo) == VACIO) {
+        int filas = alto();
+        int filaElegida = 0;
+        int filaActual = 0;
 
-        filaElegida = filaActual++;
+        while (filaActual < filas && celda(filaActual, columna, profundo) == VACIO) {
+
+            filaElegida = filaActual++;
+        }
+
+        cambiarUltimoCasillero(casillero(filaElegida, columna, profundo));
+        ultimoCasillero->cambiarContenido(tipoFicha);
     }
-
-    celda(filaElegida, columna, profundo) = tipoFicha;
 }
 
 template <class TipoTablero>
 void Tablero<TipoTablero>::imprimir() {
 
     int lados[] = {alto(), ancho(), largo()};
-    int ladoMasCorto = 99999999; // Valor Basura
+    int ladoMasCorto = menorValor(lados, 3);
 
-        for (int i = 0; i < 3; i++) {
+    if (ladoMasCorto == lados[2]) {
 
-            if (lados[i] <= ladoMasCorto) {
+        _imprimir('z');
 
-                ladoMasCorto = lados[i];
-            }
-        }
+    } else if (ladoMasCorto == lados[1]) {
 
-        if (ladoMasCorto == lados[2]) {
+        _imprimir('x');
 
-            _imprimir('z');
+    } else {
 
-        } else if (ladoMasCorto == lados[1]) {
-
-            _imprimir('x');
-
-        } else {
-
-            _imprimir('y');
-        }
+        _imprimir('y');
+    }
 }
 
 template <class TipoTablero>

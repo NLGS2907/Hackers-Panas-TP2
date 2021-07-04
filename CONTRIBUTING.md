@@ -1,4 +1,4 @@
-Al ser un repositorio más o menos temporal para el desarrollo de un TP, no se espera un acatamiento muy estricto, pero la forma general en caso de duda se detalla a continuación.
+Al ser un repositorio más o menos temporal para el desarrollo de un TP, no se espera un acatamiento muy estricto, pero la norma general, en caso de duda, se detalla a continuación.
 
 ## **Índice**
 
@@ -10,7 +10,7 @@ La manera en que **Hackers-Panas-TP2** opera es mediante los llamados *pull requ
 
 ## Usando **GitKraken**
 
-1. En caso de usar un software que gestione un clon 'local' del repositorio (como **GitHub Desktop** o **GitKraken**), crear una rama en el repositorio local
+1. En caso de usar un software que gestione un clon 'local' del repositorio, como lo es **GitKraken**, crear una rama en el repositorio local
 para el uso personal del colaborador. Preferiblemente del formato ***[NombreInicialApellido]***. Así, "*Franco Lighterman*" sería **"FrancoL"**.
 
   <img alt="*GitKraken: Creando un nueva rama en el repositorio*" src="docs/imgReadme/creating_new_branch.gif" width="315" height="375">
@@ -32,4 +32,4 @@ dicho riesgo, cada vez que se apruebe un cambio en el principal, cada rama deber
 
 
 
-*Todas las normas comunes explicadas arriba están sujetas a posterior revisión y/o modificación por parte de los demás colaboradores.*
+*Todas las normas comunes explicadas arriba están sujetas a posterior revisión y/o modificación por parte de los colaboradores.*

@@ -7,13 +7,13 @@
 
 /* ----- DECLARACIONES ----- */
 
-template <class T>
+template <class TipoNodo>
 class Nodo {
 
     private:
 
-        T datoNodo;
-        Nodo<T>* sig;
+        TipoNodo datoNodo;
+        Nodo<TipoNodo>* sig;
 
     public:
 
@@ -22,13 +22,13 @@ class Nodo {
         PRE: -
         -
         POS: El Nodo es creado con sus valores predeterminados o los
-        pasados por parámetros.
+             pasados por parámetros.
         __________________________________________________
 
         Crea un nuevo nodo con la info y posible nodo siguiente pasados por
         parametro.
         */
-        Nodo(T info, Nodo<T>* siguiente=NULL);
+        Nodo(TipoNodo info, Nodo<TipoNodo>* siguiente=NULL);
 
         /*
         __________________________________________________
@@ -39,19 +39,7 @@ class Nodo {
 
         Devuelve el dato del nodo.
         */
-        T dato();
-
-        /*
-        __________________________________________________
-        PRE: El Nodo tiene un tipo de dato válido.
-        -
-        POS: Se pasa una referencia, por lo que el dato puede ser modificado luego.
-        __________________________________________________
-
-        Devuelve una REFERENCIA al dato del nodo, lo que permite modifcarlo.
-        Es desaconsejable usarlo salvo que se lo necesite explícitamente.
-        */
-        T& datoRef();
+        TipoNodo dato();
 
         /*
         __________________________________________________
@@ -62,7 +50,7 @@ class Nodo {
 
         Devuelve el nodo siguiente (NULL si es el ultimo).
         */
-        Nodo<T>* prox();
+        Nodo<TipoNodo>* prox();
 
         /*
         __________________________________________________
@@ -73,7 +61,7 @@ class Nodo {
 
         Cambia el valor del dato del nodo.
         */
-        void setDato(T datoNuevo);
+        void setDato(TipoNodo datoNuevo);
 
         /*
         __________________________________________________
@@ -84,44 +72,38 @@ class Nodo {
 
         Cambia el nodo siguiente.
         */
-        void setProx(Nodo<T>* nodoSig);
+        void setProx(Nodo<TipoNodo>* nodoSig);
 };
 
 /* ----- DEFINICIONES ----- */
 
-template <class T>
-Nodo<T>::Nodo(T info, Nodo<T>* siguiente) {
+template <class TipoNodo>
+Nodo<TipoNodo>::Nodo(TipoNodo info, Nodo<TipoNodo>* siguiente) {
 
     datoNodo = info;
     sig = siguiente;
 }
 
-template <class T>
-T Nodo<T>::dato() {
+template <class TipoNodo>
+TipoNodo Nodo<TipoNodo>::dato() {
 
     return datoNodo;
 }
 
-template <class T>
-T& Nodo<T>::datoRef() {
-
-    return datoNodo;
-}
-
-template <class T>
-Nodo<T>* Nodo<T>::prox() {
+template <class TipoNodo>
+Nodo<TipoNodo>* Nodo<TipoNodo>::prox() {
 
     return sig;
 }
 
-template <class T>
-void Nodo<T>::setDato(T datoNuevo) {
+template <class TipoNodo>
+void Nodo<TipoNodo>::setDato(TipoNodo datoNuevo) {
 
     datoNodo = datoNuevo;
 }
 
-template <class T>
-void Nodo<T>::setProx(Nodo<T>* nodoSig) {
+template <class TipoNodo>
+void Nodo<TipoNodo>::setProx(Nodo<TipoNodo>* nodoSig) {
 
     sig = nodoSig;
 }
