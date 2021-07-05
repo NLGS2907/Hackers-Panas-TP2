@@ -90,6 +90,8 @@ public:
 
 	}
 
+	
+	//POST: imprime menu principal
 	void mostrarMenuPrincipal() {
 
 		std::cout << "Menu Principal" << std::endl
@@ -99,12 +101,15 @@ public:
 
 	}
 
+	//POST: imprime menu principal
+	//      pide seleccionar opcion
+	//      si selecciona 2, lleva a funcion modificar opciones
 	void seleccionarUnaOpcion() {
 
 		this->mostrarMenuPrincipal();
 
 		int opcion;
-		std::cout<< "Seleccione opción:" << std::endl;
+		std::cout<< "Seleccione opciÃ³n:" << std::endl;
 		std::cin >> opcion;
 
 		//validarOpcion(opcion);
@@ -125,23 +130,30 @@ public:
 		}
 
 	}
+	
 
+	//POST: Imprime opciones de datos a modificar	
 	void mostrarOpciones(){
 
 		std::cout << "Opciones" << std::endl
 				  << "1. Cantidad de Jugadores: " << this->cantidadJugadores << std::endl
 				  << "2. Cantidad de fichas por jugador: " << this->cantidadDeFichasPorJugador << std::endl
-				  << "3. Tamaño del tablero (x): " << this->tamanioX << std::endl
-				  << "4. Tamaño del tablero (y): " << this->tamanioY <<std::endl
-				  << "5. Tamaño del tablero (z): " << this->tamanioZ <<std::endl;
+				  << "3. TamaÃ±o del tablero (x): " << this->tamanioX << std::endl
+				  << "4. TamaÃ±o del tablero (y): " << this->tamanioY <<std::endl
+				  << "5. TamaÃ±o del tablero (z): " << this->tamanioZ <<std::endl;
 	}
 
+	
+	//POST: Pregunta si desea modificar si se ingresa otro numero que
+	//no sea 0 entra en loop preguntado si desea modificar
+	// cuando selecciona cero muestra menu principal
+	// al seleccionar del 1-5 modifica el dato pedido e imprime datos actualizados.	
 	void modificarOpciones(){
 
 		this->mostrarOpciones();
 
 		int opcion;
-		std::cout << "¿Desea cambiar algo? (Presione 0 para volver): " << std::endl;
+		std::cout << "Â¿Desea cambiar algo? (Presione 0 para volver): " << std::endl;
 		std::cin >> opcion;
 
 		while(opcion != 0){
@@ -168,7 +180,7 @@ public:
 
 				case 3:
 					int nuevoTamanioX;
-					std::cout << "Ingrese el nuevo Tamaño del tablero (x): " << std::endl;
+					std::cout << "Ingrese el nuevo TamaÃ±o del tablero (x): " << std::endl;
 					std::cin >> nuevoTamanioX;
 					this->setTamanioX(nuevoTamanioX);
 
@@ -176,7 +188,7 @@ public:
 
 				case 4:
 					int nuevoTamanioY;
-					std::cout << "Ingrese el nuevo Tamaño del tablero (y): " << std::endl;
+					std::cout << "Ingrese el nuevo TamaÃ±o del tablero (y): " << std::endl;
 					std::cin >> nuevoTamanioY;
 					this->setTamanioY(nuevoTamanioY);
 
@@ -184,7 +196,7 @@ public:
 
 				case 5:
 					int nuevoTamanioZ;
-					std::cout << "Ingrese el nuevo Tamaño del tablero (z): " << std::endl;
+					std::cout << "Ingrese el nuevo TamaÃ±o del tablero (z): " << std::endl;
 					std::cin >> nuevoTamanioZ;
 					this->setTamanioZ(nuevoTamanioZ);
 
@@ -193,7 +205,7 @@ public:
 				}
 
 			this->mostrarOpciones();
-			std::cout << "¿Desea cambiar algo? (Presione 0 para volver): " << std::endl;
+			std::cout << "Â¿Desea cambiar algo? (Presione 0 para volver): " << std::endl;
 			std::cin >> opcion;
 		}
 		if(opcion == 0) {
