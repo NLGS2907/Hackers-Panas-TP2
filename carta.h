@@ -1,18 +1,20 @@
-#ifndef CARTA2_H_
-#define CARTA2_H_
+#ifndef CARTA_H_
+#define CARTA_H_
+
+#include<string>
 
 enum CartaEspecial {
-    BloquearTurno,
     JuegaDoble,
-    CambiaSentido,
-    SacaFichaDeColumna,
+    BloquearTurno,
+    AgarrarCincoFichas,
+    EliminarMazoJugadorSiguiente
 };
 
 class Carta {
 
 private:
 	CartaEspecial tipoDeCarta;
-	//tipoCarta datoCarta;
+	std::string descripcionCarta;
 
 public:
 
@@ -24,47 +26,62 @@ public:
 
 	/*
 	 * PRE:
-	 * POST: asigna carta especial
-	 */
-	void asignarCartaEspecial(CartaEspecial tipoDeCarta);
-
-	/*
-	 * PRE:
 	 * POST: devuelve carta especial
 	 */
-	CartaEspecial obtenerCartaEspecial();
-
+	CartaEspecial getCartaEspecial();
+	
 	/*
 	 * PRE:
-	 * POST:
+	 * POST: devuelve descripcion de la carta
 	 */
-	void usarCartaEspecial(CartaEspecial tipoDeCarta);
-
+	std::string getDescripcionCarta();
 };
 
 
 /* ----- DEFINICIONES ----- */
 
+Carta::Carta(CartaEspecial tipoCartaNueva) {
 
-Carta::Carta(CartaEspecial datoCartaNuevo)  {
+	this->tipoDeCarta = tipoCartaNueva;
 
-	tipoDeCarta = datoCartaNuevo;
+	switch(this->getCartaEspecial()){
+
+	case JuegaDoble:
+
+		this->descripcionCarta = "El jugador actual juega dos veces";
+
+	break;
+
+	case BloquearTurno:
+
+		this->descripcionCarta = "Bloquea turno al jugador siguiente";
+
+	break;
+
+	case AgarrarCincoFichas:
+
+		this->descripcionCarta = "Suma cinco fichas";
+
+	break;
+
+	case EliminarMazoJugadorSiguiente:
+
+		this->descripcionCarta = "Elimina el mazo del jugador siguiente";
+
+	break;
+
+	}
 }
 
 
-void Carta::asignarCartaEspecial(CartaEspecial datoCartaNuevo) {
+CartaEspecial Carta::getCartaEspecial() {
 
-	tipoDeCarta = datoCartaNuevo;
+	return this->tipoDeCarta;
 }
 
+std::string Carta::getDescripcionCarta() {
 
-CartaEspecial Carta::obtenerCartaEspecial() {
-
-	return tipoDeCarta;
+	return this->descripcionCarta;
 }
-/*
-void Carta::usarCartaEspecial(CartaEspecial tipoDeCarta){
 
-}
-*/
-#endif /* CARTA2_H_ */
+#endif /* CARTA_H_ */
