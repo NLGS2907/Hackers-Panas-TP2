@@ -274,28 +274,28 @@ void dibujarCuadrilatero(BMP& imagen, double x1, double y1, double x2, double y2
 
 Exportador::Exportador(const char* rutaDeEntrada, const char* rutaDeSalida) {
 
-    imagen.ReadFromFile(rutaDeEntrada);
-    rutaSalida = rutaDeSalida;
+    this->imagen.ReadFromFile(rutaDeEntrada);
+    this->rutaSalida = rutaDeSalida;
 }
 
 void Exportador::guardar() {
 
-    imagen.WriteToFile(rutaSalida);
+    this->imagen.WriteToFile(rutaSalida);
 }
 
 void Exportador::setRutaEntrada(const char* nuevaEntrada) {
 
-    imagen.ReadFromFile(nuevaEntrada);
+    this->imagen.ReadFromFile(nuevaEntrada);
 }
 
 const char* Exportador::getRutaSalida() {
 
-    return rutaSalida;
+    return this->rutaSalida;
 }
 
 void Exportador::setRutaSalida(const char* nuevaSalida) {
 
-    rutaSalida = nuevaSalida;
+    this->rutaSalida = nuevaSalida;
 }
 
 RGBApixel Exportador::conseguirPixel(int x, int y) {
@@ -306,5 +306,5 @@ RGBApixel Exportador::conseguirPixel(int x, int y) {
         throw (x);
     }
 
-    return imagen.GetPixel(x, y);
+    return this->imagen.GetPixel(x, y);
 }

@@ -256,23 +256,23 @@ int menorValor(TipoVariable* elementos, int cantidadElementos) {
 template <class TipoTablero>
 Tablero<TipoTablero>::Tablero(int anchoInicial, int altoInicial, int largoInicial) {
 
-    espacio = new Lista<Lista<Lista<Casillero<TipoTablero>*>*>*>;
-    ultimoCasillero = NULL;
+    this->espacio = new Lista<Lista<Lista<Casillero<TipoTablero>*>*>*>;
+    this->ultimoCasillero = NULL;
 
     for (int fila = 0; fila < altoInicial; fila++) {
 
         Lista<Lista<Casillero<TipoTablero>*>*>* listaFila = new Lista<Lista<Casillero<TipoTablero>*>*>;
-        espacio->agregarPrin(listaFila);
+        this->espacio->agregarPrin(listaFila);
 
         for (int columna = 0; columna < anchoInicial; columna++) {
 
             Lista<Casillero<TipoTablero>*>* listaColumna = new Lista<Casillero<TipoTablero>*>;
-            (*espacio)[0]->agregarPrin(listaColumna);
+            listaFila->agregarPrin(listaColumna);
 
             for (int profundidad = 0; profundidad < largoInicial; profundidad++) {
 
                 Casillero<TipoTablero>* nuevoCasillero = new Casillero<TipoTablero>;
-                (*(*espacio)[0])[0]->agregarPrin(nuevoCasillero);
+                listaColumna->agregarPrin(nuevoCasillero);
             }
         }
     }
@@ -288,68 +288,68 @@ Tablero<TipoTablero>::~Tablero() {
 
         for (int col = 0; col < columnas; col++) {
 
-            delete (*(*espacio)[fil])[col];
+            delete this->espacio->obtener(fil)->obtener(col);
         }
 
-        delete (*espacio)[fil];
+        delete this->espacio->obtener(fil);
     }
 
-    delete espacio;
+    delete this->espacio;
 }
 
 template <class TipoTablero>
 int Tablero<TipoTablero>::alto() {
 
-    return espacio->len();
+    return this->espacio->len();
 }
 
 template <class TipoTablero>
 int Tablero<TipoTablero>::ancho() {
 
-    return (*espacio)[0]->len();
+    return this->espacio->obtener(0)->len();
 }
 
 template <class TipoTablero>
 int Tablero<TipoTablero>::largo() {
 
-    return (*(*espacio)[0])[0]->len();
+    return this->espacio->obtener(0)->obtener(0)->len();
 }
 
 template <class TipoTablero>
 TipoTablero Tablero<TipoTablero>::celda(int fil, int col, int prof) {
 
-    return casillero(fil, col, prof)->verContenido();
+    return this->casillero(fil, col, prof)->verContenido();
 }
 
 template <class TipoTablero>
 Casillero<TipoTablero>* Tablero<TipoTablero>::casillero(int fil, int col, int prof) {
 
-    return (*(*(*espacio)[fil])[col])[prof];
+    return this->espacio->obtener(fil)->obtener(col)->obtener(prof);
 }
 
 template <class TipoTablero>
 void Tablero<TipoTablero>::cambiarCelda(int fil, int col, int prof, TipoTablero nuevoContenido) {
 
-    casillero(fil, col, prof)->cambiarContenido(nuevoContenido);
+    this->casillero(fil, col, prof)->cambiarContenido(nuevoContenido);
 }
 
 template <class TipoTablero>
 Casillero<TipoTablero>* Tablero<TipoTablero>::conseguirUltimoCasillero() {
 
-    return ultimoCasillero;
+    return this->ultimoCasillero;
 }
 
 template <class TipoTablero>
 void Tablero<TipoTablero>::cambiarUltimoCasillero(Casillero<TipoTablero>* nuevoCasillero) {
 
 
-    ultimoCasillero = nuevoCasillero;
+    this->ultimoCasillero = nuevoCasillero;
 }
 
 template <class TipoTablero>
 bool Tablero<TipoTablero>::columnaEstaLlena(int columna, int profundo) {
 
-    if (celda(0, columna, profundo) != VACIO) {
+    if (this->celda(0, columna, profundo) != VACIO) {
 
         return true;
     }
@@ -367,7 +367,7 @@ bool Tablero<TipoTablero>::tableroEstaLleno() {
 
         for (int profundo = 0; profundo < largoTablero; profundo++) {
 
-            if (columnaEstaLlena(columna, profundo)) {
+            if (this->columnaEstaLlena(columna, profundo)) {
 
                 return true;
             }
@@ -380,7 +380,7 @@ bool Tablero<TipoTablero>::tableroEstaLleno() {
 template <class TipoTablero>
 void Tablero<TipoTablero>::tirarFicha(int columna, int profundo, TipoTablero tipoFicha) {
 
-    if (!columnaEstaLlena(columna, profundo)) {
+    if (!this->columnaEstaLlena(columna, profundo)) {
 
         int filas = alto();
         int filaElegida = 0;
@@ -391,8 +391,8 @@ void Tablero<TipoTablero>::tirarFicha(int columna, int profundo, TipoTablero tip
             filaElegida = filaActual++;
         }
 
-        cambiarUltimoCasillero(casillero(filaElegida, columna, profundo));
-        ultimoCasillero->cambiarContenido(tipoFicha);
+        this->cambiarUltimoCasillero(casillero(filaElegida, columna, profundo));
+        this->ultimoCasillero->cambiarContenido(tipoFicha);
     }
 }
 
@@ -404,15 +404,15 @@ void Tablero<TipoTablero>::imprimir() {
 
     if (ladoMasCorto == lados[2]) {
 
-        _imprimir('z');
+        this->_imprimir('z');
 
     } else if (ladoMasCorto == lados[1]) {
 
-        _imprimir('x');
+        this->_imprimir('x');
 
     } else {
 
-        _imprimir('y');
+        this->_imprimir('y');
     }
 }
 
@@ -427,12 +427,11 @@ void Tablero<TipoTablero>::imprimir(char ladoCorto) {
         case 'Y':
         case 'z':
         case 'Z':
-        _imprimir(ladoCorto);
+        this->_imprimir(ladoCorto);
         break;
 
         default:
-
-        imprimir();
+        this->imprimir();
     }
 }
 
@@ -484,7 +483,7 @@ void Tablero<TipoTablero>::_imprimir(char ladoCorto) {
 
             for (int ter = 0; ter < tercero; ter++) {
 
-                std::cout << _verificarCelda(prim, seg, ter, ladoCorto) << "  ";
+                std::cout << this->_verificarCelda(prim, seg, ter, ladoCorto) << "  ";
 
             }
 
@@ -499,15 +498,15 @@ TipoTablero Tablero<TipoTablero>::_verificarCelda(int prim, int seg, int ter, ch
 
     if (ladoCorto == 'x' || ladoCorto == 'X') {
 
-        return celda(seg, prim, ter);
+        return this->celda(seg, prim, ter);
 
     } else if (ladoCorto == 'y' || ladoCorto == 'Y') {
 
-        return celda(prim, ter, seg);
+        return this->celda(prim, ter, seg);
 
     } else /* if (ladoCorto == 'z' || ladoCorto == 'Z') */ {
 
-        return celda(seg, ter, prim);
+        return this->celda(seg, ter, prim);
     }
 }
 

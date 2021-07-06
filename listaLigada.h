@@ -13,6 +13,16 @@ class Lista {
 
         Nodo<TipoLista>* prim; // Primer nodo de la lista
         int cant; // Sin importar el TipoLista de dato, la cantidad debería ser <int>
+        Nodo<TipoLista>* cursor;
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Devuelve el nodo en la posición especificada.
+        __________________________________________________
+        */
+        Nodo<TipoLista>* obtenerNodo(int posicion);
     
     public:
 
@@ -26,6 +36,19 @@ class Lista {
         Inicializa una nueva lista, cuyo primer nodo apunta a NULL.
         */
         Lista();
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista es creada con sus valores copiados de otra
+             pasada por parámetro.
+        __________________________________________________
+
+        Inicializa una nueva lista con los mismos elementos que otra
+        lista indicada, creando una copia.
+        */
+        Lista(Lista<TipoLista>& otraLista);
 
         /*
         __________________________________________________
@@ -66,12 +89,60 @@ class Lista {
         __________________________________________________
         PRE: -
         -
+        POS: Deja el cursor de la lista preparado para hacer
+             un nuevo recorrido.
+        __________________________________________________
+        */
+        void iniciarCursor();
+
+        /*
+        __________________________________________________
+        PRE: Se ha iniciado ya el cursor mediante iniciarCursor().
+             y no se ha mutado la lista, quitando ni agregando Nodos,
+             desde entonces.
+        -
+        POS: Mueve el cursor posicionándolo en el Nodo siguiente al
+             cual está parado actualmente dicho cursor.
+        __________________________________________________
+
+        Devuelve 'true' si el cursor queda parado sobre un Nodo. Si, por el contrario, el
+        cursor queda apuntando a NULL, devuelve 'false'.
+        */
+        bool avanzarCursor();
+
+        /*
+        __________________________________________________
+        PRE: El cursor está posicionado sobre un Nodo con dato (avanazarCursor() devolvió
+             'true').
+        -
+        POS: Devuelve el dato del Nodo al cual está apuntando el cursor actualmente.
+        __________________________________________________
+        */
+        TipoLista obtenerDatoCursor();
+
+        /*
+        __________________________________________________
+        PRE: La lista no debe estar vacía y el índice indicado debe ser
+             entre 0 y uno menos que la cantidad de Nodos (los índices van
+             desde 0 hasta n - 1).
+        -
+        POS: Se pasa el dato de la posición indicada.
+        __________________________________________________
+
+        Devuelve el dato que esta en el nodo cuyo indice es el pasado por parametro.
+        */
+        TipoLista obtener(int indice);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
         POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
         __________________________________________________
 
         Ingresa un nodo con un nuevo dato al principio de toda la lista, antes del primer nodo.
         */
-        void agregarPrin(TipoLista elem);
+        void agregarPrin(TipoLista elemento);
 
         /*
         __________________________________________________
@@ -82,7 +153,18 @@ class Lista {
 
         Ingresa un nodo con un nuevo dato al final de toda la lista, despues del ultimo nodo.
         */
-        void agregarFin(TipoLista elem);
+        void agregarFin(TipoLista elemento);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: La Lista es modificada, pues se cambia su cantidad de Nodos.
+        __________________________________________________
+
+        Ingresa una  lista pasada por parámetro al final de todo.
+        */
+        void agregarFin(Lista<TipoLista>& otraLista);
 
         /*
         __________________________________________________
@@ -95,7 +177,18 @@ class Lista {
         al indice dado.
         Si el indice esta fuera de rango y/o no existe se lanza una excepcion.
         */
-        void insertar(int indice, TipoLista elem);
+        void insertar(int indice, TipoLista elemento);
+
+        /*
+        __________________________________________________
+        PRE: El índice indicado debe ser entre 0 y la cantidad de Nodos actual menos uno.
+        -
+        POS: La Lista es modificada, pues se cambia el dato de uno de los Nodos.
+        __________________________________________________
+
+        Va a la posición especificada y cambia el dato de ese nodo por el pasado por parámetro.
+        */
+        void asignar(int indice, TipoLista elemento);
 
         /*
         __________________________________________________
@@ -109,7 +202,7 @@ class Lista {
         primera aparicion de este.
         Si el elemento no se encuentra se lanza una excepcion.
         */
-        void borrar(TipoLista elem);
+        void borrar(TipoLista elemento);
 
         /*
         __________________________________________________
@@ -134,11 +227,11 @@ class Lista {
         POS: La Lista permanece inalterada.
         __________________________________________________
 
-        Busca en la lista el elemento pasado por parametro y devuelve el indice que corresponda
+        Busca en la lista el elemento pasado por parámetro y devuelve el indice que corresponda
         a la primera aparicion de este.
         Si el elemento no se encuentra se lanza una excepcion.
         */
-        int indice(TipoLista elem);
+        int indice(TipoLista elemento);
 
         /*
         __________________________________________________
@@ -147,10 +240,10 @@ class Lista {
         POS: La Lista permanece inalterada.
         __________________________________________________
 
-        Devuelve 'true' si existe al menos una (1) aparicion del elemento dado dentro de la lista.
+        Devuelve 'true' si existe al menos una (1) aparición del elemento dado dentro de la lista.
         Devuelve 'false' si no se encuentra nada.
         */
-        bool existe(TipoLista elem);
+        bool existe(TipoLista elemento);
 
         /*
         __________________________________________________
@@ -162,33 +255,7 @@ class Lista {
         Cuenta las apariciones del elemento dado que hay dentro de la lista. Devuelve 0 si no
         encuentra nada.
         */
-        int contar(TipoLista elem);
-
-        /*
-        __________________________________________________
-        PRE: La lista no debe estar vacía y el índice indicado debe ser
-             entre 0 y uno menos que la cantidad de Nodos (los índices van
-             desde 0 hasta n - 1).
-        -
-        POS: Se pasa una referencia, por lo que la Lista podría ser
-             modificada.
-        __________________________________________________
-
-        Devuelve el dato que esta en el nodo cuyo indice es el pasado por parametro.
-        */
-        TipoLista operator[](int indice);
-
-        /*
-        __________________________________________________
-        PRE: -
-        -
-        POS: La Lista permanece inalterada.
-        __________________________________________________
-
-        Compara dos listas y devuelve 'true' si tienen la msima cantidad de elementos y estos son los
-        mismos. Si no devuelve 'false'.
-        */
-        bool operator==(Lista<TipoLista> otraLista);
+        int contar(TipoLista elemento);
 
         /*
         __________________________________________________
@@ -205,23 +272,53 @@ class Lista {
 /* ----- DEFINICIONES ----- */
 
 template <class TipoLista>
+Nodo<TipoLista>* Lista<TipoLista>::obtenerNodo(int posicion) {
+
+    if (posicion < 0 || posicion >= this->len()) {
+
+        std::cout << "La posicion indicada (" << posicion << ") no es valida o esta fuera de rango" << std::endl;
+        throw posicion;
+    }
+
+    Nodo<TipoLista>* auxiliar = this->prim;
+
+    for (int i = 0; i < posicion; i++) {
+
+        auxiliar = auxiliar->prox();
+    }
+
+    return auxiliar;
+}
+
+template <class TipoLista>
 Lista<TipoLista>::Lista() {
 
-    prim = NULL;
-    cant = 0;
+    this->prim = NULL;
+    this->cant = 0;
+    this->cursor = NULL;
+}
+
+template <class TipoLista>
+Lista<TipoLista>::Lista(Lista<TipoLista>& otraLista) {
+
+    this->prim = NULL;
+    this->cant = 0;
+    this->cursor = NULL;
+
+    this->agregarFin(otraLista);
 }
 
 template <class TipoLista>
 Lista<TipoLista>::~Lista() {
 
-    if (prim) {
+    if (!this->estaVacia()) {
 
-        Nodo<TipoLista>* aux = prim;
-        while (aux) {
+        Nodo<TipoLista>* auxiliar = this->prim;
+        while (auxiliar) {
 
-            prim = prim->prox();
-            delete aux;
-            aux = prim;
+            this->prim = prim->prox();
+            delete auxiliar;
+            auxiliar = this->prim;
         }
     }
 }
@@ -229,47 +326,117 @@ Lista<TipoLista>::~Lista() {
 template <class TipoLista>
 bool Lista<TipoLista>::estaVacia() {
 
-    return prim == NULL;
+    return this->prim == NULL;
 }
 
 template <class TipoLista>
 int Lista<TipoLista>::len() {
 
-    return cant;
+    return this->cant;
 }
 
 template <class TipoLista>
-void Lista<TipoLista>::agregarPrin(TipoLista elem) {
+void Lista<TipoLista>::iniciarCursor() {
 
-    prim = new Nodo<TipoLista>(elem, prim);
-    cant++;
+    this->cursor = NULL;
 }
 
 template <class TipoLista>
-void Lista<TipoLista>::agregarFin(TipoLista elem) {
+bool Lista<TipoLista>::avanzarCursor() {
 
-    Nodo<TipoLista>* aux = prim;
-    while (aux && aux->prox()) {
+    if (this->cursor == NULL) {
 
-        aux = aux->prox();
-    }
-
-    if (aux) {
-
-        aux->setProx(new Nodo<TipoLista>(elem));
+        this->cursor = this->prim;
 
     } else {
 
-        prim = new Nodo<TipoLista>(elem, prim);
+        this->cursor = this->cursor->prox();
     }
 
-    cant++;
+    return (this->cursor != NULL);
 }
 
 template <class TipoLista>
-void Lista<TipoLista>::insertar(int indice, TipoLista elem) {
+TipoLista Lista<TipoLista>::obtenerDatoCursor() {
 
-    if (indice < 0 || indice > cant) {
+    if (this->cursor == NULL) {
+
+        std::cout << "El cursor apunta a NULL." << std::endl;
+    }
+
+    return this->cursor->dato();
+}
+
+template <class TipoLista>
+TipoLista Lista<TipoLista>::obtener(int indice) {
+
+    if (this->estaVacia() || indice < 0 || indice >= this->cant) {
+
+        std::cout << "El indice indicado (" << indice << ") esta fuera de rango o la lista esta vacia" << std::endl;
+        throw indice;
+    }
+
+    this->iniciarCursor();
+
+    for (int contador = 0; contador <= indice; contador++) {
+
+        this->avanzarCursor();
+    }
+
+    return this->obtenerDatoCursor();
+}
+
+template <class TipoLista>
+void Lista<TipoLista>::agregarPrin(TipoLista elemento) {
+
+    this->prim = new Nodo<TipoLista>(elemento, prim);
+    this->cant++;
+
+    this->iniciarCursor(); // Anula el posible recorrido que podría haber hecho el cursor.
+}
+
+template <class TipoLista>
+void Lista<TipoLista>::agregarFin(TipoLista elemento) {
+
+    this->iniciarCursor();
+    Nodo<TipoLista>* auxiliar = NULL;
+
+    while (this->avanzarCursor()) {
+
+        auxiliar = this->cursor;
+    }
+
+    if (!this->estaVacia()) {
+
+        auxiliar->setProx(new Nodo<TipoLista>(elemento));
+
+    } else {
+
+        this->prim = new Nodo<TipoLista>(elemento, prim);
+    }
+
+    this->cant++;
+
+    this->iniciarCursor(); // Anula el posible recorrido que podría haber hecho el cursor.
+}
+
+template <class TipoLista>
+void Lista<TipoLista>::agregarFin(Lista<TipoLista>& otraLista) {
+
+    otraLista.iniciarCursor();
+
+    while (otraLista.avanzarCursor()) {
+
+        this->agregarFin(otraLista.obtenerDatoCursor());
+    }
+
+    this->iniciarCursor(); // Anula el posible recorrido que podría haber hecho el cursor.
+}
+
+template <class TipoLista>
+void Lista<TipoLista>::insertar(int indice, TipoLista elemento) {
+
+    if (indice < 0 || indice > this->len()) {
 
         std::cout << "El indice indicado (" << indice << ") no valido o fuera de rango" << std::endl;
         throw indice;
@@ -277,146 +444,135 @@ void Lista<TipoLista>::insertar(int indice, TipoLista elem) {
 
     if (indice == 0) {
 
-        agregarPrin(elem);
+        this->agregarPrin(elemento);
 
     } else {
 
-        Nodo<TipoLista>* posterior = prim;
-        for (int contador = 0; (posterior) && (posterior->prox()) && (contador < indice - 1); contador++) {
-
-            posterior = posterior->prox();
-        }
-
-        if (posterior) {
-
-            posterior->setProx(new Nodo<TipoLista>(elem, posterior->prox()));
-            cant++;
-
-        } else {
-
-            agregarFin(elem);
-        }
+        Nodo<TipoLista>* anterior = obtenerNodo(indice - 1);
+        anterior->setProx(new Nodo<TipoLista>(elemento, anterior->prox()));
+        this->cant++;
     }
+
+    this->iniciarCursor(); // Anula el posible recorrido que podría haber hecho el cursor.
 }
 
 template <class TipoLista>
-void Lista<TipoLista>::borrar(TipoLista elem) {
+void Lista<TipoLista>::asignar(int indice, TipoLista elemento) {
 
-    if (estaVacia()) {
+    this->obtenerNodo(indice)->setDato(elemento);
+}
+
+template <class TipoLista>
+void Lista<TipoLista>::borrar(TipoLista elemento) {
+
+    if (this->estaVacia()) {
 
         std::cout << "La lista esta vacia" << std::endl;
-        throw elem;
+        throw elemento;
     }
 
+    this->iniciarCursor();
     Nodo<TipoLista>* anterior = NULL;
-    Nodo<TipoLista>* posterior = prim;
-    while (posterior && posterior->prox() && posterior->dato() != elem) {
 
-        anterior = posterior;
-        posterior = posterior->prox();
+    while (this->avanzarCursor() && this->obtenerDatoCursor() != elemento) {
+    
+        anterior = this->cursor;
     }
 
-    if (posterior->dato() == elem) {
+    if (!this->cursor) {
+
+        std::cout << "El elemento especificado (" << elemento << ") no fue encontrado" << std::endl;
+        throw elemento;
+    }
+
+    if (anterior) {
+
+        anterior->setProx(this->cursor->prox());
         
-        if (anterior) {
-
-            anterior->setProx(posterior->prox());
-
-        } else {
-
-            prim = posterior->prox();
-        }
-
-        delete posterior;
-
     } else {
 
-        std::cout << "El elemento especificado (" << elem << ") no fue encontrado" << std::endl;
-        throw elem;
+        this->prim = this->cursor->prox();
     }
 
-    cant--;
+    delete this->cursor;
+    this->cant--;
+
+    this->iniciarCursor(); // Anula el posible recorrido que podría haber hecho el cursor.
 }
 
 template <class TipoLista>
 TipoLista Lista<TipoLista>::pop(int indice) {
 
-    if (estaVacia() || indice < 0 || indice >= cant) {
+    if (this->estaVacia() || indice < 0 || indice >= this->cant) {
 
         std::cout << "El indice indicado (" << indice << ") esta fuera de rango o la lista esta vacia" << std::endl;
         throw indice;
     }
 
-    Nodo<TipoLista>* anterior = NULL;
-    Nodo<TipoLista>* posterior = prim;
-    TipoLista datoEliminado;
+    Nodo<TipoLista>* nodoARemover = NULL;
 
-    for (int contador = 0; (posterior) && (posterior->prox()) && (contador < indice); contador++) {
+    if (indice == 0) {
 
-        anterior = posterior;
-        posterior = posterior->prox();
-    }
-
-    if (anterior) {
-
-        anterior->setProx(posterior->prox());
+        nodoARemover = this->prim;
+        this->prim = nodoARemover->prox();
 
     } else {
 
-        prim = posterior->prox();
+        Nodo<TipoLista>* anterior = this->obtenerNodo(indice - 1);
+        nodoARemover = anterior->prox();
+        anterior->setProx(nodoARemover->prox());
     }
 
-    datoEliminado = posterior->dato();
-    delete posterior;
+    TipoLista datoEliminado = nodoARemover->dato();
+    delete nodoARemover;
+    this->cant--;
 
-    cant--; 
+    this->iniciarCursor(); // Anula el posible recorrido que podría haber hecho el cursor.
+
     return datoEliminado;
 }
 
 template <class TipoLista>
-int Lista<TipoLista>::indice(TipoLista elem) {
+int Lista<TipoLista>::indice(TipoLista elemento) {
 
-    if (estaVacia()) {
+    if (this->estaVacia()) {
 
         std::cout << "La lista esta vacia" << std::endl;
-        throw elem;
+        throw elemento;
     }
 
-    Nodo<TipoLista>* aux = prim;
+    this->iniciarCursor();
     int contador = 0;
 
-    while (aux && aux->prox() && aux->dato() != elem) {
+    while (this->avanzarCursor() && this->obtenerDatoCursor() != elemento) {
 
-        aux = aux->prox();
         contador++;
     }
 
-    if (aux->dato() == elem) {
+    if (!this->cursor) {
 
-        return contador;
-
-    } else {
-
-        std::cout << "El elemento especificado (" << elem << ") no fue encontrado" << std::endl;
-        throw elem;
+        std::cout << "El elemento especificado (" << elemento << ") no fue encontrado" << std::endl;
+        throw elemento;
     }
+
+    this->iniciarCursor(); // Anula el posible recorrido que podría haber hecho el cursor.
+
+    return contador;
 }
 
 template <class TipoLista>
-bool Lista<TipoLista>::existe(TipoLista elem) {
+bool Lista<TipoLista>::existe(TipoLista elemento) {
 
-    if (!estaVacia()) {
+    if (!this->estaVacia()) {
 
-        Nodo<TipoLista>* aux = prim;
+        this->iniciarCursor();
 
-        while (aux) {
+        while (this->avanzarCursor()) {
 
-            if (aux->dato() == elem) {
+            if (this->obtenerDatoCursor() == elemento) {
 
                 return true;
             }
-
-            aux = aux->prox();
         }
     }
 
@@ -424,22 +580,20 @@ bool Lista<TipoLista>::existe(TipoLista elem) {
 }
 
 template <class TipoLista>
-int Lista<TipoLista>::contar(TipoLista elem) {
+int Lista<TipoLista>::contar(TipoLista elemento) {
 
     int suma = 0;
 
-    if (!estaVacia()) {
+    if (!this->estaVacia()) {
 
-        Nodo<TipoLista>* aux = prim;
+        this->iniciarCursor();
 
-        while (aux) {
+        while (this->avanzarCursor()) {
 
-            if (aux->dato() == elem) {
+            if (this->obtenerDatoCursor() == elemento) {
 
                 suma++;
             }
-
-            aux = aux->prox();
         }
     }
 
@@ -447,64 +601,20 @@ int Lista<TipoLista>::contar(TipoLista elem) {
 }
 
 template <class TipoLista>
-TipoLista Lista<TipoLista>::operator[](int indice) {
-
-    if (estaVacia() || indice < 0 || indice >= cant) {
-
-        std::cout << "El indice indicado (" << indice << ") esta fuera de rango o la lista esta vacia" << std::endl;
-        throw indice;
-    }
-
-    Nodo<TipoLista>* aux = prim;
-
-    for (int contador = 0; contador < indice; contador++) {
-
-        aux = aux->prox();
-    }
-
-    return aux->dato();
-}
-
-template <class TipoLista>
-bool Lista<TipoLista>::operator==(Lista<TipoLista> otraLista) {
-
-    if (len() != otraLista.len()) {
-
-        return false;
-    }
-
-    Nodo<TipoLista>* aux1 = prim;
-    Nodo<TipoLista>* aux2 = otraLista.prim;
-
-    while (aux1 && aux1->prox()) {
-
-        if (aux1->dato() != aux2->dato()) {
-
-            return false;
-        }
-
-        aux1 = aux1->prox();
-        aux2 = aux2->prox();
-    }
-
-    return true;
-}
-
-template <class TipoLista>
 void Lista<TipoLista>::imprimir() {
 
-    Nodo<TipoLista>* aux = prim;
+    Nodo<TipoLista>* auxiliar = prim;
 
-    while (aux) {
+    while (auxiliar) {
 
-        std::cout << aux->dato();
+        std::cout << auxiliar->dato();
 
-        if (aux->prox()) {
+        if (auxiliar->prox()) {
 
             std::cout << " -> ";
         }
 
-        aux = aux->prox();
+        auxiliar = auxiliar->prox();
     }
 
     std::cout << std::endl;

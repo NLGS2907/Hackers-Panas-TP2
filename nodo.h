@@ -80,32 +80,32 @@ class Nodo {
 template <class TipoNodo>
 Nodo<TipoNodo>::Nodo(TipoNodo info, Nodo<TipoNodo>* siguiente) {
 
-    datoNodo = info;
-    sig = siguiente;
+    this->datoNodo = info;
+    this->sig = siguiente;
 }
 
 template <class TipoNodo>
 TipoNodo Nodo<TipoNodo>::dato() {
 
-    return datoNodo;
+    return this->datoNodo;
 }
 
 template <class TipoNodo>
 Nodo<TipoNodo>* Nodo<TipoNodo>::prox() {
 
-    return sig;
+    return this->sig;
 }
 
 template <class TipoNodo>
 void Nodo<TipoNodo>::setDato(TipoNodo datoNuevo) {
 
-    datoNodo = datoNuevo;
+    this->datoNodo = datoNuevo;
 }
 
 template <class TipoNodo>
 void Nodo<TipoNodo>::setProx(Nodo<TipoNodo>* nodoSig) {
 
-    sig = nodoSig;
+    this->sig = nodoSig;
 }
 
 #endif /* NODO_H_ */
