@@ -34,45 +34,6 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
   ```c++
   int estoEsUnaVariable;
   ```
-  También, cuando se desarrolla el método de una clase, evitar poner `this->` de ser posible, a menos que sea necesario. Se han visto ejemplos del tipo
-  ```c++
-  class ClaseCualquiera {
-  
-    private:
-    
-      int numeroCualquiera;
-  
-    public:
-    
-      void metodoCualquiera;
-  };
-  
-  void metodoCualquiera(int numeroCualquiera) {
-  
-    this->numeroCualquiera = numeroCualquiera;
-  }
-  ```
-  donde `this->numeroCualquiera` y `numeroCualquiera` tienen nombres muy similares y podrían ser confundidos. Uno es el atributo de la clase, y otro es el
-  parámetro del método. Al inhibir el uso de `this->`, se sugiere una alternativa similar a esta:
-  ```c++
-  class ClaseCualquiera {
-  
-    private:
-    
-      int numeroCualquiera;
-  
-    public:
-    
-      void metodoCualquiera;
-  };
-  
-  void metodoCualquiera(int numeroNuevo) {
-  
-    numeroCualquiera = numeroNuevo;
-  }
-  ```
-  ya que, al ser un atributo interno, la clase ya tiene la información sobre el atributo y no es necesario explicitar que pertenece a la clase sobre la que
-  se trabaja.
 
 * **Clases:** Los nombres para las clases y TDAs hechos siguen las mismas guías que para las variables y funciones, con *camelCase*, sólo que esta vez la primera
   palabra **también** debe tener la inicial en mayúscula. ***Ejemplo:***
@@ -114,7 +75,7 @@ Las mismas son más una norma general que una regla estricta que se debe acatar 
    POS: (pos-condiciones)
    __________________________________________________
   
-   (Descripción adicional) 
+   (Descripción adicional)
    */
   int funcionCualquiera;
   ```

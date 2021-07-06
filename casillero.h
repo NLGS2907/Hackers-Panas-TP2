@@ -79,7 +79,7 @@ class Casillero {
 template <class TipoCasillero>
 Casillero<TipoCasillero>::Casillero(TipoCasillero nuevoContenido) {
 
-    contenido = nuevoContenido;
+    this->contenido = nuevoContenido;
 }
 
 template <class TipoCasillero>
@@ -91,19 +91,19 @@ Casillero<TipoCasillero>::~Casillero() {
 template <class TipoCasillero>
 TipoCasillero Casillero<TipoCasillero>::verContenido() {
 
-    return contenido;
+    return this->contenido;
 }
 
 template <class TipoCasillero>
 void Casillero<TipoCasillero>::cambiarContenido(TipoCasillero nuevoContenido) {
 
-    contenido = nuevoContenido;
+    this->contenido = nuevoContenido;
 }
 
 template <class TipoCasillero>
 bool Casillero<TipoCasillero>::estaVacio() {
 
-    if (contenido == VACIO) {
+    if (this->contenido == VACIO) {
 
         return true;
     }
