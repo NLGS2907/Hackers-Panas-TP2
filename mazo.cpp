@@ -1,8 +1,11 @@
 #include"mazo.h"
 #include<iostream>
+
 /* ----- DEFINICIONES ----- */
 
 Mazo::Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, int cantidadDeCartasAgarrarCincoFichas, int cantidadDeCartasEliminarMazoJugadorSiguiente) {
+
+            this->mazo = new Cola<Carta*>();
 
 	    int cantidadTotal = cantidadDeCartasJuegaDoble + cantidadDeCartasBloquearTurno + cantidadDeCartasAgarrarCincoFichas + cantidadDeCartasEliminarMazoJugadorSiguiente;
 
@@ -15,55 +18,43 @@ Mazo::Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, in
 
 	    while (cantidadDeCartas < cantidadTotal) {
 
-	        Carta* cartaAAgregar = new Carta(generarNumeroRandom());
-	        if (cartaAAgregar->getCartaEspecial() == JuegaDoble) {
+	        CartaEspecial tipoAleatorio = generarNumeroRandom();
+	        if (tipoAleatorio == JuegaDoble) {
 
 	            if (contador1 < cantidadDeCartasJuegaDoble) {
 
-	                mazo->acolar(cartaAAgregar);
+	                this->acolarCarta(new Carta(tipoAleatorio));
 	                contador1++;
 	                cantidadDeCartas++;
 
-	            } else {
-
-	                delete cartaAAgregar;
 	            }
-	        } else if (cartaAAgregar->getCartaEspecial() == BloquearTurno) {
+	        } else if (tipoAleatorio == BloquearTurno) {
 
 	            if (contador2 < cantidadDeCartasBloquearTurno) {
 
-	                mazo->acolar(cartaAAgregar);
+	                this->acolarCarta(new Carta(tipoAleatorio));
 	                contador2++;
 	                cantidadDeCartas++;
 
-	            } else {
-
-	                delete cartaAAgregar;
 	            }
-	        } else if (cartaAAgregar->getCartaEspecial() == AgarrarCincoFichas) {
+	        } else if (tipoAleatorio == AgarrarCincoFichas) {
 
 	            if (contador3 < cantidadDeCartasAgarrarCincoFichas) {
 
-	                mazo->acolar(cartaAAgregar);
+	                this->acolarCarta(new Carta(tipoAleatorio));
 	                contador3++;
 	                cantidadDeCartas++;
 
-	            } else {
-
-	                delete cartaAAgregar;
 	            }
 
-	        } else if (cartaAAgregar->getCartaEspecial() == EliminarMazoJugadorSiguiente) {
+	        } else if (tipoAleatorio == EliminarMazoJugadorSiguiente) {
 
 	            if (contador3 < cantidadDeCartasEliminarMazoJugadorSiguiente) {
 
-	                mazo->acolar(cartaAAgregar);
+	                this->acolarCarta(new Carta(tipoAleatorio));
 	                contador4++;
 	                cantidadDeCartas++;
 
-	            } else {
-
-	                delete cartaAAgregar;
 	            }
 	        }
 	    }
