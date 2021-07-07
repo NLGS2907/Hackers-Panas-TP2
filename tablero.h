@@ -4,8 +4,6 @@
 #include "listaLigada.h"
 #include "casillero.h"
 
-#include <iostream>
-
 /* ----- DECLARACIONES ----- */
 
 /*
@@ -590,7 +588,7 @@ void Tablero<TipoTablero>::_imprimir(char ladoCorto) {
 
     for (int prim = 0; prim < primero; prim++) {
 
-        std::cout << primEje << " ^ " << segEje << " >\n" << std::endl;
+        std::cout << primEje << " v " << segEje << " >\n" << std::endl;
 
         for (int seg = 0; seg < segundo; seg++) {
 
