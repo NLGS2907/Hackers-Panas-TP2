@@ -4,11 +4,20 @@
 #include"listaLigada.h"
 #include"Carta.h"
 
+const int CINCO_FICHAS = 5;
+
 enum TipoDeTurno{
     Comun,
     Doble,
     Bloqueado
 }
+
+enum CartaElegida{
+    Ninguna,
+    Primera,
+    Segunda,
+    Tercera
+};
 
 class Jugador{
 
@@ -16,9 +25,7 @@ class Jugador{
         
         char fichaJugador;
         int cantidadDeFichas;
-        int profundidadElegida;
-        int columnaElegida;
-        Lista<Carta>* cartasJugador;
+        Lista<Carta*>* cartasJugador;
         TipoDeTurno turno;
 
         
@@ -26,7 +33,7 @@ class Jugador{
 
         /*
         __________________________________________________
-        PRE:
+        PRE:-La cantidadFichasJugador tiene que ser mayor a 0.
         -
         POS:Crea un jugador con: 
                 -Un tipo de ficha "char" para identificarla en el juego.
@@ -34,6 +41,15 @@ class Jugador{
         __________________________________________________
         */
         Jugador(char ficha, int cantidadFichasJugador);
+
+        /*
+        __________________________________________________
+        PRE:
+        -
+        POS: Devuelve la ficha que identifica al jugador.
+        __________________________________________________
+        */
+        char getFicha();
 
         /*
         __________________________________________________
@@ -48,19 +64,28 @@ class Jugador{
         __________________________________________________
         PRE: 
         -
-        POS: Devuelve la cantidad de cartas que tiene el jugador. (Con sizeof de la lista de cartas)
+        POS: Devuelve la cantidad de cartas que tiene el jugador. 
         __________________________________________________
         */
         int getCantidadDeCartasEnMano();
 
         /*
         __________________________________________________
-        PRE: 
+        PRE: El jugador agarro una carta.
         -
         POS: Carga a la lista de cartas del jugador la carta pasada por parametro.
         __________________________________________________
         */
-        void cargarCarta(Carta cartaAgarrada);
+        void cargarCarta(Carta* cartaAgarrada);
+        
+        /*
+        __________________________________________________
+        PRE: El jugador usa una carta.
+        -
+        POS: Devuelve un puntero a la carta en la posicion elegida.
+        __________________________________________________
+        */
+        Carta* obtenerCarta(CartaElegida posicionCarta);
 
         /*
         __________________________________________________
@@ -69,7 +94,7 @@ class Jugador{
         POS:Elimina la carta pasada por parametro de la lista. 
         __________________________________________________
         */
-        void eliminarCarta(CartaElegida carta);
+        void eliminarCarta(CartaElegida posicionCarta);
 
         /*
         __________________________________________________
@@ -118,49 +143,30 @@ class Jugador{
 
         /*
         __________________________________________________
-        PRE:
-        -
-        POS: Establece la columna elegida por el jugador.
-        __________________________________________________
-        */
-        void setColumnaElegida(int columnaSeleccionada);
-
-        /*
-        __________________________________________________
-        PRE:
-        -
-        POS: Establece la profundidad elegida por el jugador.
-        __________________________________________________
-        */
-        void setProfundidadElegida(int profundidadSeleccionada);
-
-        /*
-        __________________________________________________
         PRE:  
         -
-        POS:-Devuelve true si hay carta en la posicion elegida, false sino .
+        POS:-Establece el tipo de turno que el jugador tendra.
         __________________________________________________
         */
-        int getColumnaElegida();
+        void setTipoDeTurno(TipoDeTurno turno);
 
         /*
         __________________________________________________
-        PRE:
-        -
-        POS:Devuelve la profundidad elegida por el jugador.
-        __________________________________________________
-        */
-        int getProfundidadElegida();
-
-        /*
-        __________________________________________________
-        PRE:
+        PRE:El jugador coloco una ficha en el tablero.
         -
         POS:Le descuenta una ficha a la cantidadDeFichas.
         __________________________________________________
         */
-        void descontarUnaFicha();
+        void descontarFichaColocada();
 
+        /*
+        __________________________________________________
+        PRE:
+        -
+        POS:Libera la memoria que ocupa el jugador.
+        __________________________________________________
+        */
+        ~Jugador();
         
 
 };
