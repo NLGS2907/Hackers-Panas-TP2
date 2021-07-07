@@ -2,6 +2,7 @@
 #define COLA_H_
 
 #include"nodo.h"
+#include<iostream>
 #include<string>
 
 template<class Tipo> class Cola {
