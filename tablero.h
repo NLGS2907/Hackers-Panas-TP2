@@ -4,6 +4,8 @@
 #include "listaLigada.h"
 #include "casillero.h"
 
+#include <iostream>
+
 /* ----- DECLARACIONES ----- */
 
 /*
@@ -30,6 +32,19 @@ class Tablero {
         Casillero<TipoTablero>* ultimoCasillero;
 
         void _imprimir(char ladoCorto);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
+        POS: El Tablero permanece inalterado.
+        __________________________________________________
+
+        Deuelve 'true' si las coordenadas pasadas por parámetro están
+        dentro de los límites del tablero. En caso contrario, devuelve
+        'false'.
+        */
+        bool _coordenadasSonValidas(int x, int y, int z);
 
         /*
         __________________________________________________
@@ -208,6 +223,19 @@ class Tablero {
         __________________________________________________
         PRE: -
         -
+        POS: El tablero permanece inalterado.
+        __________________________________________________
+
+        Recorre toda dirección desde el ultimo casillero jugando, en busca de
+        que haya N fichas alineadas del mismo tipo en dicha dirección, en tal
+        caso devuelve 'true'. En caso contrario devuelve 'false'.
+        */
+        bool ganoAlguien(int nEnLinea);
+
+        /*
+        __________________________________________________
+        PRE: -
+        -
         POS: El Tablero permanece inalterado.
         __________________________________________________
 
@@ -262,17 +290,38 @@ Tablero<TipoTablero>::Tablero(int anchoInicial, int altoInicial, int largoInicia
     for (int fila = 0; fila < altoInicial; fila++) {
 
         Lista<Lista<Casillero<TipoTablero>*>*>* listaFila = new Lista<Lista<Casillero<TipoTablero>*>*>;
-        this->espacio->agregarPrin(listaFila);
+        this->espacio->agregarFin(listaFila);
 
         for (int columna = 0; columna < anchoInicial; columna++) {
 
             Lista<Casillero<TipoTablero>*>* listaColumna = new Lista<Casillero<TipoTablero>*>;
-            listaFila->agregarPrin(listaColumna);
+            listaFila->agregarFin(listaColumna);
 
             for (int profundidad = 0; profundidad < largoInicial; profundidad++) {
 
-                Casillero<TipoTablero>* nuevoCasillero = new Casillero<TipoTablero>;
-                listaColumna->agregarPrin(nuevoCasillero);
+                Casillero<TipoTablero>* nuevoCasillero = new Casillero<TipoTablero>(columna, fila, profundidad);
+                listaColumna->agregarFin(nuevoCasillero);
+            }
+        }
+    }
+
+    for (int fila = 0; fila < altoInicial; fila++) {
+
+        for (int columna = 0; columna < anchoInicial; columna++) {
+
+            for (int profundidad = 0; profundidad < largoInicial; profundidad++) {
+
+                for (int i = -1; i <= 1; i++) {
+
+                    for (int j = -1; j <= 1; j++) {
+
+                        for (int k = -1; k <= 1; k++) {
+                            
+                            Casillero<TipoTablero>* casilleroVecino = this->casillero(fila + j, columna + i, profundidad + k);
+                            this->casillero(fila, columna, profundidad)->cambiarVecino(casilleroVecino, i, j, k);
+                        }
+                    }
+                }
             }
         }
     }
@@ -281,8 +330,8 @@ Tablero<TipoTablero>::Tablero(int anchoInicial, int altoInicial, int largoInicia
 template <class TipoTablero>
 Tablero<TipoTablero>::~Tablero() {
 
-    int filas = alto();
-    int columnas = ancho();
+    int filas = this->alto();
+    int columnas = this->ancho();
 
     for (int fil = 0; fil < filas; fil++) {
 
@@ -324,6 +373,11 @@ TipoTablero Tablero<TipoTablero>::celda(int fil, int col, int prof) {
 template <class TipoTablero>
 Casillero<TipoTablero>* Tablero<TipoTablero>::casillero(int fil, int col, int prof) {
 
+    if (!_coordenadasSonValidas(col, fil, prof)) {
+
+        return NULL;
+    }
+
     return this->espacio->obtener(fil)->obtener(col)->obtener(prof);
 }
 
@@ -342,7 +396,6 @@ Casillero<TipoTablero>* Tablero<TipoTablero>::conseguirUltimoCasillero() {
 template <class TipoTablero>
 void Tablero<TipoTablero>::cambiarUltimoCasillero(Casillero<TipoTablero>* nuevoCasillero) {
 
-
     this->ultimoCasillero = nuevoCasillero;
 }
 
@@ -360,8 +413,8 @@ bool Tablero<TipoTablero>::columnaEstaLlena(int columna, int profundo) {
 template <class TipoTablero>
 bool Tablero<TipoTablero>::tableroEstaLleno() {
 
-    int anchoTablero = ancho();
-    int largoTablero = largo();
+    int anchoTablero = this->ancho();
+    int largoTablero = this->largo();
 
     for (int columna = 0; columna < anchoTablero; columna++) {
 
@@ -388,18 +441,80 @@ void Tablero<TipoTablero>::tirarFicha(int columna, int profundo, TipoTablero tip
 
         while (filaActual < filas && celda(filaActual, columna, profundo) == VACIO) {
 
-            filaElegida = filaActual++;
+            filaElegida = filaActual;
+            filaActual++;
         }
 
         this->cambiarUltimoCasillero(casillero(filaElegida, columna, profundo));
-        this->ultimoCasillero->cambiarContenido(tipoFicha);
+        this->conseguirUltimoCasillero()->cambiarContenido(tipoFicha);
     }
+}
+
+template <class TipoTablero>
+bool Tablero<TipoTablero>::ganoAlguien(int nEnLinea) {
+
+    int cantidadades [3][3][3];
+
+    for(int i = -1; i < 2 ; i++) {
+
+        for (int j = -1; j < 2; j++) {
+
+            for (int k = -1; k < 2; k++) {
+
+                cantidadades[i + 1][j + 1][k + 1] = 0;
+            }
+        }
+    }
+
+    for(int i = -1; i < 2 ; i++){
+
+        for(int j = -1; j < 2; j++){
+
+            for(int k = -1; k < 2; k++){
+
+                if (!(i == 0 && j == 0 && k == 0) && this->_coordenadasSonValidas(this->conseguirUltimoCasillero()->coordenadaX() + i,
+                                                                                  this->conseguirUltimoCasillero()->coordenadaY() + j,
+                                                                                  this->conseguirUltimoCasillero()->coordenadaZ() + k)) {
+
+                    Casillero<TipoTablero>* vecino = this->conseguirUltimoCasillero()->conseguirVecino(i, j, k);
+
+                    while(vecino->esMismoContenido(this->conseguirUltimoCasillero())) {
+
+                        cantidadades[i + 1][j + 1][k + 1]++;
+
+                        if (!this->_coordenadasSonValidas(vecino->coordenadaX() + i, vecino->coordenadaY()+ j, vecino->coordenadaZ() + k)) {
+
+                            break;
+                        }
+
+                        vecino = vecino->conseguirVecino(i, j, k);
+                    }
+                }
+            }
+        }
+    }
+
+    for(int i = -1; i <= 1; i++) {
+
+        for (int j = -1; j <= 1; j++) {
+
+            for (int k = -1; k <= 1; k++) {
+
+                if ((cantidadades[i + 1][j + 1][k + 1] + cantidadades[-i + 1][-j + 1][-k + 1] + 1) >= nEnLinea) {
+
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 template <class TipoTablero>
 void Tablero<TipoTablero>::imprimir() {
 
-    int lados[] = {alto(), ancho(), largo()};
+    int lados[] = {this->alto(), this->ancho(), this->largo()};
     int ladoMasCorto = menorValor(lados, 3);
 
     if (ladoMasCorto == lados[2]) {
@@ -438,9 +553,9 @@ void Tablero<TipoTablero>::imprimir(char ladoCorto) {
 template <class TipoTablero>
 void Tablero<TipoTablero>::_imprimir(char ladoCorto) {
 
-    int filas = alto();
-    int columnas = ancho();
-    int profundidad = largo();
+    int filas = this->alto();
+    int columnas = this->ancho();
+    int profundidad = this->largo();
 
     int primero, segundo, tercero;
     char primEje, segEje;
@@ -491,6 +606,17 @@ void Tablero<TipoTablero>::_imprimir(char ladoCorto) {
         }
     }
 
+}
+
+template <class TipoTablero>
+bool Tablero<TipoTablero>::_coordenadasSonValidas(int x, int y, int z) {
+
+    if (x < 0 || x >= this->ancho() || y < 0 || y >= this->alto() || z < 0 || z >= this->largo()) {
+
+        return false;
+    }
+
+    return true;
 }
 
 template <class TipoTablero>
