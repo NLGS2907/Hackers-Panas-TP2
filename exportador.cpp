@@ -54,7 +54,9 @@ bool esHexValido(const char* hex) {
         int i = 1;
         while (hex[i] != '\0') {
 
-            if (i > 6 || hex[i] < '0' || (hex[i] > '9' && hex[i] < 'A') || (hex[i] > 'F' && hex[i] < 'a') || hex[i] > 'f') {
+            if (i > 6 || hex[i] < '0' || (hex[i] > '9' 
+                     && hex[i] < 'A') || (hex[i] > 'F'
+                     && hex[i] < 'a') || hex[i] > 'f') {
 
                 return false;
             }

@@ -8,7 +8,8 @@ funciones internas.
 
 #include "easyBMP.h"
 #include "EasyBMP_Geometry.h"
-#include "constantes.h"
+
+#define _PI_ 3.14159265358979 // Para hacer los calculos más fáciles.
 
 typedef struct Cubo {
 
