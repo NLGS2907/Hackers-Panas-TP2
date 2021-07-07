@@ -1,12 +1,8 @@
 #include "Jugador.h"
 
-using namespace std;
 
 Jugador::Jugador(char ficha, int cantidadFichasJugador){
 
-    if (cantidadDeFichas<=0){
-        throw("La cantidad de fichas es invalida");
-    }
     this->fichaJugador = ficha;
     this->cantidadDeFichas = cantidadFichasJugador;
     this->cartasJugador = new Lista<Carta*>; 
@@ -41,13 +37,13 @@ void Jugador::cargarCarta(Carta* cartaAgarrada){
 
 }
 
-Carta* Jugador::obtenerCarta(CartaElegida posicionCarta){
+Carta* Jugador::obtenerCarta(int posicionCarta){
     
     return ( this->cartasJugador->obtener(posicionCarta - 1) );
 
 }
 
-void Jugador::eliminarCarta(CartaElegida posicionCarta){
+void Jugador::eliminarCarta(int posicionCarta){
     
     this->cartasJugador->pop(posicionCarta - 1);
 
@@ -113,7 +109,7 @@ void Jugador::descontarFichaColocada(){
 
 }
 
-~Jugador(){
+Jugador::~Jugador(){
 
     for(int i=0; i<(this->cartasJugador->len()); i++){
         delete this->cartasJugador->obtener(i);

@@ -1,59 +1,14 @@
 #include "Juego.h"
 
 //PRIVATE
-int Juego::getNumeroSiguienteJugador(){
-
-    if( this->getNumeroJugadorActual() == (this->jugadores->len() - 1) ){
-        return 0;
-    }
-    else{
-        return (this->getNumeroJugadorActual() + 1);
-    }
-
-}
-
-
-bool Juego::jugadoresTienenCartas(){
-
-    this->jugadores->iniciarCursor();
-    while(this->jugadores->avanzarCursor()){
-        if( this->jugadores->obtenerCursor()->getCantidadDeCartasEnMano() > 0){
-            return true;
-        }
-    }
-    return false;
-
-}
-
-
-bool Juego::tieneMenosDeTresCartas(){
-
-    return (this->jugadores->obtener(this->getNumeroJugadorActual())->getCantidadDeCartasEnMano() < MAX_CARTAS );
-
-}
-
-
-bool Juego::jugadoresTienenFichas(){
-
-    this->jugadores->iniciarCursor();
-    while(this->jugadores->avanzarCursor()){
-        if( this->jugadores->obtenerCursor()->getCantidadDeFichasRestantes() > 0){
-            return true;
-        }
-    }
-    return false; 
-
-}
-
-
 char Juego::getFichaAleatoria(){
 
     srand(time(NULL));
     char fichaAleatoria = 0;
 
     while( fichaAleatoria < CARACTER_A ){
-	    
-        fichaAleatoria = rand() % CARACTER_Z;
+
+        fichaAleatoria = (rand() % CARACTER_Z) + 1;
 
     }
     return fichaAleatoria;
@@ -72,7 +27,52 @@ bool Juego::esFichaUsada(char ficha){
 }
 
 
-void Juego::cargarJugadores(int cantidadJugadores){
+int Juego::getNumeroSiguienteJugador(){
+
+    if( this->getNumeroJugadorActual() == (this->jugadores->len() - 1) ){
+        return 0;
+    }
+    else{
+        return (this->getNumeroJugadorActual() + 1);
+    }
+
+}
+
+
+bool Juego::jugadoresTienenCartas(){
+
+    this->jugadores->iniciarCursor();
+    while(this->jugadores->avanzarCursor()){
+        if( this->jugadores->obtenerDatoCursor()->getCantidadDeCartasEnMano() > 0){
+            return true;
+        }
+    }
+    return false;
+
+}
+
+
+bool Juego::jugadorActualTieneMenosDeTresCartas(){
+
+    return (this->jugadores->obtener(this->getNumeroJugadorActual())->getCantidadDeCartasEnMano() < MAX_CARTAS );
+
+}
+
+
+bool Juego::jugadoresTienenFichas(){
+
+    this->jugadores->iniciarCursor();
+    while(this->jugadores->avanzarCursor()){
+        if( this->jugadores->obtenerDatoCursor()->getCantidadDeFichasRestantes() > 0){
+            return true;
+        }
+    }
+    return false; 
+
+}
+
+
+void Juego::cargarJugadores(int cantidadDeFichas, int cantidadJugadores){
 
     char ficha = this->getFichaAleatoria();
     Jugador *jugador = new Jugador(ficha, cantidadDeFichas);
@@ -98,18 +98,25 @@ int Juego::getCantidadFichasEnLinea(){
 
 
 //PUBLIC
-Juego::Juego(int cantidadFilas, int cantidadColumnas, int profundidad, int cantidadJugadores, int cantidadCartasDelMazo, int cantidadDeFichas, int fichasEnLinea){
+Juego::Juego(int cantidadFilas, int cantidadColumnas, int profundidad, int cantidadJugadores, int cantidadDeFichas, int fichasEnLinea,
+				int cartasJuegaDoble, int cartasBloquearTurno, int cartasAgarrarCincoFichas, int cartasEliminarMazoSiguienteJugador){
 
         this->jugadores = new Lista<Jugador*>;
-        this->mazoJuego = new Mazo(cantidadCartasDelMazo);
-        this->tablero = new Tablero(cantidadColumnas, cantidadFilas, profundidad);
+        this->mazoJuego = new Mazo(cartasJuegaDoble, cartasBloquearTurno, cartasAgarrarCincoFichas, cartasEliminarMazoSiguienteJugador);
+        this->tablero = new Tablero<char>(cantidadColumnas, cantidadFilas, profundidad);
         this->numeroJugadorActual = 0;
         this->cantidadFichasEnLinea = fichasEnLinea;
         this->estadoActual = Jugando;
-        this->cartaActualElegida = Ninguna;
+        this->cartaActualElegida = NINGUNA;
+        this->numeroDeTurno = 1;
 
-        this->cargarJugadores(cantidadJugadores);
+        this->cargarJugadores(cantidadDeFichas, cantidadJugadores);
         
+}
+
+int Juego::getTurnoActual(){
+
+	return this->numeroDeTurno;
 }
 
 
@@ -122,7 +129,7 @@ int Juego::getNumeroJugadorActual(){
 
 void Juego::setNumeroJugadorActual(int numeroJugador){
 
-    if(numeroJugador < 0 && numeroJugador <= this->jugadores->len() ){
+    if(numeroJugador < 0 && numeroJugador < this->jugadores->len() ){
         throw("El numero del jugador no existe");
     }
     this->numeroJugadorActual = numeroJugador;
@@ -130,7 +137,7 @@ void Juego::setNumeroJugadorActual(int numeroJugador){
 }
 
 
-bool Juego::estaBloqueado(){
+bool Juego::jugadorActualEstaBloqueado(){
 
     return (this->jugadores->obtener(this->getNumeroJugadorActual())->getTipoDeTurno() == Bloqueado); 
 
@@ -139,45 +146,45 @@ bool Juego::estaBloqueado(){
 
 void Juego::agarrarCarta(){
     
-    if( this->tieneMenosDeTresCartas() ){
+    if( this->jugadorActualTieneMenosDeTresCartas() ){
         this->jugadores->obtener(this->getNumeroJugadorActual())->cargarCarta(this->mazoJuego->darCarta());
     }
 
 }
 
 
-bool Juego::tieneLaCartaElegida(CartaElegida cartaSeleccionada){
+bool Juego::jugadorActualTieneLaCartaElegida(int cartaSeleccionada){
 
-    return ( this->jugadores->obtener(this->getNumeroJugadorActual())->getCantidadDeCartasEnMano >= cartaSeleccionada );
-
-}
-
-
-bool Juego::arrojoCarta(){
-
-    return ( this->getCartaElegida() != Ninguna );
+    return ( this->jugadores->obtener(this->getNumeroJugadorActual())->getCantidadDeCartasEnMano() >= cartaSeleccionada );
 
 }
 
 
-void Juego::setCartaElegida(CartaElegida cartaSeleccionada){
+bool Juego::jugadorActualArrojoCarta(){
+
+    return ( this->getCartaElegida() != NINGUNA );
+
+}
+
+
+void Juego::setCartaElegida(int cartaSeleccionada){
 
     this->cartaActualElegida = cartaSeleccionada;
 
 }
 
 
-CartaElegida Juego::getCartaElegida(){
+int Juego::getCartaElegida(){
 
     return this->cartaActualElegida; 
 
 }
 
 
-void Juego::usarCarta(CartaElegida cartaSeleccionada){
+void Juego::usarCarta(int cartaSeleccionada){
   
     switch(this->jugadores->obtener(this->getNumeroJugadorActual())->obtenerCarta(cartaSeleccionada)->getCartaEspecial()){
-        case JuegaDoble: 
+        case JuegaDoble:
             this->jugadores->obtener(this->getNumeroJugadorActual())->duplicarTurno();
         break;
         case BloquearTurno:
@@ -186,9 +193,11 @@ void Juego::usarCarta(CartaElegida cartaSeleccionada){
         case AgarrarCincoFichas:
             this->jugadores->obtener(this->getNumeroJugadorActual())->sumarCincoFichas();
         break;
-        case EliminarMazoSiguiente:
-            while (this->jugadores->obtener(this->getNumeroSiguienteJugador())->getCantidadDeCartasEnMano() > 0){
-                this->jugadores->obtener(this->getNumeroSiguienteJugador())->eliminarCarta(this->jugadores->obtener(this->getNumeroSiguienteJugador())->getCantidadDeCartasEnMano());
+        case EliminarMazoJugadorSiguiente:
+        	int cantidadCartas = this->jugadores->obtener(this->getNumeroSiguienteJugador())->getCantidadDeCartasEnMano();
+            while (cantidadCartas > 0){
+                this->jugadores->obtener(this->getNumeroSiguienteJugador())->eliminarCarta(cantidadCartas);
+                cantidadCartas = this->jugadores->obtener(this->getNumeroSiguienteJugador())->getCantidadDeCartasEnMano();
             } 
         break;    
     }
@@ -198,14 +207,14 @@ void Juego::usarCarta(CartaElegida cartaSeleccionada){
 }
 
 
-bool Juego::tieneFichas(){
+bool Juego::jugadorActualTieneFichas(){
 
     return (this->jugadores->obtener(this->getNumeroJugadorActual())->getCantidadDeFichasRestantes() > 0);
 
 }
 
 
-bool Juego::juegaDoble(){
+bool Juego::jugadorActualJuegaDoble(){
 
     return (this->jugadores->obtener(this->getNumeroJugadorActual())->getTipoDeTurno() == Doble);
 
@@ -257,10 +266,12 @@ void Juego::avanzarTurno(){
             this->jugadores->obtener(this->getNumeroJugadorActual())->reestablecerTurno();
         }
 
+    this->numeroDeTurno++;
     this->setNumeroJugadorActual(this->getNumeroSiguienteJugador());
     
 
 }
+
 
 
 Juego::~Juego(){
@@ -274,5 +285,8 @@ Juego::~Juego(){
 
     delete this->tablero;
 }
+
+
+
 
 

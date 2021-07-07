@@ -6,18 +6,14 @@
 
 const int CINCO_FICHAS = 5;
 
+const int NINGUNA = 0;
+
 enum TipoDeTurno{
     Comun,
     Doble,
     Bloqueado
-}
-
-enum CartaElegida{
-    Ninguna,
-    Primera,
-    Segunda,
-    Tercera
 };
+
 
 class Jugador{
 
@@ -80,21 +76,21 @@ class Jugador{
         
         /*
         __________________________________________________
-        PRE: El jugador usa una carta.
+        PRE: El jugador eligio usar la carta en la posicion elegida.
         -
         POS: Devuelve un puntero a la carta en la posicion elegida.
         __________________________________________________
         */
-        Carta* obtenerCarta(CartaElegida posicionCarta);
+        Carta* obtenerCarta(int posicionCarta);
 
         /*
         __________________________________________________
-        PRE: La carta fue usada en el juego.
+        PRE: La carta fue usada en el juego o se uso la carta "Eliminar Mazo Siguiente Jugador" en su contra.
         -
         POS:Elimina la carta pasada por parametro de la lista. 
         __________________________________________________
         */
-        void eliminarCarta(CartaElegida posicionCarta);
+        void eliminarCarta(int posicionCarta);
 
         /*
         __________________________________________________

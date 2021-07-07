@@ -1,9 +1,9 @@
 #ifndef JUEGO_H_
 #define JUEGO_H_
 
+#include "Tablero.h"
 #include "Jugador.h"
 #include "Mazo.h"
-#include "Tablero.h"
 
 const int MAX_CARTAS = 3;
 const int CARACTER_A = 65, CARACTER_Z = 90;
@@ -20,11 +20,12 @@ class Juego{
     
         Lista<Jugador*>* jugadores;
         Mazo* mazoJuego;
-        Tablero* tablero;
+        Tablero<char>* tablero;
         int numeroJugadorActual;
         int cantidadFichasEnLinea;
         EstadoJuego estadoActual;
-        CartaElegida cartaActualElegida;
+        int cartaActualElegida;
+        int numeroDeTurno;
 
         /*
         __________________________________________________
@@ -48,7 +49,7 @@ class Juego{
         __________________________________________________
         PRE:  
         -
-        POS:-Devuelve el numero del jugador siguiente jugador, si es el ultimo de la lista devuelve al primero de la lista.
+        POS:-Devuelve el numero del jugador siguiente jugador, si es el ultimo devuelve al primero de la lista.
         __________________________________________________
         */
         int getNumeroSiguienteJugador();
@@ -78,7 +79,7 @@ class Juego{
         POS:-Devuelve true si el jugador actual tiene menos de 3 cartas en mano, false sino.
         __________________________________________________
         */
-        bool tieneMenosDeTresCartas();
+        bool jugadorActualTieneMenosDeTresCartas();
 
         /*
         __________________________________________________
@@ -87,7 +88,7 @@ class Juego{
         POS:-Devuelve la lista de jugadores cargada.
         __________________________________________________
         */
-        void cargarJugadores(int cantidadJugadores);
+        void cargarJugadores(int cantidadDeFichas, int cantidadJugadores);
 
 
         /*
@@ -108,12 +109,22 @@ class Juego{
         POS:Crea un juego N en Linea con las caracteristicas pasadas por parametros:
                     -La cantidadDeFilas, cantidadDeColumnas y profundidad sera la dimension de nuestro tablero.
                     -la cantidadDeJugadores sera la cantidad total de personas a jugar.
-                    -La cantidadCartasDelMazo son las cantidad de cartas total que habra en el mazo.
                     -La cantidadDeFichas son la cantidad de fichas totales para cada jugador.
                     -Las fichasEnLinea es la cantidad de fichas a alinear para ganar el juego.
+                    -La cartasJuegaDoble, cartasBloquearTurno, cartasAgarrarCincoFichas y cartasEliminarMazoSiguienteJugador son las cartas que tendra el mazoJuego.
         __________________________________________________
         */
-        Juego(int cantidadFilas, int canitdadColumnas, int profundidad, int cantidadJugadores, int cantidadCartasDelMazo, int cantidadDeFichas, int fichasEnLinea);
+        Juego(int cantidadFilas, int canitdadColumnas, int profundidad, int cantidadJugadores, int cantidadDeFichas, int fichasEnLinea,
+        		int cartasJuegaDoble, int cartasBloquearTurno, int cartasAgarrarCincoFichas, int cartasEliminarMazoSiguienteJugador);
+
+        /*
+        __________________________________________________
+        PRE:
+        -
+        POS:-Devuelve el numero del turno actual.
+        __________________________________________________
+        */
+        int getTurnoActual();
 
         /*
         __________________________________________________
@@ -126,7 +137,7 @@ class Juego{
 
         /*
         __________________________________________________
-        PRE: El numero de jugador debe ser mayor a 0 y menor igual a la cantidad de jugadores.  
+        PRE: El numero de jugador debe ser mayor a 0 y menor a la cantidad de jugadores.
         -
         POS:-Establece el numero del jugador actual a jugar.
         __________________________________________________
@@ -140,13 +151,13 @@ class Juego{
         POS:-Devuelve true si el jugador actual tiene el turno "Bloqueado", false sino .
         __________________________________________________
         */
-        bool estaBloqueado();
+        bool jugadorActualEstaBloqueado();
 
         /*
         __________________________________________________
         PRE: El jugador Actual no puede agarrar si tiene 3 cartas en mano. 
         -
-        POS:-El jugado rActual recibe una carta del mazo y la guarda en su lista de cartas.
+        POS:-Si el jugador actual tiene menos de 3 cartas en mano se le da una carta y la guarda en su lista de cartas, si tiene 3 no agarra.
             -Le resta una carta al mazo.
         __________________________________________________
         */
@@ -159,7 +170,7 @@ class Juego{
         POS:-Devuelve true si hay una carta en la posicion elegida del jugador actual, false sino.
         __________________________________________________
         */
-        bool tieneLaCartaElegida(CartaElegida cartaSeleccionada);
+        bool jugadorActualTieneLaCartaElegida(int cartaSeleccionada);
 
         /*
         __________________________________________________
@@ -168,7 +179,7 @@ class Juego{
         POS: Establece la carta elegida en el turno por el jugador actual.
         __________________________________________________
         */
-        void setCartaElegida(CartaElegida cartaSeleccionada);
+        void setCartaElegida(int cartaSeleccionada);
 
         /*
         __________________________________________________
@@ -177,7 +188,7 @@ class Juego{
         POS: Devuelve la carta elegida por el jugador actual.
         __________________________________________________
         */
-        CartaElegida getCartaElegida();
+        int getCartaElegida();
 
         /*
         __________________________________________________
@@ -186,7 +197,7 @@ class Juego{
         POS:-Devuelve true si la cartaSeleccionada es la  Primera, Segunda o Tercera, false si es Ninguna.
         __________________________________________________
         */
-        bool arrojoCarta();
+        bool jugadorActualArrojoCarta();
 
         /*
         __________________________________________________
@@ -201,7 +212,7 @@ class Juego{
             Elimina la carta usada por el jugador. 
         __________________________________________________
         */
-        void usarCarta(CartaElegida cartaSeleccionada);
+        void usarCarta(int cartaSeleccionada);
 
         /*
         __________________________________________________
@@ -210,7 +221,7 @@ class Juego{
         POS:-Devuelve true si el jugador actual le quedan fichas, false sino.
         __________________________________________________
         */
-        bool tieneFichas();
+        bool jugadorActualTieneFichas();
 
         /*
         __________________________________________________
@@ -219,7 +230,7 @@ class Juego{
         POS: Devuelve true si el jugaor actual tiene turno doble, false sino.
         __________________________________________________
         */
-        bool juegaDoble();
+        bool jugadorActualJuegaDoble();
 
         /*
         __________________________________________________
@@ -239,7 +250,7 @@ class Juego{
             -Le resta una ficha al jugadorActual.
         __________________________________________________
         */
-        void colocarFicha();
+        void colocarFicha(int columnaElegida, int profundidadElegida);
 
         /*
         __________________________________________________
@@ -267,9 +278,11 @@ class Juego{
         -
         POS: -Reestablece el turno de tipo "Comun" al jugador si fue afectado por la carta "JuegaDoble" o "BloquearTurno". 
              -Pasa al siguiente jugador en la lista de jugadores.
+             -Incrementa el numero de turno.
         __________________________________________________
         */
         void avanzarTurno();
+
 
         /*
         __________________________________________________
