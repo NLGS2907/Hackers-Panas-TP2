@@ -6,24 +6,23 @@ Menu::Menu() {
 
     this->tipo = menuPrincipal;
 
-    this->tamanioX = 10;
-    this->tamanioY = 10;
-    this->tamanioZ = 10;
+    this->tamanioX = 3;
+    this->tamanioY = 4;
+    this->tamanioZ = 5;
 
-    this->nEnLinea = 4;
+    this->nEnLinea = 2;
 
-    this->cantidadJugadores = 2;
-    this->cantidadDeFichasPorJugador = 50;
+    this->cantidadJugadores = 3;
+    this->cantidadDeFichasPorJugador = 30;
 
-    this->cantidadCartasJuegaDoble = 10;
-    this->cantidadCartasBloquearTurno = 10;
-    this->cantidadCartasAgarrarCincoFichas = 10;
-    this->cantidadCartasEliminarMazoJugadorSiguiente = 10;
+    this->cantidadCartasJuegaDoble = 1;
+    this->cantidadCartasBloquearTurno = 1;
+    this->cantidadCartasAgarrarCincoFichas = 0;
+    this->cantidadCartasEliminarMazoJugadorSiguiente = 0;
+}
 
-    this->cantidadCartasMazo = this->cantidadCartasJuegaDoble +
-                               this->cantidadCartasBloquearTurno +
-                               this->cantidadCartasAgarrarCincoFichas +
-                               this->cantidadCartasEliminarMazoJugadorSiguiente;
+Menu::~Menu() {
+
 }
 
 TipoDeMenu Menu::getTipoMenu() {
@@ -62,11 +61,6 @@ int Menu::getCantidadFichasPorJugador() {
 
     return this->cantidadDeFichasPorJugador;
 
-}
-
-int Menu::getCartasMazo() {
-
-    return this->cantidadCartasMazo;
 }
 
 int Menu::getCartasJuegaDoble() {
@@ -126,11 +120,6 @@ void Menu::setCantidadDeFichasPorJugador(int nuevaCantidadDeFichasPorJugador) {
 
 }
 
-void Menu::setCartasMazo(int nuevaCantidadCartas) {
-
-    this->cantidadCartasMazo = nuevaCantidadCartas;
-}
-
 void Menu::setCartasJuegaDoble(int nuevasCartasJuegaDoble) {
 
     this->cantidadCartasJuegaDoble = nuevasCartasJuegaDoble;
@@ -151,6 +140,14 @@ void Menu::setCartasEliminarMazoJugadorSiguiente(int nuevasCartasEliminarMazoJug
     this->cantidadCartasEliminarMazoJugadorSiguiente = nuevasCartasEliminarMazoJugadorSiguiente;
 }
 
+int Menu::cartasTotales() {
+
+    return this->cantidadCartasJuegaDoble +
+           this->cantidadCartasBloquearTurno +
+           this->cantidadCartasAgarrarCincoFichas +
+           this->cantidadCartasEliminarMazoJugadorSiguiente;
+}
+
 void Menu::mostrarMenuPrincipal() {
 
     std::cout << "\n\n- Menu Principal -\n\n"
@@ -165,10 +162,14 @@ void Menu::mostrarMenuOpciones() {
               << "\n1. Ancho del tablero (x): " << this->getTamanioX()
               << "\n2. Alto del tablero (y): " << this->getTamanioY()
               << "\n3. Largo del tablero (z): " << this->getTamanioZ()
+
               << "\n\n4. Fichas Necesarias para ganar: " << this->getNenLinea()
+
               << "\n\n5. Cantidad de Jugadores: " << this->getCantidadJugadores()
               << "\n6. Cantidad de fichas por jugador: " << this->getCantidadFichasPorJugador()
-              << "\n\nCantidad de Cartas Totales del Mazo: " << this->getCartasMazo()
+
+              << "\n\nCantidad de Cartas Totales del Mazo: " << this->cartasTotales()
+
               << "\n\n7. Cantidad de Cartas 'Juega Doble': " << this->getCartasJuegaDoble()
               << "\n8. Cantidad de Cartas 'Bloquear Turno': " << this->getCartasBloquearTurno()
               << "\n9. Cantidad de Cartas 'Agarrar Cinco (5) Fichas': " << this->getCartasAgarrarCincoFichas()
@@ -177,7 +178,37 @@ void Menu::mostrarMenuOpciones() {
 
 void Menu::mostrarMenuDeJuego() {
 
-    std::cout << "Estoy en el juego!" << std::endl;
+    do {
+
+        this->juego->getTablero()->imprimir();
+
+        std::cout << "Turno " << this->juego->getTurnoActual() << " (le toca al Jugador '" << this->juego->getJugadorActual()->getFicha() << "')" << std::endl;
+
+        if (this->juego->agarrarCartaDelMazo()) {
+
+            std::cout << "\n¡Agarraste una carta del Mazo!" << std::endl;
+        }
+
+        if (this->juego->getJugadorActual()->getCantidadDeCartasEnMano() > 0 && this->quiereJugarCarta()) {
+
+            this->mostrarCartas();
+            this->utilizarCarta();
+        }
+
+        this->tirarUnaFicha();
+
+    } while (this->juego->getEstadoJuego() == Jugando);
+
+    this->juego->getTablero()->imprimir();
+
+    if (this->juego->getEstadoJuego() == Empatado) {
+
+        std::cout << "\nHubo Empate!\n" << std::endl;
+
+    } else if (this->juego->getEstadoJuego() == Ganado) {
+
+        std::cout << "\nHa ganado el Jugador " << this->juego->getJugadorActual()->getFicha() << "!\n" << std::endl;
+    }
 }
 
 void Menu::mostrarMenuActual() {
@@ -237,7 +268,7 @@ void Menu::seleccionarUnaOpcion() {
 
         do {
 
-            std::cout<< "\nSeleccione una opción (1-10) o presione '0' para volver: ";
+            std::cout<< "\nSeleccione una opción (1-10) (o presione '0' para volver): ";
             std::cin >> opcion;
 
         } while (opcion < 0 || opcion > 10);
@@ -285,7 +316,7 @@ void Menu::modificarOpcion(int opcionElegida) {
                std::cout << " (debe ser mayor a la cantidad necesaria para ganar)"; 
             }
 
-            std::cout << "o presione '0' para cancelar: ";
+            std::cout << " (o presione '0' para cancelar): ";
 
             std::cin >> opcion;
 
@@ -311,7 +342,7 @@ void Menu::modificarOpcion(int opcionElegida) {
                std::cout << " (debe ser mayor a la cantidad necesaria para ganar)"; 
             }
 
-            std::cout << " o presione '0' para cancelar: ";
+            std::cout << " (o presione '0' para cancelar): ";
 
             std::cin >> opcion;
 
@@ -337,7 +368,7 @@ void Menu::modificarOpcion(int opcionElegida) {
                std::cout << " (debe ser mayor a la cantidad necesaria para ganar)"; 
             }
 
-            std::cout << " o presione '0' para cancelar: ";
+            std::cout << " (o presione '0' para cancelar): ";
 
             std::cin >> opcion;
 
@@ -354,7 +385,7 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de fichas para ganar o presione '0' para cancelar: ";
+            std::cout << "\nIngrese la nueva cantidad de fichas para ganar (o presione '0' para cancelar): ";
             std::cin >> opcion;
 
         } while (opcion < 0);
@@ -385,7 +416,7 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de jugadores o presione '0' para cancelar: ";
+            std::cout << "\nIngrese la nueva cantidad de jugadores (o presione '0' para cancelar): ";
             std::cin >> opcion;
 
         } while (opcion < 0);
@@ -401,7 +432,7 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de fichas por jugador o presione '0' para cancelar: ";
+            std::cout << "\nIngrese la nueva cantidad de fichas por jugador (o presione '0' para cancelar): ";
             std::cin >> opcion;
 
         } while (opcion < 0);
@@ -417,17 +448,14 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de Cartas 'Juega Doble' o presione '0' para cancelar: ";
+            std::cout << "\nIngrese la nueva cantidad de Cartas 'Juega Doble' (o presione '0' para cancelar): ";
             std::cin >> opcion;
 
         } while (opcion < 0);
 
         if (opcion != 0) {
 
-            this->setCartasJuegaDoble(opcion);        
-
-            this->setCartasMazo(this->getCartasJuegaDoble() + this->getCartasBloquearTurno() +
-                                this->getCartasAgarrarCincoFichas() + this->getCartasEliminarMazoJugadorSiguiente()); 
+            this->setCartasJuegaDoble(opcion);
         }
 
         break;
@@ -436,7 +464,7 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de Cartas 'Bloquear Turno' o presione '0' para cancelar: ";
+            std::cout << "\nIngrese la nueva cantidad de Cartas 'Bloquear Turno' (o presione '0' para cancelar): ";
             std::cin >> opcion;
 
         } while (opcion < 0);
@@ -444,9 +472,6 @@ void Menu::modificarOpcion(int opcionElegida) {
         if (opcion != 0) {
 
             this->setCartasBloquearTurno(opcion);   
-
-            this->setCartasMazo(this->getCartasJuegaDoble() + this->getCartasBloquearTurno() +
-                                this->getCartasAgarrarCincoFichas() + this->getCartasEliminarMazoJugadorSiguiente());          
         }
 
         break;
@@ -455,17 +480,14 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de Cartas 'Agarrar Cinco (5) Fichas' o presione '0' para cancelar: ";
+            std::cout << "\nIngrese la nueva cantidad de Cartas 'Agarrar Cinco (5) Fichas' (o presione '0' para cancelar): ";
             std::cin >> opcion;
 
         } while (opcion < 0);
 
         if (opcion != 0) {
 
-            this->setCartasAgarrarCincoFichas(opcion);    
-
-            this->setCartasMazo(this->getCartasJuegaDoble() + this->getCartasBloquearTurno() +
-                                this->getCartasAgarrarCincoFichas() + this->getCartasEliminarMazoJugadorSiguiente());         
+            this->setCartasAgarrarCincoFichas(opcion);         
         }
 
         break;
@@ -474,17 +496,14 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de Cartas 'Eliminar Mazo del Jugador Siguiente' o presione '0' para cancelar: ";
+            std::cout << "\nIngrese la nueva cantidad de Cartas 'Eliminar Mazo del Jugador Siguiente' (o presione '0' para cancelar): ";
             std::cin >> opcion;
 
         } while (opcion < 0);
 
         if (opcion != 0) {
 
-            this->setCartasEliminarMazoJugadorSiguiente(opcion);  
-
-            this->setCartasMazo(this->getCartasJuegaDoble() + this->getCartasBloquearTurno() +
-                                this->getCartasAgarrarCincoFichas() + this->getCartasEliminarMazoJugadorSiguiente());           
+            this->setCartasEliminarMazoJugadorSiguiente(opcion);        
         }
 
         break;
@@ -494,10 +513,9 @@ void Menu::modificarOpcion(int opcionElegida) {
 void Menu::iniciarJuego() {
 
     this->juego = new Juego(this->getTamanioY(), this->getTamanioX(), this->getTamanioZ(),
-                            this->getCantidadJugadores(), this->getCartasJuegaDoble(),
-                            this->getCartasBloquearTurno(), this->getCartasAgarrarCincoFichas(),
-                            this->getCartasEliminarMazoJugadorSiguiente(), this->getCantidadFichasPorJugador(),
-                            this->getNenLinea());
+                            this->getCantidadJugadores(), this->getCantidadFichasPorJugador(), this->getNenLinea(),
+                            this->getCartasJuegaDoble(), this->getCartasBloquearTurno(), this->getCartasAgarrarCincoFichas(),
+                            this->getCartasEliminarMazoJugadorSiguiente());
 
     this->setTipoMenu(enJuego);
 }
@@ -507,6 +525,116 @@ void Menu::salir() {
     this->setTipoMenu(saliendo);
 }
 
-Menu::~Menu() {
+int Menu::pedirColumna() {
 
+    int anchoTablero = this->juego->getTablero()->ancho();
+    int columnaElegida;
+
+    do {
+
+        std::cout << "Seleccione una columna en la que tirar ficha (0-" << (anchoTablero - 1) << "): ";
+        std::cin >> columnaElegida;
+
+    } while (columnaElegida < 0 || columnaElegida >= anchoTablero);
+
+    return columnaElegida;
+}
+
+int Menu::pedirProfundidad() {
+
+    int largoTablero = this->juego->getTablero()->largo();
+    int profundidadElegida;
+
+    do {
+
+        std::cout << "Seleccione la profundidad en la que tirar ficha (0-" << (largoTablero - 1) << "): ";
+        std::cin >> profundidadElegida;
+
+    } while (profundidadElegida < 0 || profundidadElegida >= largoTablero);
+
+    return profundidadElegida;
+}
+
+void Menu::tirarUnaFicha() {
+
+    if (this->juego->getJugadorActual()->getTipoDeTurno() != Bloqueado) {
+
+        int tiros;
+
+        if (juego->getJugadorActual()->getTipoDeTurno() == Doble) {
+
+            tiros = 2;
+
+        } else {
+
+            tiros = 1;
+        }
+
+        for (int i = 0; i < tiros; i++) {
+
+            int columnaElegida = this->pedirColumna();
+            int profundidadElegida = this->pedirProfundidad();
+            this->juego->colocarFicha(columnaElegida, profundidadElegida);
+
+            if (!this->juego->actualizarEstadoDeJuego()) {
+
+                break;
+            }
+        }
+    }
+
+    if (this->juego->actualizarEstadoDeJuego()) {
+
+        this->juego->avanzarTurno();
+    }
+}
+
+bool Menu::quiereJugarCarta() {
+
+    char eleccion;
+
+    std::cout << "¿Desea jugar una de sus cartas Especiales? (s/n): ";
+    std::cin >> eleccion;
+
+    return (eleccion == 's' || eleccion == 'S');
+}
+
+void Menu::mostrarCartas() {
+
+    Lista<Carta*>* cartas = this->juego->getJugadorActual()->getCartasJugador();
+    int cartasEnMano = this->juego->getJugadorActual()->getCantidadDeCartasEnMano();
+
+    std::cout << "\n- Cartas -\n\n";
+
+    for (int i = 0; i < cartasEnMano; i++) {
+
+        std::cout << "[ " << (i + 1) << ". " << cartas->obtener(i)->getDescripcionCarta() << " ]\n";
+    }
+}
+
+void Menu::utilizarCarta() {
+
+    int cartasEnMano = this->juego->getJugadorActual()->getCantidadDeCartasEnMano();
+    int eleccion;
+
+    do {
+
+        if (cartasEnMano <= 1) {
+
+            std::cout << "\n¿Desea utilizar su carta? ";
+
+        } else {
+
+            std::cout << "\n¿Desea utilizar alguna carta? (1-" << cartasEnMano << ") ";
+        }
+
+        std::cout << "(o presione '0' para negarse): ";
+        std::cin >> eleccion;
+
+    } while (eleccion < 0 || eleccion > cartasEnMano);
+
+    if (eleccion != 0) {
+
+        this->juego->usarCarta(eleccion);
+    }
 }
