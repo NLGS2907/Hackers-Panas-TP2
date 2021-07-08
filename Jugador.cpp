@@ -1,5 +1,4 @@
-#include "Jugador.h"
-
+#include "jugador.h"
 
 std::string Jugador::generarColorAleatorio(){
 
@@ -16,73 +15,54 @@ std::string Jugador::generarColorAleatorio(){
     return clave;
 }
 
-
 Jugador::Jugador(char ficha, int cantidadFichasJugador){
 
     this->fichaJugador = ficha;
     this->cantidadDeFichas = cantidadFichasJugador;
     this->cartasJugador = new Lista<Carta*>;
     this->turno = Comun;
-    this->colorJugador = generarColorAleatorio();
-
+    this->colorJugador = this->generarColorAleatorio();
 }
-
 
 Lista<Carta*>* Jugador::getCartasJugador(){
 
 	return this->cartasJugador;
-
 }
-
 
 std::string Jugador::getColorJugador(){
 
 	return this->colorJugador;
-
 }
-
 
 char Jugador::getFicha(){
 
     return this->fichaJugador;
-
 }
-
 
 int Jugador::getCantidadDeFichasRestantes(){
 
     return this->cantidadDeFichas;
-
 }
-
 
 int Jugador::getCantidadDeCartasEnMano(){
 
     return this->cartasJugador->len();
-
 }
-
 
 void Jugador::cargarCarta(Carta* cartaAgarrada){
 
     this->cartasJugador->agregarFin(cartaAgarrada);
-
 }
-
 
 Carta* Jugador::obtenerCarta(int posicionCarta){
 
     return ( this->cartasJugador->obtener(posicionCarta - 1) );
-
 }
-
 
 void Jugador::eliminarCarta(int posicionCarta){
 
     this->cartasJugador->pop(posicionCarta - 1);
-
 }
-
 
 void Jugador::duplicarTurno(){
 
@@ -93,9 +73,7 @@ void Jugador::duplicarTurno(){
     }
 
     this->setTipoDeTurno(Doble);
-
 }
-
 
 void Jugador::bloquearTurno(){
 
@@ -106,16 +84,12 @@ void Jugador::bloquearTurno(){
     }
 
     this->setTipoDeTurno(Bloqueado);
-
 }
-
 
 void Jugador::sumarCincoFichas(){
 
     this->cantidadDeFichas += CINCO_FICHAS;
-
 }
-
 
 void Jugador::reestablecerTurno(){
 
@@ -126,30 +100,22 @@ void Jugador::reestablecerTurno(){
     }
 
     this->setTipoDeTurno(Comun);
-
 }
-
 
 TipoDeTurno Jugador::getTipoDeTurno(){
 
     return this->turno;
-
 }
-
 
 void Jugador::setTipoDeTurno(TipoDeTurno turno){
 
     this->turno = turno;
-
 }
-
 
 void Jugador::descontarFichaColocada(){
 
     this->cantidadDeFichas--;
-
 }
-
 
 Jugador::~Jugador(){
 
@@ -158,5 +124,4 @@ Jugador::~Jugador(){
     }
 
     delete this->cartasJugador;
-
 }

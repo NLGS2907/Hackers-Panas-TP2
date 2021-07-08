@@ -8,6 +8,7 @@ funciones internas.
 
 #include "easyBMP.h"
 #include "EasyBMP_Geometry.h"
+#include "juego.h"
 
 #define _PI_ 3.14159265358979 // Para hacer los calculos más fáciles.
 
@@ -46,7 +47,7 @@ class Exportador {
 
           // /*
           // __________________________________________________
-          // PRE: La ruta de salida es uan dirección válida.
+          // PRE: La ruta de salida es una dirección válida.
           // -
           // POS: El Exportador es creado y se guarda su ruta de salida.
           // __________________________________________________

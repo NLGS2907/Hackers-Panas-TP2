@@ -1,4 +1,4 @@
-#include "Juego.h"
+#include "juego.h"
 
 //PRIVATE
 char Juego::getFichaAleatoria(){
@@ -282,7 +282,7 @@ bool Juego::actualizarEstadoDeJuego(){
     if( this->getTablero()->ganoAlguien(this->getCantidadFichasEnLinea()) ){
         this->estadoActual = Ganado;
     }
-    else if( !(this->getTablero()->tableroEstaLleno()) && (this->jugadoresTienenCartas() || this->jugadoresTienenFichas() || !(this->mazoJuego->esMazoVacio()))){
+    else if( !(this->getTablero()->tableroEstaLleno()) || (this->jugadoresTienenCartas() || this->jugadoresTienenFichas() || !(this->mazoJuego->esMazoVacio()))){
         this->estadoActual = Jugando;
     }
     else{

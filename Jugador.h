@@ -2,7 +2,7 @@
 #define JUGADOR_H_
 
 #include"listaLigada.h"
-#include"Carta.h"
+#include"carta.h"
 #include<ctime>
 #include<cstdlib>
 #include<unistd.h>
@@ -28,22 +28,21 @@ class Jugador{
         std::string colorJugador;
 
         /*
-        __________________
-        PRE:
+       __________________________________________________
+        PRE: -
         -
         POS: Devuelve un color en hexadecimal aleatorio.
-        __________________
+        __________________________________________________
         */
         std::string generarColorAleatorio();
-
 
     public:
 
         /*
         __________________________________________________
-        PRE:-La cantidadFichasJugador tiene que ser mayor a 0.
+        PRE:La cantidadFichasJugador tiene que ser mayor a 0.
         -
-        POS:Crea un jugador con: 
+        POS: Crea un jugador con: 
                 -Un tipo de ficha "char" para identificarla en el juego.
                 -La cantidad de fichas que tendra para jugar.
         __________________________________________________
@@ -52,54 +51,48 @@ class Jugador{
 
         /*
         __________________________________________________
-        PRE:
+        PRE: -
         -
         POS: Devuelve la lista de cartas del jugador.
         __________________________________________________
         */
         Lista<Carta*>* getCartasJugador();
 
-
-
         /*
         __________________________________________________
-        PRE:
+        PRE: -
         -
         POS: Devuelve la ficha que identifica al jugador.
         __________________________________________________
         */
         std::string getColorJugador();
 
-
         /*
         __________________________________________________
-        PRE:
+        PRE: -
         -
         POS: Devuelve la ficha que identifica al jugador.
         __________________________________________________
         */
         char getFicha();
 
-
         /*
         __________________________________________________
-        PRE:
+        PRE: -
         -
         POS: Devuelve la cantidad de fichas que le quedan al jugador.
         __________________________________________________
         */
         int getCantidadDeFichasRestantes();
 
-
         /*
         __________________________________________________
-        PRE: 
+        PRE: -
         -
         POS: Devuelve la cantidad de cartas que tiene el jugador. 
         __________________________________________________
         */
         int getCantidadDeCartasEnMano();
-
 
         /*
         __________________________________________________
@@ -110,7 +103,6 @@ class Jugador{
         */
         void cargarCarta(Carta* cartaAgarrada);
 
-
         /*
         __________________________________________________
         PRE: El jugador eligio usar la carta en la posicion pasada por parametro.
@@ -120,16 +112,15 @@ class Jugador{
         */
         Carta* obtenerCarta(int posicionCarta);
 
-
         /*
         __________________________________________________
-        PRE: La carta fue usada en el juego o se uso la carta "Eliminar Mazo Siguiente Jugador" en su contra.
+        PRE: La carta fue usada en el juego o se uso la carta
+             "Eliminar Mazo Siguiente Jugador" en su contra.
         -
         POS:Elimina la carta pasada por parametro de la lista. 
         __________________________________________________
         */
         void eliminarCarta(int posicionCarta);
-
 
         /*
         __________________________________________________
@@ -140,7 +131,6 @@ class Jugador{
         */
         void duplicarTurno();
 
-
         /*
         __________________________________________________
         PRE: Usaron la carta "BloquearTurno" en contra del jugador.
@@ -149,7 +139,6 @@ class Jugador{
         __________________________________________________
         */
         void bloquearTurno();
-
 
         /*
         __________________________________________________
@@ -160,57 +149,51 @@ class Jugador{
         */
         void sumarCincoFichas();
 
-
         /*
         __________________________________________________
-        PRE: Termino el turno del jugador y este fue afectado por una carta(Juega Doble o Bloqueado).
+        PRE: Termino el turno del jugador y este fue afectado por
+             una carta (Juega Doble o Bloqueado).
         -
         POS: Convierte el turno del jugador a tipo "Comun".
         __________________________________________________
         */
         void reestablecerTurno();
 
-
         /*
         __________________________________________________
-        PRE:  
+        PRE: -
         -
         POS:-Devuelve el tipo de turno que tiene el jugador.
         __________________________________________________
         */
         TipoDeTurno getTipoDeTurno();
 
-
         /*
         __________________________________________________
-        PRE:  
+        PRE: -
         -
         POS:-Establece el tipo de turno que el jugador tendra.
         __________________________________________________
         */
         void setTipoDeTurno(TipoDeTurno turno);
 
-
         /*
         __________________________________________________
-        PRE:El jugador coloco una ficha en el tablero.
+        PRE: El jugador coloco una ficha en el tablero.
         -
-        POS:Le descuenta una ficha a la cantidadDeFichas.
+        POS: Le descuenta una ficha a la cantidadDeFichas.
         __________________________________________________
         */
         void descontarFichaColocada();
 
-
         /*
         __________________________________________________
-        PRE:
+        PRE: -
         -
-        POS:Libera la memoria que ocupa el jugador.
+        POS: Libera la memoria que ocupa el jugador.
         __________________________________________________
         */
         ~Jugador();
-
-
 };
 
 #endif /* JUGADOR_H_ */

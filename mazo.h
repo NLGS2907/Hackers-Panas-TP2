@@ -3,7 +3,6 @@
 
 #include"carta.h"
 #include"cola.h"
-#include<ctime>
 #include<cstdlib>
 
 class Mazo {
@@ -15,45 +14,67 @@ private:
 public:
 
 	/*
-	*pre:
-	*post: crea un mazo con cantidad de cartas indicado en parametros
+	__________________________________________________
+	PRE: -
+	-
+	POS: Crea una instancia de Mazo con las cantidades
+		 de cartas indicadas en los parámetros.
+	__________________________________________________
 	*/
 	Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, int cantidadDeCartasAgarrarCincoFichas, int cantidadDeCartasEliminarMazoJugadorSiguiente);
 
 	Cola<Carta*>* getMazo();
 
 	/*
-	*pre:
-	*post: devuelve true si el mazo esta vacio y sino false.
+	__________________________________________________
+	PRE: -
+	-
+	POS: Devuelve 'true' si el Mazo está vacío. En caso
+		 contrario, devuelve 'false'.
+	__________________________________________________
 	*/
 	bool esMazoVacio();
 
 	/*
-	*pre: recibe puntero a carta ( Carta* carta = new Carta*; ) creada en otro lado
-	*post:
+	__________________________________________________
+	PRE: Recibe puntero a carta ( Carta* carta = new Carta*; )
+		 creada en otro lado.
+	-
+	POS: Acola la carta en la Cola del Mazo.
+	__________________________________________________
 	*/
 	Carta* acolarCarta(Carta* carta);
 
 	/*
-	*pre:
-	*post: devuelve puntero a una carta
+	__________________________________________________
+	PRE: -
+	-
+	POS: Devuelve el puntero a una carta que es desacolada
+		 del Mazo.
+	__________________________________________________
 	*/
 	Carta* darCarta();
 
 	/*
-	*pre:
-	*post: genera un numero entre 0 y 3, y con esots numeros devuelver el enum de CartaEspecial correspondiente
+	__________________________________________________
+	PRE: -
+	-
+	POS: Genera un numero entre 0 y 3 inclusive, y con
+		 estos numeros devuelve el enum de CartaEspecial
+		 correspondiente.
+	__________________________________________________
 	*/
 	CartaEspecial generarNumeroRandom();
 
 	/*
-	*pre:
-	*post:
+	__________________________________________________
+	PRE: -
+	-
+	POS: Destruye el Mazo, liberando los recursos que
+		 ocupaba la estructura de datos.
+	__________________________________________________
 	*/
 	~Mazo();
-
-
 };
-
 
 #endif /* MAZO_H_ */

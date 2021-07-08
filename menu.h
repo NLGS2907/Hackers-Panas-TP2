@@ -17,6 +17,7 @@ class Menu {
 private:
 
     Juego* juego;
+    int rondaActual;
 
     TipoDeMenu tipo;
 
@@ -41,8 +42,12 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Crea una instancia Menu, lista para ser usada.
     __________________________________________________
+
+    El atributo 'this->juego' se inicializa recién cuando se ejecuta
+    'this->iniciarJuego()'. Como consecuencia, no es inicializado en
+    este constructor.
     */
 	Menu();
 
@@ -50,7 +55,8 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Elimina 'this->juego', liberando la memoria
+         dinámica que anteriormente ocupaba.
     __________________________________________________
     */
 	~Menu();
@@ -59,8 +65,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve el tipo de Menu Actual.
     */
     TipoDeMenu getTipoMenu();
 
@@ -68,8 +76,21 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve el numero de la ronda actual.
+    */
+    int getRondaActual();
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: El Menu permanece inalterado.
+    __________________________________________________
+
+    Devuelve el ANCHO del tablero.
     */
 	int getTamanioX();
 
@@ -77,8 +98,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve el ALTO del tablero.
     */
 	int getTamanioY();
 
@@ -86,8 +109,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve el LARGO del tablero.
     */
 	int getTamanioZ();
 
@@ -95,8 +120,11 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve la cantidad de fichas puestas en línea necesarias
+    para ganar la partida.
     */
 	int getNenLinea();
 
@@ -104,8 +132,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve la cantidad de personas jugando.
     */
 	int getCantidadJugadores();
 
@@ -113,8 +143,11 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve la cantidad de fichas inicial que cada jugador
+    tiene a su disposición.
     */
 	int getCantidadFichasPorJugador();
 
@@ -122,8 +155,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve la cantidad de cartas de tipo 'JuegaDoble'.
     */
     int getCartasJuegaDoble();
 
@@ -131,8 +166,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve la cantidad de cartas de tipo 'BloquearTurno'.
     */
     int getCartasBloquearTurno();
 
@@ -142,6 +179,8 @@ public:
     -
     POS: -
     __________________________________________________
+
+    Devuelve la cantidad de cartas de tipo 'AgarrarCincoFichas'.
     */
     int getCartasAgarrarCincoFichas();
 
@@ -149,8 +188,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Devuelve la cantidad de cartas de tipo 'EliminarMazoJugadorSiguiente'.
     */
     int getCartasEliminarMazoJugadorSiguiente();
 
@@ -158,8 +199,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica el tipo del Menu actual.
     */
     void setTipoMenu(TipoDeMenu nuevoTipo);
 
@@ -167,8 +210,21 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica el numero de la ronda actual.
+    */
+    void setRondaActual(int nuevaRonda);
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: Un atributo del Menu es modificado.
+    __________________________________________________
+
+    Modifica el ANCHO del tablero.
     */
 	void setTamanioX(int nuevoTamanioX);
 
@@ -176,8 +232,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica el ALTO del tablero.
     */
 	void setTamanioY(int nuevoTamanioY);
 
@@ -185,17 +243,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
-    */
-    void setNenLinea(int nuevoNenLinea);
 
-    /*
-    __________________________________________________
-    PRE: -
-    -
-    POS: -
-    __________________________________________________
+    Modifica el LARGO del tablero.
     */
 	void setTamanioZ(int nuevoTamanioZ);
 
@@ -203,8 +254,22 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica la cantidad de fichas puestas en línea necesarias
+    para ganar la partida.
+    */
+    void setNenLinea(int nuevoNenLinea);
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: Un atributo del Menu es modificado.
+    __________________________________________________
+
+    Modifica la cantidad de personas jugando.
     */
 	void setCantidadJugadores(int nuevaCantidadJugadores);
 
@@ -212,8 +277,11 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica la cantidad de fichas inicial que cada jugador
+    tiene a su disposición.
     */
 	void setCantidadDeFichasPorJugador(int nuevaCantidadDeFichasPorJugador);
 
@@ -221,8 +289,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica la cantidad de cartas de tipo 'JuegaDoble'.
     */
     void setCartasJuegaDoble(int nuevasCartasJuegaDoble);
 
@@ -230,8 +300,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica la cantidad de cartas de tipo 'BloquearTurno'.
     */
     void setCartasBloquearTurno(int nuevasCartasBloquearTurno);
 
@@ -239,8 +311,10 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica la cantidad de cartas de tipo 'AgarrarCincoFichas'.
     */
     void setCartasAgarrarCincoFichas(int nuevasCartasAgarrarCincoFicha);
 
@@ -248,10 +322,22 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu es modificado.
     __________________________________________________
+
+    Modifica la cantidad de cartas de tipo 'EliminarMazoJugadorSiguiente'.
     */
     void setCartasEliminarMazoJugadorSiguiente(int nuevasCartasEliminarMazoJugadorSiguiente);
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: El Menu permanece inalterado.
+    __________________________________________________
+
+    Devuelve la suma de todas las cantidades de tipos de cartas.
+    */
 
     int cartasTotales();
 
@@ -259,37 +345,51 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Imprime por pantalla el Menu principal, mostrando las opciones
+    disponibles.
     */
-	//POST: imprime menu principal
 	void mostrarMenuPrincipal();
 
     /*
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Imprime por pantalla el Menu de Opciones, mostrando todos
+    los parámetros de juego personalizables disponibles.
     */
-	//POST: Imprime opciones de datos a modificar	
 	void mostrarMenuOpciones();
 
     /*
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Imprime por pantalla a cada turno el estado de tablero, así
+    como toda la información necesaria para que el jugador juegue
+    satisfactoriamente.
+    Devuelve 'true' si el usuario elije salir al menus principal al
+    terminar la ronda. En caso contrario, devuelve 'false'.
     */
-    void mostrarMenuDeJuego();
+    bool mostrarMenuDeJuego();
 
     /*
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Detecta cuál es el estado del Menu (si está en el Menu principal,
+    si está en Opciones o si está en medio del juego), e imprime
+    por pantalla la información correspondiente.
     */
     void mostrarMenuActual();
 
@@ -297,33 +397,37 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Dependiendo de cuál sea el menú actual, ofrece al usuario la
+    información de cuáles son los elementos, y la forma de interactuar
+    con ellos.
     */
-	//POST: imprime menu principal
-	//      pide seleccionar opcion
-	//      si selecciona 2, lleva a funcion modificar opciones
 	void seleccionarUnaOpcion();
 
     /*
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Un atributo del Menu podría ser modificado.
     __________________________________________________
-    */
-	//POST: Pregunta si desea modificar si se ingresa otro numero que
-	//no sea 0 entra en loop preguntado si desea modificar
-	// cuando selecciona cero muestra menu principal
-	// al seleccionar del 1-5 modifica el dato pedido e imprime datos actualizados.	
+
+    Elegida una opción, y dependiendo a cuál parámetro se
+    refiere la misma, se procesa las compatibilidades
+    correspondiente y, de ser posible, modifica el valor del
+    atributo.
+    */	
 	void modificarOpcion(int opcionElegida);
 
     /*
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El atributo 'this->juego' del Menu es inicializado.
     __________________________________________________
+
+    Inicializa el juego con los parámetros del Menu.
     */
 	void iniciarJuego();
 
@@ -331,8 +435,12 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Cambia el estado del Menu.
     __________________________________________________
+
+    El estado en sí está puramente para verificar si se está
+    saliendo del programa, en cuyo caso pasa de largo en los
+    ciclos y finaliza existosamente la ejecución del programa.
     */
 	void salir();
 
@@ -340,8 +448,12 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Le pide al usuario que ingrese un numero, y valida que
+esté entre 0 y el ANCHO del tablero, en cuyo caso devuelve
+    el valor.
     */
     int pedirColumna();
 
@@ -349,8 +461,12 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Le pide al usuario que ingrese un numero, y valida que
+esté entre 0 y el LARGO del tablero, en cuyo caso devuelve
+    el valor.
     */
     int pedirProfundidad();
 
@@ -358,8 +474,11 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Modifica el tablero del juego.
     __________________________________________________
+
+    Se tira una ficha, de ser posible, en el tablero del
+    juego, en las coordenadas seleccionadas.
     */
     void tirarUnaFicha();
 
@@ -367,8 +486,12 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Devuelve 'true' si el usuario responde con 's'.
+         En cualquier otro caso devuelve 'false'.
     __________________________________________________
+
+    Le pregunta al usuario si, de tener cartas, quiere verlas
+    para posiblemente usar alguna.
     */
     bool quiereJugarCarta();
 
@@ -376,8 +499,11 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: El Menu permanece inalterado.
     __________________________________________________
+
+    Imprime por pantalla las cartas que el jugador actual
+    tiene a su disposición.
     */
     void mostrarCartas();
 
@@ -385,10 +511,39 @@ public:
     __________________________________________________
     PRE: -
     -
-    POS: -
+    POS: Dependiendo del tipo de carta usada, el Menu podría
+         ser modificado.
     __________________________________________________
+
+    Pregunta al usuario si quiere usar la o las cartas disponibles.
+    De aceptar, se aplica el efecto correspondiente.
     */
     void utilizarCarta();
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: El Menu permanece inalterado.
+    __________________________________________________
+
+    Imprime por pantalla un mensaje que le pregunta al usuario si
+    quiere iniciar otra ronda, en la que si acepta, devuelve 'true'.
+    En caso contrario, devuelve 'false'.
+    */
+    bool consultarRevancha();
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: El Menu permanece inalterado.
+    __________________________________________________
+
+    Pregunta al usuario si quiere ir al menú principal. Si responde
+    que sí, devuelve 'true'. En caso contrario, devuelve 'false'.
+    */
+    bool volverAlMenuPrincipal();
 };
 
 #endif /* MENU_H_ */

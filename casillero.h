@@ -1,8 +1,9 @@
 #ifndef CASILLERO_H_
 #define CASILLERO_H_
 
-#include "constantes.h"
 #include <iostream>
+
+#define VACIO '.' // Valor que se guarda en una celda vacía del tablero.
 
 /* ----- DECLARACIONES ----- */
 

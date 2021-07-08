@@ -2,32 +2,37 @@
 
 Menu::Menu() {
 
-    //this->juego se inicializa recién cuando se ejecuta this->iniciarJuego()
-
     this->tipo = menuPrincipal;
+    this->rondaActual = 1;
 
     this->tamanioX = 3;
     this->tamanioY = 4;
     this->tamanioZ = 5;
 
-    this->nEnLinea = 2;
+    this->nEnLinea = 4;
 
     this->cantidadJugadores = 3;
-    this->cantidadDeFichasPorJugador = 30;
+    this->cantidadDeFichasPorJugador = 20;
 
-    this->cantidadCartasJuegaDoble = 1;
-    this->cantidadCartasBloquearTurno = 1;
-    this->cantidadCartasAgarrarCincoFichas = 0;
-    this->cantidadCartasEliminarMazoJugadorSiguiente = 0;
+    this->cantidadCartasJuegaDoble = 5;
+    this->cantidadCartasBloquearTurno = 5;
+    this->cantidadCartasAgarrarCincoFichas = 5;
+    this->cantidadCartasEliminarMazoJugadorSiguiente = 5;
 }
 
 Menu::~Menu() {
 
+    delete this->juego;
 }
 
 TipoDeMenu Menu::getTipoMenu() {
 
     return this->tipo;
+}
+
+int Menu::getRondaActual() {
+
+    return this->rondaActual;
 }
 
 int Menu::getTamanioX() {
@@ -88,6 +93,11 @@ void Menu::setTipoMenu(TipoDeMenu nuevoTipo) {
     this->tipo = nuevoTipo;
 }
 
+void Menu::setRondaActual(int nuevaRonda) {
+
+    this->rondaActual = nuevaRonda;
+}
+
 void Menu::setTamanioX(int nuevoTamanioX) {
 
     this->tamanioX = nuevoTamanioX;
@@ -111,13 +121,11 @@ void Menu::setNenLinea(int nuevoNenLinea) {
 void Menu::setCantidadJugadores(int nuevaCantidadJugadores) {
 
     this->cantidadJugadores = nuevaCantidadJugadores;
-
 }
 
 void Menu::setCantidadDeFichasPorJugador(int nuevaCantidadDeFichasPorJugador) {
 
     this->cantidadDeFichasPorJugador = nuevaCantidadDeFichasPorJugador;
-
 }
 
 void Menu::setCartasJuegaDoble(int nuevasCartasJuegaDoble) {
@@ -176,39 +184,73 @@ void Menu::mostrarMenuOpciones() {
               << "\n10. Cantidad de Cartas 'Eliminar Mazo del Jugador Siguiente': " << this->getCartasEliminarMazoJugadorSiguiente() << std::endl;
 }
 
-void Menu::mostrarMenuDeJuego() {
+bool Menu::mostrarMenuDeJuego() {
+
+    bool seRepite = false;
 
     do {
+        do {
+            if (!this->juego->jugadorActualEstaBloqueado()) {
+
+                this->juego->getTablero()->imprimir();
+
+                std::cout << "Turno " << this->juego->getTurnoActual() << " (le toca al Jugador '" << this->juego->getJugadorActual()->getFicha() << "')\n"
+                        << "Cantidad de Fichas Restantes: " << this->juego->getJugadorActual()->getCantidadDeFichasRestantes() << std::endl;
+
+                if (this->juego->agarrarCartaDelMazo()) {
+
+                    std::cout << "\n¡Agarraste una carta del Mazo!" << std::endl;
+                }
+
+                if (this->juego->getJugadorActual()->getCantidadDeCartasEnMano() > 0 && this->quiereJugarCarta()) {
+
+                    this->mostrarCartas();
+                    this->utilizarCarta();
+                }
+
+                this->tirarUnaFicha();
+            }
+
+            if (this->juego->actualizarEstadoDeJuego()) {
+
+                this->juego->avanzarTurno();
+            }
+
+        } while (this->juego->getEstadoJuego() == Jugando);
 
         this->juego->getTablero()->imprimir();
 
-        std::cout << "Turno " << this->juego->getTurnoActual() << " (le toca al Jugador '" << this->juego->getJugadorActual()->getFicha() << "')" << std::endl;
+        std::cout << "\n¡Ha finalizado la ronda " << this->getRondaActual() << "!\n";
 
-        if (this->juego->agarrarCartaDelMazo()) {
+        if (this->juego->getEstadoJuego() == Empatado) {
 
-            std::cout << "\n¡Agarraste una carta del Mazo!" << std::endl;
+            std::cout << "\nHubo Empate!\n" << std::endl;
+
+        } else if (this->juego->getEstadoJuego() == Ganado) {
+
+            std::cout << "\nHa ganado el Jugador " << this->juego->getJugadorActual()->getFicha() << "!\n" << std::endl;
         }
 
-        if (this->juego->getJugadorActual()->getCantidadDeCartasEnMano() > 0 && this->quiereJugarCarta()) {
+        if (this->consultarRevancha()) {
 
-            this->mostrarCartas();
-            this->utilizarCarta();
+            this->iniciarJuego();
+            seRepite = true;
+            this->setRondaActual(this->getRondaActual() + 1);
+
+        } else {
+
+            seRepite = false;
+            this->setTipoMenu(menuPrincipal);
         }
 
-        this->tirarUnaFicha();
+    } while (seRepite);
 
-    } while (this->juego->getEstadoJuego() == Jugando);
+    if (this->volverAlMenuPrincipal()) {
 
-    this->juego->getTablero()->imprimir();
-
-    if (this->juego->getEstadoJuego() == Empatado) {
-
-        std::cout << "\nHubo Empate!\n" << std::endl;
-
-    } else if (this->juego->getEstadoJuego() == Ganado) {
-
-        std::cout << "\nHa ganado el Jugador " << this->juego->getJugadorActual()->getFicha() << "!\n" << std::endl;
+        return true;
     }
+
+    return false;
 }
 
 void Menu::mostrarMenuActual() {
@@ -227,8 +269,10 @@ void Menu::mostrarMenuActual() {
             
         } else if (this->tipo == enJuego) {
 
-            this->mostrarMenuDeJuego();
-            break;
+            if (!this->mostrarMenuDeJuego()) {
+
+                break;
+            }
         }
     }
 }
@@ -299,19 +343,20 @@ void Menu::seleccionarUnaOpcion() {
 
 void Menu::modificarOpcion(int opcionElegida) {
 
+    int fichasParaGanar = this->getNenLinea();
     int opcion;
 
     switch (opcionElegida) {
 
         case 1: // Ancho del Tablero
 
-        opcion = this->getNenLinea();
+        opcion = fichasParaGanar;
 
         do {
 
             std::cout << "\nIngrese el nuevo ancho del tablero";
 
-            if (opcion < this->getNenLinea()) {
+            if (opcion < fichasParaGanar) {
 
                std::cout << " (debe ser mayor a la cantidad necesaria para ganar)"; 
             }
@@ -320,7 +365,7 @@ void Menu::modificarOpcion(int opcionElegida) {
 
             std::cin >> opcion;
 
-        } while (opcion < 0 || (opcion > 0 && opcion < this->getNenLinea()));
+        } while (opcion < 0 || (opcion > 0 && opcion < fichasParaGanar));
 
         if (opcion != 0) {
 
@@ -331,13 +376,13 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         case 2: // Alto del Tablero
 
-        opcion = this->getNenLinea();
+        opcion = fichasParaGanar;
 
         do {
 
             std::cout << "\nIngrese el nuevo alto del tablero";
 
-            if (opcion < this->getNenLinea()) {
+            if (opcion < fichasParaGanar) {
 
                std::cout << " (debe ser mayor a la cantidad necesaria para ganar)"; 
             }
@@ -346,7 +391,7 @@ void Menu::modificarOpcion(int opcionElegida) {
 
             std::cin >> opcion;
 
-        } while (opcion < 0 || (opcion > 0 && opcion < this->getNenLinea()));
+        } while (opcion < 0 || (opcion > 0 && opcion < fichasParaGanar));
 
         if (opcion != 0) {
 
@@ -357,13 +402,13 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         case 3: // Largo del Tablero
 
-        opcion = this->getNenLinea();
+        opcion = fichasParaGanar;
 
         do {
 
             std::cout << "\nIngrese el nuevo largo del tablero";
 
-            if (opcion < this->getNenLinea()) {
+            if (opcion < fichasParaGanar) {
 
                std::cout << " (debe ser mayor a la cantidad necesaria para ganar)"; 
             }
@@ -372,7 +417,7 @@ void Menu::modificarOpcion(int opcionElegida) {
 
             std::cin >> opcion;
 
-        } while (opcion < 0 || (opcion > 0 && opcion < this->getNenLinea()));
+        } while (opcion < 0 || (opcion > 0 && opcion < fichasParaGanar));
 
         if (opcion != 0) {
 
@@ -430,12 +475,22 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         case 6: // Cantidad de Fichas por Jugador
 
+        opcion = fichasParaGanar;
+
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de fichas por jugador (o presione '0' para cancelar): ";
+            std::cout << "\nIngrese la nueva cantidad de Fichas por Jugador";
+
+            if (opcion < fichasParaGanar) {
+
+               std::cout << " (debe ser mayor a la cantidad necesaria para ganar)"; 
+            }
+
+            std::cout << " (o presione '0' para cancelar): ";
+
             std::cin >> opcion;
 
-        } while (opcion < 0);
+        } while (opcion < 0 || (opcion > 0 && opcion < fichasParaGanar));
 
         if (opcion != 0) {
 
@@ -448,12 +503,12 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de Cartas 'Juega Doble' (o presione '0' para cancelar): ";
+            std::cout << "\nIngrese la nueva cantidad de Cartas 'Juega Doble' (o presione '-1' para cancelar): ";
             std::cin >> opcion;
 
-        } while (opcion < 0);
+        } while (opcion < -1);
 
-        if (opcion != 0) {
+        if (opcion != -1) {
 
             this->setCartasJuegaDoble(opcion);
         }
@@ -464,12 +519,12 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de Cartas 'Bloquear Turno' (o presione '0' para cancelar): ";
+            std::cout << "\nIngrese la nueva cantidad de Cartas 'Bloquear Turno' (o presione '-1' para cancelar): ";
             std::cin >> opcion;
 
-        } while (opcion < 0);
+        } while (opcion < -1);
 
-        if (opcion != 0) {
+        if (opcion != -1) {
 
             this->setCartasBloquearTurno(opcion);   
         }
@@ -480,12 +535,12 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de Cartas 'Agarrar Cinco (5) Fichas' (o presione '0' para cancelar): ";
+            std::cout << "\nIngrese la nueva cantidad de Cartas 'Agarrar Cinco (5) Fichas' (o presione '-1' para cancelar): ";
             std::cin >> opcion;
 
-        } while (opcion < 0);
+        } while (opcion < -1);
 
-        if (opcion != 0) {
+        if (opcion != -1) {
 
             this->setCartasAgarrarCincoFichas(opcion);         
         }
@@ -496,12 +551,12 @@ void Menu::modificarOpcion(int opcionElegida) {
 
         do {
 
-            std::cout << "\nIngrese la nueva cantidad de Cartas 'Eliminar Mazo del Jugador Siguiente' (o presione '0' para cancelar): ";
+            std::cout << "\nIngrese la nueva cantidad de Cartas 'Eliminar Mazo del Jugador Siguiente' (o presione '-1' para cancelar): ";
             std::cin >> opcion;
 
-        } while (opcion < 0);
+        } while (opcion < -1);
 
-        if (opcion != 0) {
+        if (opcion != -1) {
 
             this->setCartasEliminarMazoJugadorSiguiente(opcion);        
         }
@@ -557,7 +612,7 @@ int Menu::pedirProfundidad() {
 
 void Menu::tirarUnaFicha() {
 
-    if (this->juego->getJugadorActual()->getTipoDeTurno() != Bloqueado) {
+    if (this->juego->jugadorActualTieneFichas()) {
 
         int tiros;
 
@@ -572,8 +627,29 @@ void Menu::tirarUnaFicha() {
 
         for (int i = 0; i < tiros; i++) {
 
-            int columnaElegida = this->pedirColumna();
-            int profundidadElegida = this->pedirProfundidad();
+            bool columnaLlena;
+            int columnaElegida;
+            int profundidadElegida;
+
+            do {
+
+                columnaElegida = this->pedirColumna();
+                profundidadElegida = this->pedirProfundidad();
+
+                if (this->juego->getTablero()->columnaEstaLlena(columnaElegida, profundidadElegida)) {
+
+                    std::cout << "\n¡La columna en las coordenadas (" << columnaElegida << ", " << profundidadElegida
+                              << ") está llena! Por favor elige otra.\n" << std::endl;
+
+                    columnaLlena = true;
+
+                } else {
+
+                    columnaLlena = false;
+                }
+
+            } while (columnaLlena);
+
             this->juego->colocarFicha(columnaElegida, profundidadElegida);
 
             if (!this->juego->actualizarEstadoDeJuego()) {
@@ -582,18 +658,13 @@ void Menu::tirarUnaFicha() {
             }
         }
     }
-
-    if (this->juego->actualizarEstadoDeJuego()) {
-
-        this->juego->avanzarTurno();
-    }
 }
 
 bool Menu::quiereJugarCarta() {
 
     char eleccion;
 
-    std::cout << "¿Desea jugar una de sus cartas Especiales? (s/n): ";
+    std::cout << "\n¿Desea jugar una de sus cartas Especiales? (s/n): ";
     std::cin >> eleccion;
 
     return (eleccion == 's' || eleccion == 'S');
@@ -604,7 +675,7 @@ void Menu::mostrarCartas() {
     Lista<Carta*>* cartas = this->juego->getJugadorActual()->getCartasJugador();
     int cartasEnMano = this->juego->getJugadorActual()->getCantidadDeCartasEnMano();
 
-    std::cout << "\n- Cartas -\n\n";
+    std::cout << "\n-= Cartas de '" << this->juego->getJugadorActual()->getFicha() << "' =-\n\n";
 
     for (int i = 0; i < cartasEnMano; i++) {
 
@@ -621,7 +692,7 @@ void Menu::utilizarCarta() {
 
         if (cartasEnMano <= 1) {
 
-            std::cout << "\n¿Desea utilizar su carta? ";
+            std::cout << "\n¿Desea utilizar su carta? (1) ";
 
         } else {
 
@@ -635,6 +706,61 @@ void Menu::utilizarCarta() {
 
     if (eleccion != 0) {
 
+        CartaEspecial tipoCarta = this->juego->getJugadorActual()->obtenerCarta(eleccion)->getCartaEspecial();
         this->juego->usarCarta(eleccion);
+
+        switch (tipoCarta) {
+
+            case JuegaDoble:
+
+            std::cout << "\n¡Este turno tiras una ficha dos (2) veces!\n" << std::endl;
+            break;
+
+            case BloquearTurno:
+
+            std::cout << "\n¡Le bloqueaste el turno al siguiente Jugador!\n" << std::endl;
+            break;
+
+            case AgarrarCincoFichas:
+
+            std::cout << "\n¡Ahora tienes cinco (5) fichas mas!\n"
+                      << "Nueva Cantidad de Fichas: " << this->juego->getJugadorActual()->getCantidadDeFichasRestantes() << '\n' << std::endl;
+            break;
+
+            case EliminarMazoJugadorSiguiente:
+
+            std::cout << "\n¡El Jugador siguiente se quedó sin cartas!\n" << std::endl;
+            break;
+        }
     }
+}
+
+bool Menu::consultarRevancha() {
+
+    char eleccion;
+
+    std::cout << "¿Quieres jugar otra ronda? (s/n): ";
+    std::cin >> eleccion;
+
+    if (eleccion == 's' || eleccion == 'S') {
+
+        return true;
+    }
+
+    return false;
+}
+
+bool Menu::volverAlMenuPrincipal() {
+
+    char eleccion;
+
+    std::cout << "¿Quieres ir al Menu Principal? (s/n): ";
+    std::cin >> eleccion;
+
+    if (eleccion == 's' || eleccion == 'S') {
+
+        return true;
+    }
+
+    return false;
 }

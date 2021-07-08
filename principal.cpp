@@ -1,13 +1,12 @@
 #include "menu.h"
-using namespace std;
 
 int main() {
 
-    Menu* menusito = new Menu();
+    Menu* menu = new Menu();
 
-    menusito->mostrarMenuActual();
+    menu->mostrarMenuActual();
 
-    delete menusito;
+    delete menu;
 
     return 0;
 }
