@@ -3,10 +3,11 @@
 
 #include"listaLigada.h"
 #include"Carta.h"
+#include<ctime>
+#include<unistd.h>
+#include<string>
 
 const int CINCO_FICHAS = 5;
-
-const int NINGUNA = 0;
 
 enum TipoDeTurno{
     Comun,
@@ -23,6 +24,16 @@ class Jugador{
         int cantidadDeFichas;
         Lista<Carta*>* cartasJugador;
         TipoDeTurno turno;
+        std::string colorJugador;
+
+        /*
+        __________________
+        PRE:
+        -
+        POS: Devuelve un color en hexadecimal aleatorio.
+        __________________
+        */
+        std::string generarColorAleatorio();
 
         
     public:
@@ -38,6 +49,28 @@ class Jugador{
         */
         Jugador(char ficha, int cantidadFichasJugador);
 
+
+        /*
+        __________________________________________________
+        PRE:
+        -
+        POS: Devuelve la lista de cartas del jugador.
+        __________________________________________________
+        */
+        Lista<Carta*>* getCartasJugador();
+
+
+
+        /*
+        __________________________________________________
+        PRE:
+        -
+        POS: Devuelve la ficha que identifica al jugador.
+        __________________________________________________
+        */
+        std::string getColorJugador();
+
+
         /*
         __________________________________________________
         PRE:
@@ -46,6 +79,7 @@ class Jugador{
         __________________________________________________
         */
         char getFicha();
+
 
         /*
         __________________________________________________
@@ -56,6 +90,7 @@ class Jugador{
         */
         int getCantidadDeFichasRestantes();
 
+
         /*
         __________________________________________________
         PRE: 
@@ -64,6 +99,7 @@ class Jugador{
         __________________________________________________
         */
         int getCantidadDeCartasEnMano();
+
 
         /*
         __________________________________________________
@@ -74,14 +110,16 @@ class Jugador{
         */
         void cargarCarta(Carta* cartaAgarrada);
         
+
         /*
         __________________________________________________
-        PRE: El jugador eligio usar la carta en la posicion elegida.
+        PRE: El jugador eligio usar la carta en la posicion pasada por parametro.
         -
         POS: Devuelve un puntero a la carta en la posicion elegida.
         __________________________________________________
         */
         Carta* obtenerCarta(int posicionCarta);
+
 
         /*
         __________________________________________________
@@ -92,6 +130,7 @@ class Jugador{
         */
         void eliminarCarta(int posicionCarta);
 
+
         /*
         __________________________________________________
         PRE: El jugador uso la carta "JuegaDoble".
@@ -100,6 +139,7 @@ class Jugador{
         __________________________________________________
         */
         void duplicarTurno();
+
 
         /*
         __________________________________________________
@@ -110,6 +150,7 @@ class Jugador{
         */
         void bloquearTurno();
 
+
         /*
         __________________________________________________
         PRE: El jugador uso la carta "Agarrar Cinco Fichas".
@@ -118,6 +159,7 @@ class Jugador{
         __________________________________________________
         */
         void sumarCincoFichas();
+
 
         /*
         __________________________________________________
@@ -128,6 +170,7 @@ class Jugador{
         */
         void reestablecerTurno();
 
+
         /*
         __________________________________________________
         PRE:  
@@ -136,6 +179,7 @@ class Jugador{
         __________________________________________________
         */
         TipoDeTurno getTipoDeTurno();
+
 
         /*
         __________________________________________________
@@ -146,6 +190,7 @@ class Jugador{
         */
         void setTipoDeTurno(TipoDeTurno turno);
 
+
         /*
         __________________________________________________
         PRE:El jugador coloco una ficha en el tablero.
@@ -154,6 +199,7 @@ class Jugador{
         __________________________________________________
         */
         void descontarFichaColocada();
+
 
         /*
         __________________________________________________

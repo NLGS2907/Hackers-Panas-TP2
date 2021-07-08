@@ -1,14 +1,48 @@
 #include "Jugador.h"
 
 
+std::string Jugador::generarColorAleatorio(){
+
+    string clave;
+
+    const char alphanum[] =
+        "0123456789"
+        "ABCDEF";
+
+    srand( (unsigned) time(NULL) );
+
+    for(int i = 0; i < len; i++){
+    	clave += alphanum[ rand() % (sizeof(alphanum) - 1) ];
+    }
+
+    return clave;
+}
+
+
 Jugador::Jugador(char ficha, int cantidadFichasJugador){
 
     this->fichaJugador = ficha;
     this->cantidadDeFichas = cantidadFichasJugador;
-    this->cartasJugador = new Lista<Carta*>; 
+    this->cartasJugador = new Lista<Carta*>;
     this->turno = Comun;
+    this->colorJugador = generarColorAleatorio();
 
 }
+
+
+Lista<Carta*>* Jugador::getCartasJugador(){
+
+	return this->cartasJugador;
+
+}
+
+
+std::string Jugador::getColorJugador(){
+
+	return this->colorJugador;
+
+}
+
 
 char Jugador::getFicha(){
 
@@ -37,11 +71,13 @@ void Jugador::cargarCarta(Carta* cartaAgarrada){
 
 }
 
+
 Carta* Jugador::obtenerCarta(int posicionCarta){
     
     return ( this->cartasJugador->obtener(posicionCarta - 1) );
 
 }
+
 
 void Jugador::eliminarCarta(int posicionCarta){
     
@@ -96,6 +132,7 @@ TipoDeTurno Jugador::getTipoDeTurno(){
 
 }
 
+
 void Jugador::setTipoDeTurno(TipoDeTurno turno){
 
     this->turno = turno;
@@ -108,6 +145,7 @@ void Jugador::descontarFichaColocada(){
     this->cantidadDeFichas--;
 
 }
+
 
 Jugador::~Jugador(){
 
