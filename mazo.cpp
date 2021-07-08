@@ -115,3 +115,4 @@ Mazo::~Mazo(){
 
 	delete mazo;
 }
+

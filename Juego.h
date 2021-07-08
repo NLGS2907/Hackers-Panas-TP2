@@ -1,9 +1,11 @@
 #ifndef JUEGO_H_
 #define JUEGO_H_
 
+
 #include "tablero.h"
 #include "jugador.h"
 #include "mazo.h"
+
 
 const int MAX_CARTAS = 3;
 const int NINGUNA = 0;
@@ -34,6 +36,7 @@ class Juego{
         -
         POS: Devuelve un char aleatorio entre A y Z de la tabla
              ascii a usar como ficha en el juego.
+
         __________________________________________________
         */
         char getFichaAleatoria();
@@ -44,6 +47,7 @@ class Juego{
         -
         POS: Devuelve 'true' si la ficha ya esta usada por otro jugador,
              'false' sino.
+
         __________________________________________________
         */
         bool esFichaUsada(char ficha);

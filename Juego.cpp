@@ -114,6 +114,7 @@ Jugador* Juego::getJugadorSiguiente(){
 Juego::Juego(int cantidadFilas, int cantidadColumnas, int profundidad, int cantidadJugadores, int cantidadDeFichas, int fichasEnLinea,
 				int cartasJuegaDoble, int cartasBloquearTurno, int cartasAgarrarCincoFichas, int cartasEliminarMazoSiguienteJugador){
 
+
         srand(time(NULL));
 
         this->jugadores = new Lista<Jugador*>;
@@ -126,7 +127,6 @@ Juego::Juego(int cantidadFilas, int cantidadColumnas, int profundidad, int canti
         this->numeroDeTurno = 1;
 
         this->cargarJugadores(cantidadDeFichas, cantidadJugadores);
-
 }
 
 
@@ -165,6 +165,7 @@ int Juego::getNumeroJugadorActual(){
 
 
 void Juego::setNumeroJugadorActual(int numeroJugador){
+
 
     if(numeroJugador < 0 && numeroJugador < this->jugadores->len() ){
 
@@ -273,7 +274,6 @@ void Juego::colocarFicha(int columnaElegida, int profundidadElegida){
 
     this->tablero->tirarFicha(columnaElegida, profundidadElegida, this->getJugadorActual()->getFicha());
     this->getJugadorActual()->descontarFichaColocada();
-
 }
 
 
@@ -282,7 +282,9 @@ bool Juego::actualizarEstadoDeJuego(){
     if( this->getTablero()->ganoAlguien(this->getCantidadFichasEnLinea()) ){
         this->estadoActual = Ganado;
     }
+
     else if( !(this->getTablero()->tableroEstaLleno()) || (this->jugadoresTienenCartas() || this->jugadoresTienenFichas() || !(this->mazoJuego->esMazoVacio()))){
+
         this->estadoActual = Jugando;
     }
     else{
@@ -309,8 +311,6 @@ void Juego::avanzarTurno(){
 
     this->numeroDeTurno++;
     this->setNumeroJugadorActual(this->getNumeroSiguienteJugador());
-
-
 }
 
 

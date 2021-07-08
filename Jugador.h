@@ -20,7 +20,6 @@ enum TipoDeTurno{
 class Jugador{
 
     private:
-
         char fichaJugador;
         int cantidadDeFichas;
         Lista<Carta*>* cartasJugador;
