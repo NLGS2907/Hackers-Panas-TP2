@@ -1,11 +1,9 @@
 #include"mazo.h"
 #include<iostream>
 
-/* ----- DEFINICIONES ----- */
-
 Mazo::Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, int cantidadDeCartasAgarrarCincoFichas, int cantidadDeCartasEliminarMazoJugadorSiguiente) {
 
-            this->mazo = new Cola<Carta*>();
+        this->mazo = new Cola<Carta*>();
 
 	    int cantidadTotal = cantidadDeCartasJuegaDoble + cantidadDeCartasBloquearTurno + cantidadDeCartasAgarrarCincoFichas + cantidadDeCartasEliminarMazoJugadorSiguiente;
 
@@ -18,7 +16,8 @@ Mazo::Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, in
 
 	    while (cantidadDeCartas < cantidadTotal) {
 
-	        CartaEspecial tipoAleatorio = generarNumeroRandom();
+	        CartaEspecial tipoAleatorio = this->generarNumeroRandom();
+
 	        if (tipoAleatorio == JuegaDoble) {
 
 	            if (contador1 < cantidadDeCartasJuegaDoble) {
@@ -26,7 +25,6 @@ Mazo::Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, in
 	                this->acolarCarta(new Carta(tipoAleatorio));
 	                contador1++;
 	                cantidadDeCartas++;
-
 	            }
 	        } else if (tipoAleatorio == BloquearTurno) {
 
@@ -35,7 +33,6 @@ Mazo::Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, in
 	                this->acolarCarta(new Carta(tipoAleatorio));
 	                contador2++;
 	                cantidadDeCartas++;
-
 	            }
 	        } else if (tipoAleatorio == AgarrarCincoFichas) {
 
@@ -44,12 +41,11 @@ Mazo::Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, in
 	                this->acolarCarta(new Carta(tipoAleatorio));
 	                contador3++;
 	                cantidadDeCartas++;
-
 	            }
 
 	        } else if (tipoAleatorio == EliminarMazoJugadorSiguiente) {
 
-	            if (contador3 < cantidadDeCartasEliminarMazoJugadorSiguiente) {
+	            if (contador4 < cantidadDeCartasEliminarMazoJugadorSiguiente) {
 
 	                this->acolarCarta(new Carta(tipoAleatorio));
 	                contador4++;
@@ -58,7 +54,11 @@ Mazo::Mazo(int cantidadDeCartasJuegaDoble, int cantidadDeCartasBloquearTurno, in
 	            }
 	        }
 	    }
+}
 
+Cola<Carta*>* Mazo::getMazo() {
+
+	return this->mazo;
 }
 
 bool Mazo::esMazoVacio(){
@@ -67,7 +67,8 @@ bool Mazo::esMazoVacio(){
 }
 
 Carta* Mazo::acolarCarta(Carta* carta) {
-		mazo->acolar(carta);
+
+	mazo->acolar(carta);
 
 	return carta;
 }
@@ -79,28 +80,31 @@ Carta* Mazo::darCarta(){
 
 CartaEspecial Mazo::generarNumeroRandom(){
 
-	srand(time(NULL));
 	int aleatorio = rand() % 4;
 
 	CartaEspecial tipoDeCarta;
 
 	switch(aleatorio) {
 
-	case 0:
+		case 0:
+
 		tipoDeCarta = JuegaDoble;
-	break;
+		break;
 
-	case 1:
+		case 1:
+
 		tipoDeCarta = BloquearTurno;
-	break;
+		break;
 
-	case 2:
+		case 2:
+
 		tipoDeCarta = AgarrarCincoFichas;
-	break;
+		break;
 
-	case 3:
+		case 3:
+
 		tipoDeCarta = EliminarMazoJugadorSiguiente;
-	break;
+		break;
 
 	}
 
@@ -108,7 +112,7 @@ CartaEspecial Mazo::generarNumeroRandom(){
 }
 
 Mazo::~Mazo(){
+
 	delete mazo;
 }
-
 

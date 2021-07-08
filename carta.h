@@ -19,24 +19,31 @@ private:
 public:
 
 	/*
-	 * PRE:
-	 * POST: asigna carta especial
-	 */
+    __________________________________________________
+    PRE: -
+    -
+    POS: Asigna Carta Especial.
+    __________________________________________________
+    */
 	Carta(CartaEspecial tipoDeCarta);
 
 	/*
-	 * PRE:
-	 * POST: devuelve carta especial
-	 */
+    __________________________________________________
+    PRE: -
+    -
+    POS: Devuelve Carta Especial.
+    __________________________________________________
+    */
 	CartaEspecial getCartaEspecial();
 
 	/*
-	 * PRE:
-	 * POST: devuelve descripcion de la carta
-	 */
+    __________________________________________________
+    PRE: -
+    -
+    POS: Devuelve la descripción de la Carta.
+    __________________________________________________
+    */
 	std::string getDescripcionCarta();
 };
-
-
 
 #endif /* CARTA_H_ */

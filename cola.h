@@ -15,44 +15,70 @@ template<class Tipo> class Cola {
 
     public:
 
-        /*
-         * post: instancia de Cola vacía y lista para ser usada.
-         */
+    	/*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Se crea una instancia de COla vacía y lista para
+             ser usada.
+        __________________________________________________
+        */
         Cola();
 
-        /*
-         * post: devuelve si la Cola no tiene ningún elemento.
-         */
+    	/*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Devuelve 'true' si la Cola no tiene ningún elemento.
+             Caso contrario, devuelve 'false'.
+        __________________________________________________
+        */
         bool estaVacia();
 
-        /*
-         * post: agrega 'elemento' en el fondo de la Cola.
-         */
+    	/*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Agrega 'elemento' al fondo de la Cola.
+        __________________________________________________
+        */
         void acolar(Tipo elemento);
 
-        /*
-         * pre : la Cola no está vacía.
-         * post: remueve el frente de la Cola y lo devuelve.
-         */
+    	/*
+        __________________________________________________
+        PRE: La Cola no está vacía.
+        -
+        POS: Remueve el frente de la Cola y lo devuelve.
+        __________________________________________________
+        */
         Tipo desacolar();
 
-        /*
-         * pre : la Cola no está vacía.
-         * post: devuelve el frente de la Cola.
-         */
+    	/*
+        __________________________________________________
+        PRE: La Cola no está vacía.
+        -
+        POS: Devuelve el frente de la Cola.
+        __________________________________________________
+        */
         Tipo obtenerFrente();
 
-        /*
-         *pre:
-         *post:
-         */
+    	/*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Imprime por pantalla la Cola.
+        __________________________________________________
+        */
         void imprimir();
 
-
-        /*
-         * post: remueve todos los elementos y libera
-         *       los recursos tomados por la estructura de datos.
-         */
+    	/*
+        __________________________________________________
+        PRE: -
+        -
+        POS: Remueve todos los elementos y libera los recursos
+             tomados por la estructura de datos.
+        __________________________________________________
+        */
         ~Cola();
 };
 

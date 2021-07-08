@@ -1,9 +1,8 @@
-#include "Juego.h"
+#include "juego.h"
 
 //PRIVATE
 char Juego::getFichaAleatoria(){
 
-    srand(time(NULL));
     char fichaAleatoria = 0;
 
     while( fichaAleatoria < CARACTER_A ){
@@ -78,7 +77,7 @@ void Juego::cargarJugadores(int cantidadDeFichas, int cantidadJugadores){
     Jugador *jugador = new Jugador(ficha, cantidadDeFichas);
     this->jugadores->agregarFin(jugador);
     for(int i=1; i<cantidadJugadores; i++){
-            
+
         while( this->esFichaUsada(ficha) ){
             ficha = this->getFichaAleatoria();
         }
@@ -91,7 +90,7 @@ void Juego::cargarJugadores(int cantidadDeFichas, int cantidadJugadores){
 
 
 int Juego::getCantidadFichasEnLinea(){
-    
+
     return this->cantidadFichasEnLinea;
 
 }
@@ -115,6 +114,9 @@ Jugador* Juego::getJugadorSiguiente(){
 Juego::Juego(int cantidadFilas, int cantidadColumnas, int profundidad, int cantidadJugadores, int cantidadDeFichas, int fichasEnLinea,
 				int cartasJuegaDoble, int cartasBloquearTurno, int cartasAgarrarCincoFichas, int cartasEliminarMazoSiguienteJugador){
 
+
+        srand(time(NULL));
+
         this->jugadores = new Lista<Jugador*>;
         this->mazoJuego = new Mazo(cartasJuegaDoble, cartasBloquearTurno, cartasAgarrarCincoFichas, cartasEliminarMazoSiguienteJugador);
         this->tablero = new Tablero<char>(cantidadColumnas, cantidadFilas, profundidad);
@@ -125,7 +127,6 @@ Juego::Juego(int cantidadFilas, int cantidadColumnas, int profundidad, int canti
         this->numeroDeTurno = 1;
 
         this->cargarJugadores(cantidadDeFichas, cantidadJugadores);
-        
 }
 
 
@@ -165,7 +166,10 @@ int Juego::getNumeroJugadorActual(){
 
 void Juego::setNumeroJugadorActual(int numeroJugador){
 
-    if(numeroJugador <= 0 && numeroJugador < this->jugadores->len() ){
+
+    if(numeroJugador < 0 && numeroJugador < this->jugadores->len() ){
+
+        std::cout << "El numero del jugador (" << numeroJugador << ") no existe" << std::endl;
         throw("El numero del jugador no existe");
     }
     this->numeroJugadorActual = numeroJugador;
@@ -181,7 +185,7 @@ bool Juego::jugadorActualEstaBloqueado(){
 
 
 bool Juego::agarrarCartaDelMazo(){
-    
+
     if( this->jugadorActualTieneMenosDeTresCartas() && !(this->mazoJuego->esMazoVacio()) ){
         this->getJugadorActual()->cargarCarta(this->mazoJuego->darCarta());
         return true;
@@ -220,7 +224,7 @@ int Juego::getCartaElegida(){
 
 
 void Juego::usarCarta(int cartaSeleccionada){
-  
+
     switch(this->getJugadorActual()->obtenerCarta(cartaSeleccionada)->getCartaEspecial()){
         case JuegaDoble:
             this->getJugadorActual()->duplicarTurno();
@@ -241,7 +245,7 @@ void Juego::usarCarta(int cartaSeleccionada){
     }
 
     this->getJugadorActual()->eliminarCarta(cartaSeleccionada);
-    
+
 }
 
 
@@ -270,7 +274,6 @@ void Juego::colocarFicha(int columnaElegida, int profundidadElegida){
 
     this->tablero->tirarFicha(columnaElegida, profundidadElegida, this->getJugadorActual()->getFicha());
     this->getJugadorActual()->descontarFichaColocada();
-    
 }
 
 
@@ -279,7 +282,9 @@ bool Juego::actualizarEstadoDeJuego(){
     if( this->getTablero()->ganoAlguien(this->getCantidadFichasEnLinea()) ){
         this->estadoActual = Ganado;
     }
-    else if( !(this->getTablero()->tableroEstaLleno()) && (this->jugadoresTienenCartas() || this->jugadoresTienenFichas() || !(this->mazoJuego->esMazoVacio()))){
+
+    else if( !(this->getTablero()->tableroEstaLleno()) || (this->jugadoresTienenCartas() || this->jugadoresTienenFichas() || !(this->mazoJuego->esMazoVacio()))){
+
         this->estadoActual = Jugando;
     }
     else{
@@ -300,14 +305,12 @@ EstadoJuego Juego::getEstadoJuego(){
 void Juego::avanzarTurno(){
 
     if( (this->getJugadorActual()->getTipoDeTurno() == Bloqueado) || (this->getJugadorActual()->getTipoDeTurno() == Doble) ){
-            
+
             this->getJugadorActual()->reestablecerTurno();
         }
 
     this->numeroDeTurno++;
     this->setNumeroJugadorActual(this->getNumeroSiguienteJugador());
-    
-
 }
 
 
@@ -323,5 +326,3 @@ Juego::~Juego(){
 
     delete this->tablero;
 }
-
-

@@ -1,7 +1,4 @@
 #include"carta.h"
-#include<iostream>
-
-/* ----- DEFINICIONES ----- */
 
 Carta::Carta(CartaEspecial tipoCartaNueva) {
 
@@ -36,7 +33,6 @@ Carta::Carta(CartaEspecial tipoCartaNueva) {
 	}
 }
 
-
 CartaEspecial Carta::getCartaEspecial() {
 
 	return this->tipoDeCarta;
@@ -46,8 +42,3 @@ std::string Carta::getDescripcionCarta() {
 
 	return this->descripcionCarta;
 }
-
-
-
-
-
