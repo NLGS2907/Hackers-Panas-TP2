@@ -3,7 +3,7 @@
 
 
 #include "tablero.h"
-#include "jugador.h"
+#include "Jugador.h"
 #include "mazo.h"
 
 
