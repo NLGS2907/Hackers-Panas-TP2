@@ -5,8 +5,8 @@ Menu::Menu() {
     this->tipo = menuPrincipal;
     this->rondaActual = 1;
 
-    this->tamanioX = 3;
-    this->tamanioY = 4;
+    this->tamanioX = 5;
+    this->tamanioY = 6;
     this->tamanioZ = 5;
 
     this->nEnLinea = 4;
@@ -18,11 +18,19 @@ Menu::Menu() {
     this->cantidadCartasBloquearTurno = 5;
     this->cantidadCartasAgarrarCincoFichas = 5;
     this->cantidadCartasEliminarMazoJugadorSiguiente = 5;
+    
+    this->juego = new Juego(this->getTamanioY(), this->getTamanioX(), this->getTamanioZ(),
+                            this->getCantidadJugadores(), this->getCantidadFichasPorJugador(), this->getNenLinea(),
+                            this->getCartasJuegaDoble(), this->getCartasBloquearTurno(), this->getCartasAgarrarCincoFichas(),
+                            this->getCartasEliminarMazoJugadorSiguiente());
+
+    this->exportador = new Exportador(this->juego);
 }
 
 Menu::~Menu() {
 
     delete this->juego;
+    delete this->exportador;
 }
 
 TipoDeMenu Menu::getTipoMenu() {
@@ -33,6 +41,11 @@ TipoDeMenu Menu::getTipoMenu() {
 int Menu::getRondaActual() {
 
     return this->rondaActual;
+}
+
+Exportador* Menu::getExportador() {
+
+    return this->exportador;
 }
 
 int Menu::getTamanioX() {
@@ -96,6 +109,11 @@ void Menu::setTipoMenu(TipoDeMenu nuevoTipo) {
 void Menu::setRondaActual(int nuevaRonda) {
 
     this->rondaActual = nuevaRonda;
+}
+
+void Menu::setExportador(Exportador* nuevoExportador) {
+
+    this->exportador = nuevoExportador;
 }
 
 void Menu::setTamanioX(int nuevoTamanioX) {
@@ -219,6 +237,8 @@ bool Menu::mostrarMenuDeJuego() {
         } while (this->juego->getEstadoJuego() == Jugando);
 
         this->juego->getTablero()->imprimir();
+
+        this->exportarTablero();
 
         std::cout << "\n¡Ha finalizado la ronda " << this->getRondaActual() << "!\n";
 
@@ -572,6 +592,8 @@ void Menu::iniciarJuego() {
                             this->getCartasJuegaDoble(), this->getCartasBloquearTurno(), this->getCartasAgarrarCincoFichas(),
                             this->getCartasEliminarMazoJugadorSiguiente());
 
+    this->setExportador(new Exportador(this->juego));
+
     this->setTipoMenu(enJuego);
 }
 
@@ -656,6 +678,8 @@ void Menu::tirarUnaFicha() {
 
                 break;
             }
+
+            this->exportarTablero();
         }
     }
 }
@@ -763,4 +787,11 @@ bool Menu::volverAlMenuPrincipal() {
     }
 
     return false;
+}
+
+void Menu::exportarTablero() {
+
+    this->getExportador()->dibujarTablero();
+    this->getExportador()->actualizarRutaSalida(this->getRondaActual(), this->juego->getTurnoActual());
+    this->getExportador()->guardar();
 }

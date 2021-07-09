@@ -2,6 +2,7 @@
 #define MENU_H_
 
 #include "juego.h"
+#include "exportador.h"
 #include <iostream>
 
 enum TipoDeMenu {
@@ -18,6 +19,7 @@ private:
 
     Juego* juego;
     int rondaActual;
+    Exportador* exportador;
 
     TipoDeMenu tipo;
 
@@ -44,10 +46,6 @@ public:
     -
     POS: Crea una instancia Menu, lista para ser usada.
     __________________________________________________
-
-    El atributo 'this->juego' se inicializa recién cuando se ejecuta
-    'this->iniciarJuego()'. Como consecuencia, no es inicializado en
-    este constructor.
     */
 	Menu();
 
@@ -82,6 +80,17 @@ public:
     Devuelve el numero de la ronda actual.
     */
     int getRondaActual();
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: El Menu permanece inalterado.
+    __________________________________________________
+
+    Devuelve el exportador del juego.
+    */
+    Exportador* getExportador();
 
     /*
     __________________________________________________
@@ -216,6 +225,17 @@ public:
     Modifica el numero de la ronda actual.
     */
     void setRondaActual(int nuevaRonda);
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: Un atributo del Menu es modificado.
+    __________________________________________________
+
+    Modifica el exportador del juego.
+    */
+    void setExportador(Exportador* nuevoExportador);
 
     /*
     __________________________________________________
@@ -544,6 +564,18 @@ esté entre 0 y el LARGO del tablero, en cuyo caso devuelve
     que sí, devuelve 'true'. En caso contrario, devuelve 'false'.
     */
     bool volverAlMenuPrincipal();
+
+    /*
+    __________________________________________________
+    PRE: -
+    -
+    POS: El Menu permanece inalterado.
+    __________________________________________________
+
+    Se exporta el estado del tablero a un archivo BMP en la carpeta
+    'historial'.
+    */
+    void exportarTablero();
 };
 
 #endif /* MENU_H_ */

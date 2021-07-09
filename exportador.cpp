@@ -274,39 +274,119 @@ void dibujarCuadrilatero(BMP& imagen, double x1, double y1, double x2, double y2
 ==============================
 */
 
-Exportador::Exportador(const char* rutaDeEntrada, const char* rutaDeSalida) {
+Exportador::Exportador(std::string rutaDeEntrada, std::string rutaDeSalida) {
 
-    this->imagen.ReadFromFile(rutaDeEntrada);
+    this->imagen.ReadFromFile(rutaDeEntrada.c_str());
     this->rutaSalida = rutaDeSalida;
+}
+
+Exportador::Exportador(Juego* nuevoJuego) {
+
+    this->juego = nuevoJuego;
+
+    int anchoTablero = this->juego->getTablero()->ancho();
+    int altoTablero = this->juego->getTablero()->alto();
+    int largoTablero = this->juego->getTablero()->largo();
+
+    this->imagen.SetSize((anchoTablero * TAMANIO_CELDA) + (2 * MARGEN_X),
+                          (altoTablero * largoTablero * TAMANIO_CELDA) + (MARGEN_Y * (largoTablero + 1)));
 }
 
 void Exportador::guardar() {
 
-    this->imagen.WriteToFile(rutaSalida);
+    this->imagen.WriteToFile(this->rutaSalida.c_str());
 }
 
-void Exportador::setRutaEntrada(const char* nuevaEntrada) {
+void Exportador::setRutaEntrada(std::string nuevaEntrada) {
 
-    this->imagen.ReadFromFile(nuevaEntrada);
+    this->imagen.ReadFromFile(nuevaEntrada.c_str());
 }
 
-const char* Exportador::getRutaSalida() {
+std::string Exportador::getRutaSalida() {
 
     return this->rutaSalida;
 }
 
-void Exportador::setRutaSalida(const char* nuevaSalida) {
+void Exportador::setRutaSalida(std::string nuevaSalida) {
 
     this->rutaSalida = nuevaSalida;
 }
 
 RGBApixel Exportador::conseguirPixel(int x, int y) {
 
-    if (!esPosicionValida(imagen, x, y)) {
+    if (!esPosicionValida(this->imagen, x, y)) {
 
-        std::cout << "La posición (" << x << ", " << y << ") no está dentro de los límites de la imagen." << std::endl;
+        std::cout << "La posición (" << x << ", " << y << ") no está dentro de los límites de la imagen->" << std::endl;
         throw (x);
     }
 
     return this->imagen.GetPixel(x, y);
+}
+
+void Exportador::actualizarRutaSalida(int rondaActual, int turnoActual) {
+
+    std::string nuevaRuta = "historial/ronda_" + numeroAString(rondaActual) + "_turno_" + numeroAString(turnoActual) + ".bmp";
+    this->setRutaSalida(nuevaRuta);
+}
+
+void Exportador::dibujarTablero() {
+
+    int anchoImagen = this->imagen.TellWidth();
+    int altoImagen = this->imagen.TellHeight();
+
+    dibujarRectangulo(this->imagen, 0, 0, anchoImagen, altoImagen, true, HexToRGB(COLOR_FONDO));
+
+    int anchoTablero = this->juego->getTablero()->ancho();
+    int altoTablero = this->juego->getTablero()->alto();
+    int largoTablero = this->juego->getTablero()->largo();
+
+    for (int z = 0; z < largoTablero; z++) {
+
+        for (int x = 0; x <= anchoTablero; x++) { // Líneas Verticales
+
+            dibujarRectangulo(this->imagen, (MARGEN_X + (x * TAMANIO_CELDA)) - (ANCHURA / 2), // x1)
+                             (MARGEN_Y * (z + 1) + (z * altoTablero * TAMANIO_CELDA))  - (ANCHURA / 2), // y1
+                             (MARGEN_X + (x * TAMANIO_CELDA)) + (ANCHURA / 2), // x2
+                             (MARGEN_Y * (z + 1) + (altoTablero * TAMANIO_CELDA) + (z * altoTablero * TAMANIO_CELDA)) + (ANCHURA / 2), // y2
+                             true, HexToRGB(AZUL_OSCURO)); // Color
+        }
+
+        for (int y = 0; y <= altoTablero; y++) { // Líneas Horziontales
+
+            dibujarRectangulo(this->imagen, MARGEN_X - (ANCHURA / 2), // x1
+                       (MARGEN_Y * (z + 1) + (y * TAMANIO_CELDA) + (z * altoTablero * TAMANIO_CELDA)) - (ANCHURA / 2), // y1
+                       (anchoImagen - MARGEN_X) + (ANCHURA / 2), // x2
+                       (MARGEN_Y * (z + 1) + (y * TAMANIO_CELDA) + (z * altoTablero * TAMANIO_CELDA)) + (ANCHURA / 2), // y2
+                       true, HexToRGB(AZUL_OSCURO)); // Color
+        }
+    }
+
+    for (int x = 0; x < anchoTablero; x++) {
+
+            for (int y = 0; y < altoTablero; y++) {
+
+                for (int z = 0; z < largoTablero; z++) {
+
+                    if (this->juego->getTablero()->casillero(y, x, z)->verContenido() != VACIO) {
+
+                    char fichaPuesta = this->juego->getTablero()->celda(y, x, z);
+                    std::string color;
+
+                    for (int i = 0; i < this->juego->getJugadores()->len(); i++) {
+
+                        if (this->juego->getJugadores()->obtener(i)->getFicha() == fichaPuesta) {
+
+                            color = this->juego->getJugadores()->obtener(i)->getColorJugador();
+                        }
+                    }
+
+                    dibujarCirculo(this->imagen,
+                                  MARGEN_X + ((x * TAMANIO_CELDA) + ((x + 1) * TAMANIO_CELDA)) / 2, // Centro en X
+                                  (MARGEN_Y * (z + 1) + (y * TAMANIO_CELDA) + (z * altoTablero * TAMANIO_CELDA) + MARGEN_Y * (z + 1) + ((y + 1) * TAMANIO_CELDA) + (z * altoTablero * TAMANIO_CELDA)) / 2, // Centro en Y
+                                  RADIO_FICHAS, // Radio
+                                  0, 2 * _PI_, HexToRGB(color.c_str())); // Color
+                }
+                }
+            }
+        }
 }
